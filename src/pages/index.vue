@@ -1,619 +1,357 @@
 <template>
-  <div class="min-h-screen bg-[#F3F2EC] text-slate-900">
-    <!-- Top bar / Navigation -->
-    <header class="border-b border-slate-200/60 bg-white/90 backdrop-blur sticky top-0 z-30">
-      <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
-        <!-- Logo / Brand -->
-        <div class="flex items-center gap-2">
-          <div
-              class="h-9 w-9 rounded-full flex items-center justify-center font-bold text-white text-xl"
-              style="background:#E62727;"
-          >
+  <div class="font-sans bg-[#FDFCF8] text-slate-800 min-h-screen selection:bg-rose-100 selection:text-rose-900">
+    <component :is="'style'">
+      @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+      .font-serif { font-family: 'Playfair Display', serif; }
+      .font-sans { font-family: 'Inter', sans-serif; }
+    </component>
+
+    <header class="fixed top-0 w-full z-40 border-b border-slate-200/50 bg-white/80 backdrop-blur-md transition-all duration-300">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+        <a href="#" class="flex items-center gap-3 group">
+          <div class="relative flex items-center justify-center h-10 w-10 bg-rose-600 text-white font-serif font-bold text-xl rounded-xl shadow-lg shadow-rose-200 group-hover:scale-105 transition-transform">
             SB
           </div>
-          <div class="leading-tight">
-            <div class="font-semibold tracking-tight text-lg">Stage &amp; Bloom</div>
-            <p class="text-[11px] text-slate-500">Event vendors, all in one place.</p>
+          <div class="leading-none">
+            <h1 class="font-serif font-bold text-xl text-slate-900 tracking-tight">Stage &amp; Bloom</h1>
+            <p class="text-[10px] uppercase tracking-widest text-slate-500 mt-1">The Event Collective</p>
           </div>
-        </div>
+        </a>
 
-        <!-- Center Nav -->
-        <nav class="hidden md:flex items-center gap-6 text-sm">
-          <a href="#vendors" class="hover:text-stage-red transition-colors">
-            Browse vendors
-          </a>
-          <a href="#why-exists" class="hover:text-stage-red transition-colors">
-            Why it exists
-          </a>
-          <a href="#how-it-works" class="hover:text-stage-red transition-colors">
-            How it works
-          </a>
+        <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
+          <a href="#vendors" class="hover:text-rose-600 transition-colors">Find Vendors</a>
+          <a href="#how-it-works" class="hover:text-rose-600 transition-colors">How it Works</a>
+          <a href="#inspiration" class="hover:text-rose-600 transition-colors">Inspiration</a>
         </nav>
 
-        <!-- Right side: CTA + Country selector -->
-        <div class="flex items-center gap-3">
-          <!-- Country selector -->
-          <div class="hidden sm:block">
-            <select
-                v-model="selectedCountry"
-                class="text-xs border-slate-200/80 bg-white px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-stage-red/30"
-            >
-              <option value="gh">🇬🇭 Ghana</option>
-              <option value="ke">🇰🇪 Kenya</option>
-              <option value="za">🇿🇦 South Africa</option>
+        <div class="flex items-center gap-4">
+          <div class="hidden sm:flex items-center gap-2 bg-slate-100/80 rounded-full px-3 py-1.5 border border-slate-200">
+            <span class="text-lg">🇬🇭</span>
+            <select v-model="selectedCountry" class="bg-transparent text-xs font-medium text-slate-700 focus:outline-none cursor-pointer">
+              <option value="gh">Ghana</option>
+              <option value="ke">Kenya</option>
+              <option value="za">South Africa</option>
             </select>
           </div>
-
-          <!-- Primary CTA -->
-          <button
-              class="hidden sm:inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-white border border-transparent bg-red-700 hover:bg-[#c02121] transition-colors"
-          >
-            List your services
+          <button class="hidden sm:inline-flex rounded-full bg-slate-900 text-white px-5 py-2.5 text-sm font-medium hover:bg-slate-800 hover:shadow-lg transition-all">
+            List your business
           </button>
         </div>
       </div>
     </header>
 
+    <main class="pt-24 pb-20 space-y-24">
 
-    <!-- Main -->
-    <main class="max-w-6xl mx-auto px-4 pt-10 pb-16 space-y-16">
-      <!-- HERO -->
-      <section class="grid lg:grid-cols-2 gap-10 items-center">
-        <!-- Left: Copy -->
-        <div class="space-y-5">
-          <p class="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-slate-500">
-            <span class="h-1.5 w-1.5 rounded-full" style="background:#E62727;"></span>
-            Event vendor marketplace
-          </p>
+      <section class="max-w-7xl mx-auto px-4 sm:px-6">
+        <div class="grid lg:grid-cols-12 gap-12 items-center">
 
-          <h1 class="text-3xl md:text-4xl lg:text-[2.75rem] font-semibold leading-tight">
-            Find trusted <span class="text-stage-red">event vendors</span> for your next
-            celebration in minutes.
-          </h1>
-
-          <p class="text-sm md:text-base text-slate-600 max-w-lg">
-            Browse decorators, caterers, photographers, DJs, MCs and more – all plugged
-            into the Instagram and WhatsApp flows vendors already use.
-          </p>
-
-          <!-- Quick chips -->
-          <div class="flex flex-wrap gap-2.5 text-[11px]">
-            <span
-                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200/70"
-            >
-              🎉 Birthdays &amp; baby showers
-            </span>
-            <span
-                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200/70"
-            >
-              💍 Weddings &amp; engagements
-            </span>
-            <span
-                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200/70"
-            >
-              🏢 Corporate &amp; brand events
-            </span>
-          </div>
-
-          <!-- Trust / explainer row -->
-          <div class="flex flex-wrap gap-4 text-[11px] text-slate-500">
-            <div class="flex items-center gap-2">
-              <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-              Contact vendors directly on WhatsApp
+          <div class="lg:col-span-6 space-y-8 relative z-10">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-50 border border-rose-100 text-rose-700 text-xs font-medium tracking-wide">
+              <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+              </span>
+              The curated marketplace for events
             </div>
-            <div class="flex items-center gap-2">
-              <span class="h-1.5 w-1.5 rounded-full bg-stage-teal"></span>
-              Real rate hints &amp; ballpark pricing
-            </div>
-          </div>
-        </div>
 
-        <!-- Right: Search card -->
-        <div
-            id="search"
-            class="bg-white shadow-[0_18px_40px_rgba(15,23,42,0.06)] border border-slate-200/60 overflow-hidden rounded-none"
-        >
-          <!-- Header strip -->
-          <div class="px-5 pt-4 pb-3 border-b border-slate-200/60 bg-[#F9F8F4]">
-            <p class="text-xs font-medium text-slate-800">Tell us what you’re planning</p>
-            <p class="text-[11px] text-slate-500 mt-0.5">
-              We’ll help you find the right mix of vendors for your event.
+            <h1 class="font-serif text-5xl md:text-6xl lg:text-[4.2rem] leading-[1.1] font-medium text-slate-900">
+              Curate your <br/>
+              <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-orange-500 italic pr-2">perfect moment.</span>
+            </h1>
+
+            <p class="text-lg text-slate-600 leading-relaxed max-w-lg">
+              Discover Accra’s finest decorators, caterers, and creatives.
+              Plugged directly into WhatsApp for seamless planning.
             </p>
+
+            <div class="flex items-center gap-6 pt-2">
+              <div class="flex -space-x-3">
+                <img class="h-10 w-10 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=64&h=64" alt="User" />
+                <img class="h-10 w-10 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=64&h=64" alt="User" />
+                <img class="h-10 w-10 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=64&h=64" alt="User" />
+                <div class="h-10 w-10 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-600">+2k</div>
+              </div>
+              <div class="text-sm">
+                <p class="font-bold text-slate-900">Trusted by planners</p>
+                <div class="flex text-yellow-400 text-xs">★★★★★</div>
+              </div>
+            </div>
           </div>
 
-          <div class="p-4 md:p-5 space-y-4">
-            <!-- Mode toggle -->
-            <div
-                class="grid grid-cols-2 gap-2 text-xs font-medium bg-[#F3F2EC] rounded-full p-1"
-            >
-              <button
-                  type="button"
-                  class="rounded-full py-2 text-center transition-all"
-                  :class="
-                  mode === 'filters'
-                    ? 'bg-white shadow-sm text-slate-900'
-                    : 'text-slate-500 hover:text-slate-800'
-                "
-                  @click="mode = 'filters'"
-              >
-                Quick filters
-              </button>
-              <button
-                  type="button"
-                  class="rounded-full py-2 text-center transition-all"
-                  :class="
-                  mode === 'ai'
-                    ? 'bg-white shadow-sm text-slate-900'
-                    : 'text-slate-500 hover:text-slate-800'
-                "
-                  @click="mode = 'ai'"
-              >
-                Ask Stage &amp; Bloom AI
-              </button>
-            </div>
+          <div class="lg:col-span-6 relative">
+            <div class="absolute -inset-4 bg-gradient-to-tr from-rose-200 to-orange-100 rounded-[3rem] blur-2xl opacity-60 -z-10"></div>
 
-            <!-- Filters mode -->
-            <div v-if="mode === 'filters'" class="space-y-3">
-              <div class="grid md:grid-cols-2 gap-3">
-                <div>
-                  <label class="block text-xs font-medium text-slate-700 mb-1">
-                    What do you need?
-                  </label>
-                  <select
-                      v-model="selectedCategory"
-                      class="w-full text-sm rounded-xl border border-slate-200/80 bg-white px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-stage-red/30"
-                  >
-                    <option value="">Any vendor type</option>
-                    <option v-for="cat in categories" :key="cat.slug" :value="cat.slug">
-                      {{ cat.name }}
-                    </option>
-                  </select>
-                </div>
+            <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden relative">
 
-                <div>
-                  <label class="block text-xs font-medium text-slate-700 mb-1">
-                    City / Area
-                  </label>
-                  <input
-                      v-model="location"
-                      type="text"
-                      placeholder="e.g. East Legon, Osu"
-                      class="w-full text-sm rounded-xl border border-slate-200/80 bg-white px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-stage-red/30"
-                  />
-                </div>
-              </div>
 
-              <div class="grid md:grid-cols-2 gap-3">
-                <div>
-                  <label class="block text-xs font-medium text-slate-700 mb-1">
-                    Number of guests
-                  </label>
-                  <input
-                      v-model.number="guestCount"
-                      type="number"
-                      min="1"
-                      placeholder="e.g. 50"
-                      class="w-full text-sm rounded-xl border border-slate-200/80 bg-white px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-stage-red/30"
-                  />
-                </div>
-                <div>
-                  <div class="flex items-center justify-between mb-1">
-                    <label class="block text-xs font-medium text-slate-700">
-                      Approx. budget per vendor (GHS)
-                    </label>
-                    <span class="text-[11px] text-slate-500">
-                      Up to {{ budgetPerVendor || '—' }}
-                    </span>
-                  </div>
-                  <input
-                      v-model.number="budgetPerVendor"
-                      type="range"
-                      min="500"
-                      max="20000"
-                      step="500"
-                      class="w-full accent-stage-red"
-                  />
-                </div>
-              </div>
-
-              <button
-                  type="button"
-                  @click="runFilterSearch"
-                  class="w-full mt-2 inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:shadow-md transition-shadow bg-red-700 hover:bg-[#c02121]"
-              >
-                Search vendors
-                <span class="text-xs opacity-80">
-                  ({{ filteredVendors.length }} found)
-                </span>
-              </button>
-            </div>
-
-            <!-- AI mode -->
-            <div v-else class="space-y-3">
-              <div>
-                <label class="block text-xs font-medium text-slate-700 mb-1">
-                  Describe your event
-                </label>
-                <textarea
-                    v-model="aiPrompt"
-                    rows="4"
-                    placeholder="e.g. Small 50-person birthday in Osu next month, budget about 10k. Need decor, food, cake and a DJ."
-                    class="w-full text-sm rounded-2xl border border-slate-200/80 bg-white px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-stage-red/30 resize-none"
-                />
-              </div>
-
-              <p class="text-[11px] text-slate-500">
-                We’ll turn this into filters (guest count, budget, vendor types) and show
-                matching vendors you can contact on WhatsApp.
-              </p>
-
-              <button
-                  type="button"
-                  @click="runAISearch"
-                  class="w-full inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:shadow-md transition-shadow bg-red-700 hover:bg-[#c02121]"
-              >
-                Ask the AI planner
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- BROWSE BY EVENT TYPE -->
-      <section class="space-y-4">
-        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-3">
-          <div>
-            <h2 class="text-xl md:text-2xl font-semibold">Browse by event type</h2>
-            <p class="text-xs md:text-sm text-slate-500 max-w-md">
-              Not sure where to start? Choose the kind of event you’re planning and explore
-              typical vendor needs.
-            </p>
-          </div>
-        </div>
-
-        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <article
-              v-for="event in eventTypes"
-              :key="event.slug"
-              class="bg-white border border-slate-200/70 p-4 flex flex-col justify-between rounded-none"
-          >
-            <div class="space-y-1.5">
-              <p class="text-[11px] uppercase tracking-[0.16em] text-slate-500">
-                {{ event.kicker }}
-              </p>
-              <h3 class="font-semibold text-sm md:text-base">{{ event.name }}</h3>
-              <p class="text-xs text-slate-600">
-                {{ event.description }}
-              </p>
-            </div>
-
-            <div class="mt-3 space-y-2">
-              <label class="block text-[11px] font-medium text-slate-600">
-                Focus on
-              </label>
-              <select
-                  v-model="selectedSubcategories[event.slug]"
-                  class="w-full text-xs rounded-md border border-slate-200/80 bg-white px-2.5 py-2 focus:outline-none focus:ring-1 focus:ring-stage-red/30"
-              >
-                <option :value="''">Any vendor type</option>
-                <option
-                    v-for="sub in event.subcategories"
-                    :key="sub.slug"
-                    :value="sub.slug"
+              <div class="flex border-b border-slate-100">
+                <button
+                    @click="mode = 'filters'"
+                    class="flex-1 py-4 text-sm font-medium transition-colors relative"
+                    :class="mode === 'filters' ? 'text-rose-600 bg-rose-50/50' : 'text-slate-500 hover:bg-slate-50'"
                 >
-                  {{ sub.name }}
-                </option>
-              </select>
+                  Quick Search
+                  <div v-if="mode === 'filters'" class="absolute bottom-0 inset-x-0 h-0.5 bg-rose-600"></div>
+                </button>
+                <button
+                    @click="mode = 'ai'"
+                    class="flex-1 py-4 text-sm font-medium transition-colors relative flex items-center justify-center gap-2"
+                    :class="mode === 'ai' ? 'text-purple-600 bg-purple-50/50' : 'text-slate-500 hover:bg-slate-50'"
+                >
+                  <span class="text-lg">✨</span> AI Planner
+                  <div v-if="mode === 'ai'" class="absolute bottom-0 inset-x-0 h-0.5 bg-purple-600"></div>
+                </button>
+              </div>
+
+              <div class="p-6 md:p-8">
+                <div v-if="mode === 'filters'" class="space-y-5">
+                  <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-1.5">
+                      <label class="text-xs font-bold uppercase tracking-wider text-slate-400">Service</label>
+                      <select v-model="selectedCategory" class="w-full bg-slate-50 border-0 rounded-xl px-4 py-3 text-sm font-medium text-slate-800 focus:ring-2 focus:ring-rose-500/20 transition-shadow cursor-pointer">
+                        <option value="">All Vendors</option>
+                        <option v-for="cat in categories" :key="cat.slug" :value="cat.slug">{{ cat.name }}</option>
+                      </select>
+                    </div>
+                    <div class="space-y-1.5">
+                      <label class="text-xs font-bold uppercase tracking-wider text-slate-400">Location</label>
+                      <input v-model="location" type="text" placeholder="e.g. East Legon" class="w-full bg-slate-50 border-0 rounded-xl px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:ring-2 focus:ring-rose-500/20 transition-shadow" />
+                    </div>
+                  </div>
+
+                  <div class="space-y-3 pt-2">
+                    <div class="flex justify-between text-xs font-medium">
+                      <span class="text-slate-500">Budget Range (GHS)</span>
+                      <span class="text-rose-600">Up to {{ budgetPerVendor.toLocaleString() }}</span>
+                    </div>
+                    <input v-model.number="budgetPerVendor" type="range" min="500" max="20000" step="500" class="w-full h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-rose-600" />
+                  </div>
+
+                  <button @click="runFilterSearch" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-medium py-3.5 rounded-xl shadow-lg shadow-rose-200 transition-all hover:-translate-y-0.5 active:translate-y-0">
+                    Show {{ filteredVendors.length }} Vendors
+                  </button>
+                </div>
+
+                <div v-else class="space-y-5">
+                  <div class="space-y-1.5">
+                    <label class="text-xs font-bold uppercase tracking-wider text-slate-400">Describe your dream event</label>
+                    <textarea
+                        v-model="aiPrompt"
+                        rows="3"
+                        class="w-full bg-slate-50 border-0 rounded-xl px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:ring-2 focus:ring-purple-500/20 transition-shadow resize-none"
+                        placeholder="I need a photographer and cake for a baby shower in Osu next Saturday. Budget is around 5000 GHS."
+                    ></textarea>
+                  </div>
+                  <button @click="runAISearch" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium py-3.5 rounded-xl shadow-lg shadow-purple-200 transition-all hover:-translate-y-0.5">
+                    Generate Plan with AI
+                  </button>
+                </div>
+              </div>
             </div>
-          </article>
+          </div>
         </div>
       </section>
 
-      <!-- FEATURED VENDORS -->
-      <section id="vendors" class="space-y-5">
-        <div class="flex items-center justify-between">
-          <div>
-            <h2 class="text-xl md:text-2xl font-semibold">Featured vendors</h2>
-            <p class="text-xs md:text-sm text-slate-500">
-              Showing {{ filteredVendors.length }} of {{ vendors.length }} sample vendors
-              (mock data for now).
-            </p>
-          </div>
-          <div class="hidden md:flex text-[11px] items-center gap-2 text-slate-500">
-            <span
-                class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-white border border-slate-200/70"
-            >
-              <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-              Available
-            </span>
-          </div>
+      <section class="max-w-7xl mx-auto px-4 sm:px-6">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+          <h2 class="font-serif text-3xl font-bold text-slate-900 mb-3">Browse by Occasion</h2>
+          <p class="text-slate-500">Start with the type of event you are planning and we'll guide you.</p>
         </div>
 
-        <div v-if="filteredVendors.length" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div v-for="event in eventTypes" :key="event.slug" class="group relative overflow-hidden rounded-2xl aspect-[4/5] cursor-pointer">
+            <div class="absolute inset-0 bg-slate-200 transition-transform duration-700 group-hover:scale-110">
+              <img v-if="event.slug === 'wedding'" src="https://images.pexels.com/photos/169198/pexels-photo-169198.jpeg" class="h-full w-full object-cover opacity-90" alt="Wedding" />
+              <img v-if="event.slug === 'party'" src="https://images.pexels.com/photos/1190298/pexels-photo-1190298.jpeg" class="h-full w-full object-cover opacity-90" alt="Party" />
+              <img v-if="event.slug === 'corporate'" src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg" class="h-full w-full object-cover opacity-90" alt="Corporate" />
+              <img v-if="event.slug === 'other'" src="https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg" class="h-full w-full object-cover opacity-90" alt="Other" />
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+
+            <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+              <p class="text-[10px] uppercase tracking-widest font-medium text-white/80 mb-2">{{ event.kicker }}</p>
+              <h3 class="font-serif text-2xl font-medium mb-1">{{ event.name }}</h3>
+              <p class="text-sm text-white/80 line-clamp-2 mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75">{{ event.description }}</p>
+              <div class="flex items-center gap-2 text-xs font-medium opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                Explore Vendors <span class="text-lg">→</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="vendors" class="max-w-7xl mx-auto px-4 sm:px-6">
+        <div class="flex items-end justify-between mb-8">
+          <div>
+            <h2 class="font-serif text-3xl font-bold text-slate-900">Featured Talent</h2>
+            <p class="text-slate-500 mt-2">Hand-picked vendors available for your dates.</p>
+          </div>
+          <button class="text-sm font-medium text-rose-600 hover:text-rose-700 flex items-center gap-1">
+            View all vendors <span>→</span>
+          </button>
+        </div>
+
+        <div v-if="filteredVendors.length" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
           <article
               v-for="vendor in filteredVendors"
               :key="vendor.id"
-              class="bg-white border border-slate-200/70 overflow-hidden flex flex-col hover:-translate-y-1 hover:shadow-lg transition-all duration-200 rounded-none"
+              class="group bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col"
           >
-            <!-- Image / category badge -->
-            <div class="relative">
-              <div class="aspect-[4/3] bg-slate-200">
-                <img
-                    v-if="vendor.coverImage"
-                    :src="vendor.coverImage"
-                    :alt="vendor.name"
-                    class="h-full w-full object-cover"
-                />
-              </div>
+            <div class="relative aspect-[4/3] overflow-hidden bg-slate-100">
+              <img :src="vendor.coverImage" :alt="vendor.name" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
 
-              <!-- soft gradient overlay at bottom -->
-              <div
-                  class="pointer-events-none absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-black/35 to-transparent"
-              ></div>
-
-              <!-- category & verified pill -->
-              <div
-                  class="absolute top-2 left-2 text-[10px] px-2.5 py-1 rounded-full bg-white/95 border border-slate-200/80 flex items-center gap-1.5 shadow-sm"
-              >
-      <span
-          class="inline-block h-1.5 w-1.5 rounded-full"
-          :class="vendor.verified ? 'bg-emerald-500' : 'bg-slate-400'"
-      ></span>
-                <span class="font-medium text-slate-700">
-        {{ vendor.categoryLabel }}
-      </span>
-                <span
-                    v-if="vendor.verified"
-                    class="text-[9px] inline-flex items-center gap-0.5 text-emerald-600"
-                >
-        ✓ Verified
-      </span>
+              <div class="absolute top-3 left-3 flex flex-wrap gap-2">
+                <span class="px-2.5 py-1 rounded-md bg-white/95 backdrop-blur text-[10px] font-bold uppercase tracking-wider text-slate-800 shadow-sm">
+                  {{ vendor.categoryLabel }}
+                </span>
               </div>
+              <button class="absolute top-3 right-3 h-8 w-8 rounded-full bg-white/90 backdrop-blur flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-white transition-colors shadow-sm">
+                ♥
+              </button>
             </div>
 
-            <!-- Content -->
-            <div class="p-3.5 flex-1 flex flex-col gap-2.5 text-sm">
-              <!-- Top row: name + Instagram -->
-              <div class="flex items-start justify-between gap-2">
-                <div class="space-y-0.5">
-                  <h3 class="font-semibold text-[15px] leading-snug text-slate-900">
+            <div class="p-5 flex-1 flex flex-col">
+              <div class="flex justify-between items-start mb-2">
+                <div>
+                  <h3 class="font-serif text-lg font-bold text-slate-900 group-hover:text-rose-600 transition-colors">
                     {{ vendor.name }}
                   </h3>
-                  <p class="text-[11px] text-slate-500 flex items-center gap-1">
-                    <span class="inline-block h-1.5 w-1.5 rounded-full bg-slate-400/70"></span>
-                    {{ vendor.city }} • {{ vendor.area }}
+                  <p class="text-xs text-slate-500 flex items-center gap-1 mt-1">
+                    <svg class="w-3 h-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                    {{ vendor.area }}, {{ vendor.city }}
                   </p>
                 </div>
-
-                <div
-                    v-if="vendor.instagram"
-                    class="text-[11px] text-slate-500 flex flex-col items-end"
-                >
-        <span class="uppercase tracking-[0.16em] mb-0.5 text-[10px]">
-          Instagram
-        </span>
-                  <a
-                      :href="vendor.instagram"
-                      target="_blank"
-                      rel="noreferrer"
-                      class="inline-flex items-center gap-1 text-stage-teal hover:underline"
-                  >
-                    View profile
-                    <span aria-hidden="true">↗</span>
-                  </a>
+                <div v-if="vendor.verified" class="text-emerald-500" title="Verified Vendor">
+                  <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
                 </div>
               </div>
 
-              <!-- Description -->
-              <p class="text-xs text-slate-600 line-clamp-3">
+              <p class="text-sm text-slate-600 line-clamp-2 mb-4 leading-relaxed">
                 {{ vendor.description }}
               </p>
 
-              <!-- Meta: pricing + tags -->
-              <div class="mt-1 flex items-end justify-between gap-3">
-                <div class="text-xs space-y-0.5">
-                  <p class="text-slate-500">From</p>
-                  <p class="font-semibold text-[13px] text-slate-900">
-                    GHS {{ vendor.startingFrom.toLocaleString() }}
-                    <span class="block text-[10px] text-slate-500 font-normal">
-            {{ vendor.pricingNote }}
-          </span>
-                  </p>
-                </div>
-
-                <div class="text-[11px] text-slate-500 text-right max-w-[55%]">
-                  <p class="mb-0.5">Typical events</p>
-                  <p class="font-medium text-[11px] text-slate-700 truncate">
-                    {{ vendor.tags.join(', ') }}
-                  </p>
-                </div>
+              <div class="flex flex-wrap gap-1.5 mb-4">
+                <span v-for="tag in vendor.tags.slice(0,3)" :key="tag" class="px-2 py-0.5 rounded bg-slate-50 border border-slate-100 text-[10px] font-medium text-slate-600">
+                  {{ tag }}
+                </span>
               </div>
 
-              <!-- subtle divider -->
-              <div class="mt-2 border-t border-slate-100/80"></div>
-            </div>
-
-            <!-- Actions (de-emphasised) -->
-            <div class="px-3.5 pb-3.5 pt-2 flex gap-2">
-              <a
-                  :href="toWhatsappLink(vendor)"
-                  target="_blank"
-                  rel="noreferrer"
-                  class="flex-1 inline-flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-xs font-medium text-slate-700 bg-white border border-slate-200/80 hover:bg-[#F3F2EC] hover:border-slate-300 transition-colors"
-              >
-                <span aria-hidden="true">💬</span>
-                Contact on WhatsApp
-              </a>
-              <button
-                  type="button"
-                  class="inline-flex items-center justify-center rounded-xl px-3 py-2 text-[11px] font-medium text-slate-700 bg-white border border-slate-200/80 hover:bg-slate-100 hover:border-slate-300 transition-colors"
-              >
-                View details
-              </button>
+              <div class="mt-auto pt-4 border-t border-slate-50 flex items-center justify-between">
+                <div>
+                  <p class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Starting from</p>
+                  <p class="text-slate-900 font-semibold">GH₵ {{ vendor.startingFrom.toLocaleString() }}</p>
+                </div>
+                <a
+                    :href="toWhatsappLink(vendor)"
+                    target="_blank"
+                    class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-medium px-4 py-2 rounded-lg transition-colors"
+                >
+                  <span>Message</span>
+                  <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.463 1.065 2.876 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                </a>
+              </div>
             </div>
           </article>
         </div>
 
-        <div
-            v-else
-            class="mt-6 border border-dashed border-slate-200/70 bg-white/80 p-6 text-sm text-center text-slate-600 rounded-none"
-        >
-          No vendors match your filters just yet. Try clearing your filters or switching
-          to the AI planner to describe your event in your own words.
+        <div v-else class="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-12 text-center">
+          <div class="mx-auto h-16 w-16 bg-slate-100 rounded-full flex items-center justify-center mb-4 text-3xl">🕵️‍♀️</div>
+          <h3 class="text-lg font-semibold text-slate-900">No vendors found</h3>
+          <p class="text-slate-500 max-w-md mx-auto mt-2">We couldn't find anyone matching those exact filters. Try adjusting your budget or location, or let our AI suggest someone.</p>
+          <button @click="resetFilters" class="mt-6 text-rose-600 font-medium hover:underline">Clear all filters</button>
         </div>
       </section>
 
-      <!-- WHY + HOW -->
-      <section id="why-exists" class="mt-4 md:mt-6">
-        <div class="grid md:grid-cols-2 gap-8 items-start">
-          <div class="space-y-3">
-            <h2 class="text-xl md:text-2xl font-semibold">
-              Why Stage &amp; Bloom exists
-            </h2>
-            <div class="space-y-3 text-sm md:text-base text-slate-600 leading-relaxed">
-              <p>
-                Planning an event in Ghana often means hopping between Instagram profiles,
-                WhatsApp chats, and random recommendations from friends. Prices are hidden,
-                it’s hard to compare vendors, and you don’t always know who actually fits
-                your vibe and budget.
-              </p>
-              <p>
-                Stage &amp; Bloom brings everything into one place. We index vendors who
-                already live on Instagram and WhatsApp, add simple profiles with rate
-                cards, and use an assistant to help you figure out the exact mix of vendors
-                you need for your guest count, budget, and event type.
-              </p>
-              <p>No stress. No 50 open tabs. Just the right people for your day.</p>
+      <section class="bg-slate-900 text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 grid md:grid-cols-2 gap-16 items-center">
+          <div class="space-y-6">
+            <div class="inline-block p-3 rounded-xl bg-white/10 backdrop-blur">
+              <svg class="w-8 h-8 text-rose-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            </div>
+            <h2 class="font-serif text-4xl font-bold leading-tight">Vendor booking, <br/>simplified.</h2>
+            <div class="space-y-4 text-slate-300 text-lg">
+              <p>Stop drowning in Instagram DMs and screenshots. Stage &amp; Bloom brings structure to the chaos of event planning.</p>
+              <ul class="space-y-3 pt-2 text-base">
+                <li class="flex items-center gap-3">
+                  <span class="h-1.5 w-1.5 rounded-full bg-rose-500"></span>
+                  Verified rate cards & transparent pricing
+                </li>
+                <li class="flex items-center gap-3">
+                  <span class="h-1.5 w-1.5 rounded-full bg-rose-500"></span>
+                  Direct WhatsApp integration
+                </li>
+                <li class="flex items-center gap-3">
+                  <span class="h-1.5 w-1.5 rounded-full bg-rose-500"></span>
+                  Curated for quality, not quantity
+                </li>
+              </ul>
             </div>
           </div>
+          <div class="relative">
+            <div class="absolute -inset-4 bg-rose-500/20 rounded-full blur-3xl"></div>
 
-          <div
-              id="how-it-works"
-              class="bg-white/95 border border-slate-200/60 p-4 md:p-5 text-sm space-y-3 shadow-sm rounded-none"
-          >
-            <h3 class="font-semibold mb-1">How it works</h3>
-            <ol class="space-y-2 list-decimal list-inside text-slate-600">
-              <li>
-                <span class="font-medium text-slate-800">Describe your event</span> – use
-                the quick filters or tell the AI planner what you’re organising.
-              </li>
-              <li>
-                <span class="font-medium text-slate-800">See matching vendors</span> –
-                browse decorators, photographers, caterers, DJs, MCs and more, with real
-                ballpark pricing.
-              </li>
-              <li>
-                <span class="font-medium text-slate-800">Contact on WhatsApp</span> – tap
-                to start a pre-filled chat and handle payments and details the way you
-                already do.
-              </li>
-            </ol>
 
-            <div
-                class="mt-3 border border-dashed border-stage-teal/25 bg-stage-teal/5 px-3 py-3 flex items-start gap-3 rounded-none"
-            >
-              <div
-                  class="h-8 w-8 rounded-full flex items-center justify-center text-sm font-semibold text-white"
-                  style="background:#1E93AB;"
-              >
-                ℹ️
-              </div>
-              <p class="text-xs md:text-sm text-slate-700">
-                Vendors don’t need to learn another system. Stage &amp; Bloom plugs into
-                the Instagram and WhatsApp flows they already use, and simply makes them
-                easier to discover and compare.
-              </p>
-            </div>
+            [Image of a happy couple at a wedding reception]
+
           </div>
         </div>
       </section>
+
     </main>
 
-    <!-- Expanded Footer -->
-    <footer class="bg-[#0B1020] text-slate-300 mt-16">
-      <div class="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-4 gap-8">
-        <!-- Brand -->
-        <div class="space-y-3">
-          <div class="flex items-center gap-2">
-            <div
-                class="h-8 w-8 rounded-full flex items-center justify-center font-bold text-white text-sm"
-                style="background:#E62727;"
-            >
-              SB
+    <footer class="bg-white border-t border-slate-100 pt-16 pb-8">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-10 mb-16">
+          <div class="col-span-2 md:col-span-1">
+            <div class="flex items-center gap-2 mb-6">
+              <div class="h-8 w-8 bg-slate-900 text-white font-serif font-bold flex items-center justify-center rounded-lg">SB</div>
+              <span class="font-serif font-bold text-lg">Stage &amp; Bloom</span>
             </div>
-            <span class="font-semibold text-sm">Stage &amp; Bloom</span>
+            <p class="text-sm text-slate-500 leading-relaxed mb-6">
+              Reimagining how events are planned in Africa. Beautifully simple, reliably curated.
+            </p>
+            <div class="flex gap-4">
+              <div class="h-8 w-8 bg-slate-50 rounded-full flex items-center justify-center text-slate-400 hover:bg-rose-50 hover:text-rose-600 transition-colors cursor-pointer">📷</div>
+              <div class="h-8 w-8 bg-slate-50 rounded-full flex items-center justify-center text-slate-400 hover:bg-rose-50 hover:text-rose-600 transition-colors cursor-pointer">🐦</div>
+            </div>
           </div>
-          <p class="text-xs text-slate-400 leading-relaxed">
-            A calm way to discover decorators, caterers, photographers, DJs and more – all
-            in one place, all just a WhatsApp tap away.
-          </p>
-          <p class="text-[11px] text-slate-500">
-            Built in Accra for people who love good events.
-          </p>
-        </div>
 
-        <!-- Quick links -->
-        <div>
-          <h4 class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400 mb-3">
-            Product
-          </h4>
-          <ul class="space-y-2 text-xs text-slate-300">
-            <li><a href="#search" class="hover:text-white transition-colors">Plan an event</a></li>
-            <li><a href="#vendors" class="hover:text-white transition-colors">Browse vendors</a></li>
-            <li><a href="#how-it-works" class="hover:text-white transition-colors">How it works</a></li>
-            <li><a href="#why-exists" class="hover:text-white transition-colors">Why it exists</a></li>
-          </ul>
-        </div>
+          <div>
+            <h4 class="font-bold text-slate-900 mb-4">Discover</h4>
+            <ul class="space-y-3 text-sm text-slate-500">
+              <li><a href="#" class="hover:text-rose-600 transition-colors">Wedding Vendors</a></li>
+              <li><a href="#" class="hover:text-rose-600 transition-colors">Corporate Events</a></li>
+              <li><a href="#" class="hover:text-rose-600 transition-colors">Party Rentals</a></li>
+              <li><a href="#" class="hover:text-rose-600 transition-colors">Photographers</a></li>
+            </ul>
+          </div>
 
-        <!-- Event types -->
-        <div>
-          <h4 class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400 mb-3">
-            Event types
-          </h4>
-          <ul class="space-y-2 text-xs text-slate-300">
-            <li>Weddings &amp; engagements</li>
-            <li>Birthdays &amp; baby showers</li>
-            <li>Corporate &amp; brand events</li>
-            <li>Bridal &amp; pre-wedding shoots</li>
-          </ul>
-        </div>
+          <div>
+            <h4 class="font-bold text-slate-900 mb-4">Company</h4>
+            <ul class="space-y-3 text-sm text-slate-500">
+              <li><a href="#" class="hover:text-rose-600 transition-colors">About Us</a></li>
+              <li><a href="#" class="hover:text-rose-600 transition-colors">For Vendors</a></li>
+              <li><a href="#" class="hover:text-rose-600 transition-colors">Pricing</a></li>
+              <li><a href="#" class="hover:text-rose-600 transition-colors">Contact</a></li>
+            </ul>
+          </div>
 
-        <!-- Locations -->
-        <div>
-          <h4 class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400 mb-3">
-            Popular areas
-          </h4>
-          <div class="flex flex-wrap gap-2 text-[11px]">
-            <span class="px-2 py-1 rounded-full bg-white/5 border border-white/10">
-              East Legon
-            </span>
-            <span class="px-2 py-1 rounded-full bg-white/5 border border-white/10">
-              Osu
-            </span>
-            <span class="px-2 py-1 rounded-full bg-white/5 border border-white/10">
-              Airport
-            </span>
-            <span class="px-2 py-1 rounded-full bg-white/5 border border-white/10">
-              Spintex
-            </span>
-            <span class="px-2 py-1 rounded-full bg-white/5 border border-white/10">
-              Tema
-            </span>
+          <div>
+            <h4 class="font-bold text-slate-900 mb-4">Join the list</h4>
+            <p class="text-xs text-slate-500 mb-3">Get the best vendors delivered to your inbox monthly.</p>
+            <div class="flex gap-2">
+              <input type="email" placeholder="Email address" class="w-full bg-slate-50 rounded-lg px-3 py-2 text-sm border border-slate-200 focus:outline-none focus:border-rose-300" />
+              <button class="bg-slate-900 text-white rounded-lg px-3 py-2 text-sm font-medium hover:bg-slate-800">Go</button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="border-t border-slate-800/80">
-        <div
-            class="max-w-6xl mx-auto px-4 py-4 text-[11px] text-slate-500 flex flex-wrap gap-3 justify-between items-center"
-        >
-          <p>
-            &copy; {{ new Date().getFullYear() }} Stage &amp; Bloom. All rights reserved.
-          </p>
-          <p class="flex items-center gap-1">
-            <span class="h-1.5 w-1.5 rounded-full" style="background:#E62727;"></span>
-            Soft launch – vendor data is sample/mock for now.
-          </p>
+        <div class="border-t border-slate-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-400">
+          <p>&copy; {{ new Date().getFullYear() }} Stage &amp; Bloom. Made with ♥ in Accra.</p>
+          <div class="flex gap-6">
+            <a href="#" class="hover:text-slate-600">Privacy Policy</a>
+            <a href="#" class="hover:text-slate-600">Terms of Service</a>
+          </div>
         </div>
       </div>
     </footer>
@@ -621,7 +359,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref} from 'vue'
+import { computed, ref } from 'vue'
 
 const selectedCountry = ref<'gh' | 'ke' | 'za'>('gh')
 
@@ -656,76 +394,76 @@ type EventType = {
   subcategories: { slug: string; name: string }[]
 }
 
+// Search State
 const mode = ref<'filters' | 'ai'>('filters')
+const selectedCategory = ref('')
+const location = ref('')
+const guestCount = ref<number | null>(null)
+const budgetPerVendor = ref(5000)
+const aiPrompt = ref('')
 
 const categories: VendorCategory[] = [
-  {slug: 'decorator', name: 'Decor & Styling'},
-  {slug: 'caterer', name: 'Caterers & Food'},
-  {slug: 'photographer', name: 'Photographers'},
-  {slug: 'dj', name: 'DJs & Music'},
-  {slug: 'mc', name: 'MCs & Hosts'},
-  {slug: 'baker', name: 'Cakes & Desserts'}
+  { slug: 'decorator', name: 'Decor & Styling' },
+  { slug: 'caterer', name: 'Caterers & Food' },
+  { slug: 'photographer', name: 'Photographers' },
+  { slug: 'dj', name: 'DJs & Music' },
+  { slug: 'mc', name: 'MCs & Hosts' },
+  { slug: 'baker', name: 'Cakes & Desserts' }
 ]
 
 const eventTypes = ref<EventType[]>([
   {
     slug: 'wedding',
-    kicker: 'For your day',
+    kicker: 'For your special day',
     name: 'Weddings',
-    description: 'Build a team for engagements, white weddings and receptions.',
+    description: 'Build a dream team for engagements, white weddings and receptions.',
     subcategories: [
-      {slug: 'decorator', name: 'Decor & styling'},
-      {slug: 'photographer', name: 'Photography & video'},
-      {slug: 'caterer', name: 'Catering & drinks'},
-      {slug: 'mc', name: 'MCs & hosts'},
-      {slug: 'dj', name: 'DJs & live music'}
+      { slug: 'decorator', name: 'Decor & styling' },
+      { slug: 'photographer', name: 'Photography & video' },
+      { slug: 'caterer', name: 'Catering & drinks' },
+      { slug: 'mc', name: 'MCs & hosts' },
+      { slug: 'dj', name: 'DJs & live music' }
     ]
   },
   {
     slug: 'party',
-    kicker: 'For good vibes',
+    kicker: 'Celebrate in style',
     name: 'Parties',
-    description: 'Birthdays, baby showers and house parties that actually feel curated.',
+    description: 'Birthdays, baby showers and house parties that feel curated.',
     subcategories: [
-      {slug: 'decorator', name: 'Decor & backdrops'},
-      {slug: 'baker', name: 'Cakes & desserts'},
-      {slug: 'dj', name: 'DJs & playlists'},
-      {slug: 'caterer', name: 'Finger foods & bites'}
+      { slug: 'decorator', name: 'Decor & backdrops' },
+      { slug: 'baker', name: 'Cakes & desserts' },
+      { slug: 'dj', name: 'DJs & playlists' },
+      { slug: 'caterer', name: 'Finger foods & bites' }
     ]
   },
   {
     slug: 'corporate',
-    kicker: 'For the team',
+    kicker: 'Professional events',
     name: 'Corporate',
     description: 'Offsites, launches, townhalls and mixers for teams and brands.',
     subcategories: [
-      {slug: 'caterer', name: 'Corporate catering'},
-      {slug: 'decorator', name: 'Brand & stage design'},
-      {slug: 'photographer', name: 'Photo & video recap'},
-      {slug: 'mc', name: 'Professional hosts'}
+      { slug: 'caterer', name: 'Corporate catering' },
+      { slug: 'decorator', name: 'Brand & stage design' },
+      { slug: 'photographer', name: 'Photo & video recap' },
+      { slug: 'mc', name: 'Professional hosts' }
     ]
   },
   {
     slug: 'other',
-    kicker: 'Everything else',
-    name: 'Other events',
+    kicker: 'Gatherings',
+    name: 'Other Events',
     description: 'Church events, graduations, open mics and everything in between.',
     subcategories: [
-      {slug: 'decorator', name: 'General decor'},
-      {slug: 'photographer', name: 'Event coverage'},
-      {slug: 'dj', name: 'Sound & music'},
-      {slug: 'caterer', name: 'Food & drinks'}
+      { slug: 'decorator', name: 'General decor' },
+      { slug: 'photographer', name: 'Event coverage' },
+      { slug: 'dj', name: 'Sound & music' },
+      { slug: 'caterer', name: 'Food & drinks' }
     ]
   }
 ])
 
-const selectedSubcategories = ref<Record<string, string>>({
-  wedding: '',
-  party: '',
-  corporate: '',
-  other: ''
-})
-
+// Data
 const vendors = ref<Vendor[]>([
   {
     id: 1,
@@ -734,10 +472,9 @@ const vendors = ref<Vendor[]>([
     categoryLabel: 'Decor & Styling',
     city: 'Accra',
     area: 'East Legon',
-    description:
-        'Soft, modern decor for intimate parties, bridal showers, and chic weddings. Known for clean setups and floral details.',
+    description: 'Soft, modern decor for intimate parties, bridal showers, and chic weddings. Known for clean setups and floral details.',
     startingFrom: 2500,
-    pricingNote: 'per event (intimate setups)',
+    pricingNote: 'per event',
     tags: ['Birthdays', 'Bridal showers'],
     verified: true,
     instagram: 'https://instagram.com',
@@ -749,17 +486,16 @@ const vendors = ref<Vendor[]>([
     id: 2,
     name: 'Taste & Serve Catering',
     category: 'caterer',
-    categoryLabel: 'Caterers & Food',
+    categoryLabel: 'Caterers',
     city: 'Accra',
     area: 'Airport',
-    description:
-        'Buffet and plated menus for Ghanaian and continental tastes. Great for corporate events and family celebrations.',
+    description: 'Buffet and plated menus for Ghanaian and continental tastes. Great for corporate events and family celebrations.',
     startingFrom: 90,
-    pricingNote: 'per person (min. 40 guests)',
+    pricingNote: 'per person',
     tags: ['Corporate', 'Traditional'],
     verified: true,
     instagram: 'https://instagram.com',
-    coverImage: 'https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg',
+    coverImage: 'https://images.pexels.com/photos/5638732/pexels-photo-5638732.jpeg?auto=compress&cs=tinysrgb&w=800',
     maxBudgetHint: 20000,
     whatsappNumber: '+233200000002'
   },
@@ -767,17 +503,16 @@ const vendors = ref<Vendor[]>([
     id: 3,
     name: 'Lens & Love Studio',
     category: 'photographer',
-    categoryLabel: 'Photographers',
+    categoryLabel: 'Photography',
     city: 'Accra',
     area: 'Spintex',
-    description:
-        'Documentary-style photography that captures emotions and candid moments. Perfect for weddings and milestone birthdays.',
+    description: 'Documentary-style photography that captures emotions and candid moments. Perfect for weddings and milestone birthdays.',
     startingFrom: 1800,
-    pricingNote: 'per event (within Accra)',
-    tags: ['Weddings', 'Milestone birthdays'],
+    pricingNote: 'per event',
+    tags: ['Weddings', 'Milestones'],
     verified: true,
     instagram: 'https://instagram.com',
-    coverImage: 'https://images.pexels.com/photos/1963622/pexels-photo-1963622.jpeg',
+    coverImage: 'https://images.pexels.com/photos/3379934/pexels-photo-3379934.jpeg?auto=compress&cs=tinysrgb&w=800',
     maxBudgetHint: 15000,
     whatsappNumber: '+233200000003'
   },
@@ -788,8 +523,7 @@ const vendors = ref<Vendor[]>([
     categoryLabel: 'DJs & Music',
     city: 'Accra',
     area: 'Osu',
-    description:
-        'High-energy mixes across Afrobeats, Amapiano, and old-school favourites. Great for parties and lively receptions.',
+    description: 'High-energy mixes across Afrobeats, Amapiano, and old-school favourites. Great for parties and lively receptions.',
     startingFrom: 1500,
     pricingNote: 'up to 4 hours',
     tags: ['Birthdays', 'Weddings'],
@@ -803,17 +537,16 @@ const vendors = ref<Vendor[]>([
     id: 5,
     name: 'Sweet Crumbs Bakery',
     category: 'baker',
-    categoryLabel: 'Cakes & Desserts',
+    categoryLabel: 'Cakes',
     city: 'Accra',
     area: 'Tema',
-    description:
-        'Custom cakes and dessert tables for kids’ birthdays, bridal showers, and launches. Buttercream, fondant & minimalist styles.',
+    description: 'Custom cakes and dessert tables for kids’ birthdays, bridal showers, and launches.',
     startingFrom: 800,
-    pricingNote: 'for 2-tier cakes',
+    pricingNote: '2-tier cakes',
     tags: ['Kids parties', 'Showers'],
     verified: true,
     instagram: 'https://instagram.com',
-    coverImage: 'https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg',
+    coverImage: 'https://images.pexels.com/photos/1028714/pexels-photo-1028714.jpeg?auto=compress&cs=tinysrgb&w=800',
     maxBudgetHint: 6000,
     whatsappNumber: '+233200000005'
   },
@@ -821,114 +554,80 @@ const vendors = ref<Vendor[]>([
     id: 6,
     name: 'Host Kweku',
     category: 'mc',
-    categoryLabel: 'MCs & Hosts',
+    categoryLabel: 'MCs',
     city: 'Accra',
     area: 'Dansoman',
-    description:
-        'Engaging MC who blends humour with structure. Available for weddings, corporate events, and church functions.',
+    description: 'Engaging MC who blends humour with structure. Available for weddings, corporate events, and church functions.',
     startingFrom: 2000,
-    pricingNote: 'per event (within Accra)',
+    pricingNote: 'per event',
     tags: ['Weddings', 'Corporate'],
-    verified: false,
+    verified: true,
     instagram: 'https://instagram.com',
-    coverImage: 'https://images.pexels.com/photos/2306279/pexels-photo-2306279.jpeg',
-    maxBudgetHint: 12000,
+    coverImage: 'https://images.pexels.com/photos/713149/pexels-photo-713149.jpeg?auto=compress&cs=tinysrgb&w=800',
+    maxBudgetHint: 7000,
     whatsappNumber: '+233200000006'
   }
 ])
 
-const selectedCategory = ref<string>('')
-const location = ref<string>('')
-const guestCount = ref<number | null>(50)
-const budgetPerVendor = ref<number | null>(5000)
-const aiPrompt = ref<string>('')
-
+// Logic
 const filteredVendors = computed(() => {
-  let list = [...vendors.value]
-
-  if (selectedCategory.value) {
-    list = list.filter((v) => v.category === selectedCategory.value)
-  }
-
-  if (location.value.trim()) {
-    const needle = location.value.trim().toLowerCase()
-    list = list.filter(
-        (v) =>
-            v.city.toLowerCase().includes(needle) ||
-            v.area.toLowerCase().includes(needle)
-    )
-  }
-
-  if (budgetPerVendor.value) {
-    list = list.filter((v) => {
-      if (!v.maxBudgetHint) return true
-      return budgetPerVendor.value! <= v.maxBudgetHint
-    })
-  }
-
-  return list
+  return vendors.value.filter(vendor => {
+    // Filter by Category
+    if (selectedCategory.value && vendor.category !== selectedCategory.value) {
+      return false
+    }
+    // Filter by Location (simple includes check)
+    if (location.value) {
+      const search = location.value.toLowerCase()
+      const matches = vendor.city.toLowerCase().includes(search) ||
+          vendor.area.toLowerCase().includes(search)
+      if (!matches) return false
+    }
+    // Filter by Budget (show vendors whose starting price is within budget)
+    if (budgetPerVendor.value && vendor.startingFrom > budgetPerVendor.value) {
+      return false
+    }
+    return true
+  })
 })
 
-const toWhatsappLink = (vendor: Vendor): string => {
-  const base = 'https://wa.me/'
-  const number = vendor.whatsappNumber.replace(/[^+\d]/g, '')
-  const msg = [
-    `Hi ${vendor.name}, I found you on Stage & Bloom.`,
-    '',
-    'I’m planning an event and would love to know your availability and pricing:',
-    `• Vendor type: ${vendor.categoryLabel}`,
-    guestCount.value ? `• Approx. guests: ${guestCount.value}` : '',
-    budgetPerVendor.value
-        ? `• Budget per vendor: GHS ${budgetPerVendor.value?.toLocaleString()}`
-        : ''
-  ]
-      .filter(Boolean)
-      .join('\n')
-
-  const encoded = encodeURIComponent(msg)
-  return `${base}${encodeURIComponent(number)}?text=${encoded}`
+const runFilterSearch = () => {
+  document.getElementById('vendors')?.scrollIntoView({ behavior: 'smooth' })
 }
 
-const runFilterSearch = () => {
-  console.info('Running filter search with:', {
-    selectedCategory: selectedCategory.value,
-    location: location.value,
-    guestCount: guestCount.value,
-    budgetPerVendor: budgetPerVendor.value
-  })
+const resetFilters = () => {
+  selectedCategory.value = ''
+  location.value = ''
+  budgetPerVendor.value = 10000
 }
 
 const runAISearch = () => {
-  const text = aiPrompt.value.toLowerCase()
+  // Simulate AI processing
+  alert('This would trigger the AI Agent to process: ' + aiPrompt.value)
+}
 
-  if (text.includes('decor')) {
-    selectedCategory.value = 'decorator'
-  } else if (text.includes('food') || text.includes('cater')) {
-    selectedCategory.value = 'caterer'
-  } else if (text.includes('photo')) {
-    selectedCategory.value = 'photographer'
-  } else {
-    selectedCategory.value = ''
-  }
-
-  if (text.includes('osu')) {
-    location.value = 'Osu'
-  } else if (text.includes('east legon')) {
-    location.value = 'East Legon'
-  }
-
-  const guestsMatch = text.match(/\b(\d{2,3})\b/)
-  if (guestsMatch) {
-    const num = Number(guestsMatch[1])
-    if (!Number.isNaN(num)) {
-      guestCount.value = num
-    }
-  }
-
-  if (text.includes('10k') || text.includes('10000')) {
-    budgetPerVendor.value = 5000
-  }
-
-  mode.value = 'filters'
+const toWhatsappLink = (vendor: Vendor) => {
+  const text = encodeURIComponent(`Hi ${vendor.name}, I saw your profile on Stage & Bloom and would like to enquire about your services.`)
+  return `https://wa.me/${vendor.whatsappNumber.replace('+', '')}?text=${text}`
 }
 </script>
+
+<style>
+/* Custom scrollbar for better aesthetic */
+html {
+  scroll-behavior: smooth;
+}
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+</style>
