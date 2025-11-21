@@ -1,20 +1,23 @@
 <template>
   <div class="min-h-screen bg-[#F3F2EC] text-slate-900">
     <!-- Top bar / Navigation -->
-    <header class="border-b border-stage-grey/20 bg-white/80 backdrop-blur sticky top-0 z-30">
+    <header class="border-b border-slate-200/60 bg-white/90 backdrop-blur sticky top-0 z-30">
       <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
+        <!-- Logo / Brand -->
         <div class="flex items-center gap-2">
           <div
               class="h-9 w-9 rounded-full flex items-center justify-center font-bold text-white text-xl"
-              style="background: #E62727;"
+              style="background:#E62727;"
           >
             SB
           </div>
-          <div>
+          <div class="leading-tight">
             <div class="font-semibold tracking-tight text-lg">Stage &amp; Bloom</div>
+            <p class="text-[11px] text-slate-500">Event vendors, all in one place.</p>
           </div>
         </div>
 
+        <!-- Nav -->
         <nav class="hidden md:flex items-center gap-6 text-sm">
           <a href="#vendors" class="hover:text-stage-red transition-colors">
             Browse vendors
@@ -27,38 +30,85 @@
           </a>
         </nav>
 
+        <!-- Primary CTA -->
         <button
-            class="hidden sm:inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-white bg-stage-red border border-stage-red/0 hover:bg-[#c02121] transition-colors"
+            class="hidden sm:inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-white border border-transparent bg-stage-red hover:bg-[#c02121] transition-colors"
         >
           List your services
         </button>
       </div>
     </header>
 
-    <!-- Hero + Primary Filter -->
-    <main class="max-w-6xl mx-auto px-4 pt-10 pb-16 space-y-14">
-      <section class="space-y-6">
-        <!-- Hero copy (short & focused) -->
-        <div class="text-center md:text-left space-y-1">
-          <p class="uppercase tracking-[0.22em] text-[11px] text-slate-500">
-            Event Vendor Marketplace
+    <!-- Main -->
+    <main class="max-w-6xl mx-auto px-4 pt-10 pb-16 space-y-16">
+      <!-- HERO -->
+      <section class="grid lg:grid-cols-2 gap-10 items-center">
+        <!-- Left: Copy -->
+        <div class="space-y-5">
+          <p class="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-slate-500">
+            <span class="h-1.5 w-1.5 rounded-full" style="background:#E62727;"></span>
+            Event vendor marketplace
           </p>
+
           <h1 class="text-3xl md:text-4xl lg:text-[2.75rem] font-semibold leading-tight">
             Find trusted <span class="text-stage-red">event vendors</span> for your next
             celebration in minutes.
           </h1>
+
+          <p class="text-sm md:text-base text-slate-600 max-w-lg">
+            Browse decorators, caterers, photographers, DJs, MCs and more – all plugged
+            into the Instagram and WhatsApp flows vendors already use.
+          </p>
+
+          <!-- Quick chips -->
+          <div class="flex flex-wrap gap-2.5 text-[11px]">
+            <span
+                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200/70"
+            >
+              🎉 Birthdays &amp; baby showers
+            </span>
+            <span
+                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200/70"
+            >
+              💍 Weddings &amp; engagements
+            </span>
+            <span
+                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200/70"
+            >
+              🏢 Corporate &amp; brand events
+            </span>
+          </div>
+
+          <!-- Trust / explainer row -->
+          <div class="flex flex-wrap gap-4 text-[11px] text-slate-500">
+            <div class="flex items-center gap-2">
+              <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+              Contact vendors directly on WhatsApp
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="h-1.5 w-1.5 rounded-full bg-stage-teal"></span>
+              Real rate hints &amp; ballpark pricing
+            </div>
+          </div>
         </div>
 
-        <!-- Search / Filter panel as main attraction -->
+        <!-- Right: Search card (Togather-style hero form) -->
         <div
             id="search"
-            class="mt-4 rounded-3xl bg-white shadow-[0_16px_40px_rgba(15,23,42,0.06)] border-border overflow-hidden"
+            class="rounded-3xl bg-white shadow-[0_18px_40px_rgba(15,23,42,0.06)] border border-slate-200/60 overflow-hidden"
         >
+          <!-- Header strip -->
+          <div class="px-5 pt-4 pb-3 border-b border-slate-200/60 bg-[#F9F8F4]">
+            <p class="text-xs font-medium text-slate-800">Tell us what you’re planning</p>
+            <p class="text-[11px] text-slate-500 mt-0.5">
+              We’ll help you find the right mix of vendors for your event.
+            </p>
+          </div>
 
-          <div class="p-4 md:p-5">
+          <div class="p-4 md:p-5 space-y-4">
             <!-- Mode toggle -->
             <div
-                class="grid grid-cols-2 gap-2 text-xs font-medium bg-[#F3F2EC] rounded-full p-1 max-w-xs mx-auto md:mx-0 mb-4"
+                class="grid grid-cols-2 gap-2 text-xs font-medium bg-[#F3F2EC] rounded-full p-1"
             >
               <button
                   type="button"
@@ -86,142 +136,114 @@
               </button>
             </div>
 
-            <div class="grid md:grid-cols-[3fr,2fr] gap-5 items-start">
-              <!-- Filters mode -->
-              <div v-if="mode === 'filters'" class="space-y-3">
-                <div class="grid md:grid-cols-2 gap-3">
-                  <div>
-                    <label class="block text-xs font-medium text-slate-700 mb-1">
-                      What do you need?
-                    </label>
-                    <select
-                        v-model="selectedCategory"
-                        class="w-full text-sm rounded-xl border border-stage-grey/25 bg-white px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-stage-red/30"
-                    >
-                      <option value="">Any vendor type</option>
-                      <option v-for="cat in categories" :key="cat.slug" :value="cat.slug">
-                        {{ cat.name }}
-                      </option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label class="block text-xs font-medium text-slate-700 mb-1">
-                      City / Area
-                    </label>
-                    <input
-                        v-model="location"
-                        type="text"
-                        placeholder="e.g. East Legon, Osu"
-                        class="w-full text-sm rounded-xl border border-stage-grey/25 bg-white px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-stage-red/30"
-                    />
-                  </div>
-                </div>
-
-                <div class="grid md:grid-cols-2 gap-3">
-                  <div>
-                    <label class="block text-xs font-medium text-slate-700 mb-1">
-                      Number of guests
-                    </label>
-                    <input
-                        v-model.number="guestCount"
-                        type="number"
-                        min="1"
-                        placeholder="e.g. 50"
-                        class="w-full text-sm rounded-xl border border-stage-grey/25 bg-white px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-stage-red/30"
-                    />
-                  </div>
-                  <div>
-                    <div class="flex items-center justify-between mb-1">
-                      <label class="block text-xs font-medium text-slate-700">
-                        Approx. budget per vendor (GHS)
-                      </label>
-                      <span class="text-[11px] text-slate-500">
-                        Up to {{ budgetPerVendor || '—' }}
-                      </span>
-                    </div>
-                    <input
-                        v-model.number="budgetPerVendor"
-                        type="range"
-                        min="500"
-                        max="20000"
-                        step="500"
-                        class="w-full accent-stage-red"
-                    />
-                  </div>
-                </div>
-
-                <button
-                    type="button"
-                    @click="runFilterSearch"
-                    class="w-full mt-3 inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:shadow-md transition-shadow bg-stage-red hover:bg-[#c02121]"
-                >
-                  Search vendors
-                  <span class="text-xs opacity-80">
-                    ({{ filteredVendors.length }} found)
-                  </span>
-                </button>
-              </div>
-
-              <!-- AI mode -->
-              <div v-else class="space-y-3">
+            <!-- Filters mode -->
+            <div v-if="mode === 'filters'" class="space-y-3">
+              <div class="grid md:grid-cols-2 gap-3">
                 <div>
                   <label class="block text-xs font-medium text-slate-700 mb-1">
-                    Describe your event
+                    What do you need?
                   </label>
-                  <textarea
-                      v-model="aiPrompt"
-                      rows="4"
-                      placeholder="e.g. I want to organise a small 50-person birthday in Osu next month. Budget is about 10k. I’ll need decor, food, a cake and a DJ."
-                      class="w-full text-sm rounded-2xl border border-stage-grey/25 bg-white px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-stage-red/30 resize-none"
+                  <select
+                      v-model="selectedCategory"
+                      class="w-full text-sm rounded-xl border border-slate-200/80 bg-white px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-stage-red/30"
+                  >
+                    <option value="">Any vendor type</option>
+                    <option v-for="cat in categories" :key="cat.slug" :value="cat.slug">
+                      {{ cat.name }}
+                    </option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-medium text-slate-700 mb-1">
+                    City / Area
+                  </label>
+                  <input
+                      v-model="location"
+                      type="text"
+                      placeholder="e.g. East Legon, Osu"
+                      class="w-full text-sm rounded-xl border border-slate-200/80 bg-white px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-stage-red/30"
                   />
                 </div>
-
-                <p class="text-[11px] text-slate-500">
-                  We’ll parse this into vendor types, budget hints and guest count, then
-                  show matching options you can contact on WhatsApp.
-                </p>
-
-                <button
-                    type="button"
-                    @click="runAISearch"
-                    class="w-full inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:shadow-md transition-shadow bg-stage-red hover:bg-[#c02121]"
-                >
-                  Ask the AI planner
-                </button>
               </div>
 
-              <!-- Side summary -->
-              <div class="hidden md:flex flex-col gap-3 text-xs text-slate-600">
-                <div
-                    class="rounded-2xl bg-[#F9F8F4] px-4 py-3 border border-stage-grey/15"
-                >
-                  <p class="font-semibold text-slate-800 text-sm mb-1">
-                    Get a mini vendor shortlist
-                  </p>
-                  <p>
-                    Use filters or a short description and we’ll help you narrow down to a
-                    few decorators, caterers, photographers, DJs and more.
-                  </p>
+              <div class="grid md:grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-xs font-medium text-slate-700 mb-1">
+                    Number of guests
+                  </label>
+                  <input
+                      v-model.number="guestCount"
+                      type="number"
+                      min="1"
+                      placeholder="e.g. 50"
+                      class="w-full text-sm rounded-xl border border-slate-200/80 bg-white px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-stage-red/30"
+                  />
                 </div>
-                <div
-                    class="rounded-2xl bg-white px-4 py-3 border border-dashed border-stage-grey/25"
-                >
-                  <p class="font-semibold text-slate-800 text-sm mb-1">
-                    Built around Instagram &amp; WhatsApp
-                  </p>
-                  <p>
-                    Vendors keep using the tools they already know. You simply discover and
-                    compare them faster.
-                  </p>
+                <div>
+                  <div class="flex items-center justify-between mb-1">
+                    <label class="block text-xs font-medium text-slate-700">
+                      Approx. budget per vendor (GHS)
+                    </label>
+                    <span class="text-[11px] text-slate-500">
+                      Up to {{ budgetPerVendor || '—' }}
+                    </span>
+                  </div>
+                  <input
+                      v-model.number="budgetPerVendor"
+                      type="range"
+                      min="500"
+                      max="20000"
+                      step="500"
+                      class="w-full accent-stage-red"
+                  />
                 </div>
               </div>
+
+              <button
+                  type="button"
+                  @click="runFilterSearch"
+                  class="w-full mt-2 inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:shadow-md transition-shadow bg-stage-red hover:bg-[#c02121]"
+              >
+                Search vendors
+                <span class="text-xs opacity-80">
+                  ({{ filteredVendors.length }} found)
+                </span>
+              </button>
+            </div>
+
+            <!-- AI mode -->
+            <div v-else class="space-y-3">
+              <div>
+                <label class="block text-xs font-medium text-slate-700 mb-1">
+                  Describe your event
+                </label>
+                <textarea
+                    v-model="aiPrompt"
+                    rows="4"
+                    placeholder="e.g. Small 50-person birthday in Osu next month, budget about 10k. Need decor, food, cake and a DJ."
+                    class="w-full text-sm rounded-2xl border border-slate-200/80 bg-white px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-stage-red/30 resize-none"
+                />
+              </div>
+
+              <p class="text-[11px] text-slate-500">
+                We’ll turn this into filters (guest count, budget, vendor types) and show
+                matching vendors you can contact on WhatsApp.
+              </p>
+
+              <button
+                  type="button"
+                  @click="runAISearch"
+                  class="w-full inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:shadow-md transition-shadow bg-stage-red hover:bg-[#c02121]"
+              >
+                Ask the AI planner
+              </button>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Featured vendors -->
+      <!-- FEATURED VENDORS -->
       <section id="vendors" class="space-y-5">
         <div class="flex items-center justify-between">
           <div>
@@ -233,7 +255,7 @@
           </div>
           <div class="hidden md:flex text-[11px] items-center gap-2 text-slate-500">
             <span
-                class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-white border border-stage-grey/20"
+                class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-white border border-slate-200/70"
             >
               <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
               Available
@@ -245,7 +267,7 @@
           <article
               v-for="vendor in filteredVendors"
               :key="vendor.id"
-              class="bg-white/95 border border-stage-grey/15 rounded-2xl overflow-hidden flex flex-col hover:shadow-md hover:-translate-y-0.5 transition-all"
+              class="bg-white/95 border border-slate-200/60 rounded-2xl overflow-hidden flex flex-col hover:shadow-md hover:-translate-y-0.5 transition-all"
           >
             <div class="relative">
               <div class="aspect-[4/3] bg-slate-200">
@@ -257,7 +279,7 @@
                 />
               </div>
               <div
-                  class="absolute top-2 left-2 text-[10px] px-2 py-1 rounded-full bg-white/90 border border-stage-grey/20 flex items-center gap-1"
+                  class="absolute top-2 left-2 text-[10px] px-2 py-1 rounded-full bg-white/90 border border-slate-200/70 flex items-center gap-1"
               >
                 <span
                     class="inline-block h-1.5 w-1.5 rounded-full"
@@ -329,7 +351,7 @@
               </a>
               <button
                   type="button"
-                  class="inline-flex items-center justify-center rounded-xl px-3 py-2 text-[11px] font-medium border border-stage-grey/20 text-slate-700 bg-white hover:bg-[#F3F2EC] transition-colors"
+                  class="inline-flex items-center justify-center rounded-xl px-3 py-2 text-[11px] font-medium border border-slate-200/70 text-slate-700 bg-white hover:bg-[#F3F2EC] transition-colors"
               >
                 View details
               </button>
@@ -339,15 +361,15 @@
 
         <div
             v-else
-            class="mt-6 rounded-2xl border border-dashed border-stage-grey/25 bg-white/80 p-6 text-sm text-center text-slate-600"
+            class="mt-6 rounded-2xl border border-dashed border-slate-200/70 bg-white/80 p-6 text-sm text-center text-slate-600"
         >
           No vendors match your filters just yet. Try clearing your filters or switching
           to the AI planner to describe your event in your own words.
         </div>
       </section>
 
-      <!-- Why it exists + How it works -->
-      <section id="why-exists" class="mt-6 md:mt-8">
+      <!-- WHY + HOW -->
+      <section id="why-exists" class="mt-4 md:mt-6">
         <div class="grid md:grid-cols-2 gap-8 items-start">
           <div class="space-y-3">
             <h2 class="text-xl md:text-2xl font-semibold">
@@ -372,7 +394,7 @@
 
           <div
               id="how-it-works"
-              class="bg-white/90 border border-stage-grey/15 rounded-2xl p-4 md:p-5 text-sm space-y-3 shadow-sm"
+              class="bg-white/95 border border-slate-200/60 rounded-2xl p-4 md:p-5 text-sm space-y-3 shadow-sm"
           >
             <h3 class="font-semibold mb-1">How it works</h3>
             <ol class="space-y-2 list-decimal list-inside text-slate-600">
@@ -397,7 +419,7 @@
             >
               <div
                   class="h-8 w-8 rounded-full flex items-center justify-center text-sm font-semibold text-white"
-                  style="background: #1E93AB;"
+                  style="background:#1E93AB;"
               >
                 ℹ️
               </div>
@@ -413,7 +435,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-stage-grey/20 bg-white/80 mt-10">
+    <footer class="border-t border-slate-200/60 bg-white/90 mt-10">
       <div
           class="max-w-6xl mx-auto px-4 py-6 text-xs text-slate-500 flex flex-wrap gap-3 justify-between items-center"
       >
@@ -422,7 +444,7 @@
           love good events and calm planning.
         </p>
         <p class="flex items-center gap-1">
-          <span class="h-1.5 w-1.5 rounded-full" style="background: #E62727;"></span>
+          <span class="h-1.5 w-1.5 rounded-full" style="background:#E62727;"></span>
           Soft launch – vendor data is sample/mock for now.
         </p>
       </div>
@@ -431,7 +453,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref} from 'vue'
+import { computed, ref } from 'vue'
 
 type VendorCategory = {
   slug: string
@@ -459,12 +481,12 @@ type Vendor = {
 const mode = ref<'filters' | 'ai'>('filters')
 
 const categories: VendorCategory[] = [
-  {slug: 'decorator', name: 'Decor & Styling'},
-  {slug: 'caterer', name: 'Caterers & Food'},
-  {slug: 'photographer', name: 'Photographers'},
-  {slug: 'dj', name: 'DJs & Music'},
-  {slug: 'mc', name: 'MCs & Hosts'},
-  {slug: 'baker', name: 'Cakes & Desserts'}
+  { slug: 'decorator', name: 'Decor & Styling' },
+  { slug: 'caterer', name: 'Caterers & Food' },
+  { slug: 'photographer', name: 'Photographers' },
+  { slug: 'dj', name: 'DJs & Music' },
+  { slug: 'mc', name: 'MCs & Hosts' },
+  { slug: 'baker', name: 'Cakes & Desserts' }
 ]
 
 const vendors = ref<Vendor[]>([
@@ -578,16 +600,12 @@ const vendors = ref<Vendor[]>([
   }
 ])
 
-// Filter search state
 const selectedCategory = ref<string>('')
 const location = ref<string>('')
 const guestCount = ref<number | null>(50)
 const budgetPerVendor = ref<number | null>(5000)
-
-// AI mode state
 const aiPrompt = ref<string>('')
 
-// Derived list based on filters / AI interpretation
 const filteredVendors = computed(() => {
   let list = [...vendors.value]
 
@@ -614,7 +632,6 @@ const filteredVendors = computed(() => {
   return list
 })
 
-// Simple WhatsApp link builder with a prefilled message
 const toWhatsappLink = (vendor: Vendor): string => {
   const base = 'https://wa.me/'
   const number = vendor.whatsappNumber.replace(/[^+\d]/g, '')
