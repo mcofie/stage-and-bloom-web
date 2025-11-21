@@ -17,7 +17,7 @@
           </div>
         </div>
 
-        <!-- Nav -->
+        <!-- Center Nav -->
         <nav class="hidden md:flex items-center gap-6 text-sm">
           <a href="#vendors" class="hover:text-stage-red transition-colors">
             Browse vendors
@@ -30,14 +30,30 @@
           </a>
         </nav>
 
-        <!-- Primary CTA -->
-        <button
-            class="hidden sm:inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-white border border-transparent bg-stage-red hover:bg-[#c02121] transition-colors"
-        >
-          List your services
-        </button>
+        <!-- Right side: CTA + Country selector -->
+        <div class="flex items-center gap-3">
+          <!-- Country selector -->
+          <div class="hidden sm:block">
+            <select
+                v-model="selectedCountry"
+                class="text-xs border-slate-200/80 bg-white px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-stage-red/30"
+            >
+              <option value="gh">🇬🇭 Ghana</option>
+              <option value="ke">🇰🇪 Kenya</option>
+              <option value="za">🇿🇦 South Africa</option>
+            </select>
+          </div>
+
+          <!-- Primary CTA -->
+          <button
+              class="hidden sm:inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-white border border-transparent bg-red-700 hover:bg-[#c02121] transition-colors"
+          >
+            List your services
+          </button>
+        </div>
       </div>
     </header>
+
 
     <!-- Main -->
     <main class="max-w-6xl mx-auto px-4 pt-10 pb-16 space-y-16">
@@ -92,10 +108,10 @@
           </div>
         </div>
 
-        <!-- Right: Search card (Togather-style hero form) -->
+        <!-- Right: Search card -->
         <div
             id="search"
-            class="rounded-3xl bg-white shadow-[0_18px_40px_rgba(15,23,42,0.06)] border border-slate-200/60 overflow-hidden"
+            class="bg-white shadow-[0_18px_40px_rgba(15,23,42,0.06)] border border-slate-200/60 overflow-hidden rounded-none"
         >
           <!-- Header strip -->
           <div class="px-5 pt-4 pb-3 border-b border-slate-200/60 bg-[#F9F8F4]">
@@ -203,7 +219,7 @@
               <button
                   type="button"
                   @click="runFilterSearch"
-                  class="w-full mt-2 inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:shadow-md transition-shadow bg-stage-red hover:bg-[#c02121]"
+                  class="w-full mt-2 inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:shadow-md transition-shadow bg-red-700 hover:bg-[#c02121]"
               >
                 Search vendors
                 <span class="text-xs opacity-80">
@@ -234,12 +250,62 @@
               <button
                   type="button"
                   @click="runAISearch"
-                  class="w-full inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:shadow-md transition-shadow bg-stage-red hover:bg-[#c02121]"
+                  class="w-full inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:shadow-md transition-shadow bg-red-700 hover:bg-[#c02121]"
               >
                 Ask the AI planner
               </button>
             </div>
           </div>
+        </div>
+      </section>
+
+      <!-- BROWSE BY EVENT TYPE -->
+      <section class="space-y-4">
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-3">
+          <div>
+            <h2 class="text-xl md:text-2xl font-semibold">Browse by event type</h2>
+            <p class="text-xs md:text-sm text-slate-500 max-w-md">
+              Not sure where to start? Choose the kind of event you’re planning and explore
+              typical vendor needs.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <article
+              v-for="event in eventTypes"
+              :key="event.slug"
+              class="bg-white border border-slate-200/70 p-4 flex flex-col justify-between rounded-none"
+          >
+            <div class="space-y-1.5">
+              <p class="text-[11px] uppercase tracking-[0.16em] text-slate-500">
+                {{ event.kicker }}
+              </p>
+              <h3 class="font-semibold text-sm md:text-base">{{ event.name }}</h3>
+              <p class="text-xs text-slate-600">
+                {{ event.description }}
+              </p>
+            </div>
+
+            <div class="mt-3 space-y-2">
+              <label class="block text-[11px] font-medium text-slate-600">
+                Focus on
+              </label>
+              <select
+                  v-model="selectedSubcategories[event.slug]"
+                  class="w-full text-xs rounded-md border border-slate-200/80 bg-white px-2.5 py-2 focus:outline-none focus:ring-1 focus:ring-stage-red/30"
+              >
+                <option :value="''">Any vendor type</option>
+                <option
+                    v-for="sub in event.subcategories"
+                    :key="sub.slug"
+                    :value="sub.slug"
+                >
+                  {{ sub.name }}
+                </option>
+              </select>
+            </div>
+          </article>
         </div>
       </section>
 
@@ -267,7 +333,7 @@
           <article
               v-for="vendor in filteredVendors"
               :key="vendor.id"
-              class="bg-white/95 border border-slate-200/60 rounded-2xl overflow-hidden flex flex-col hover:shadow-md hover:-translate-y-0.5 transition-all"
+              class="bg-white/95 border border-slate-200/60 overflow-hidden flex flex-col hover:shadow-md hover:-translate-y-0.5 transition-all rounded-none"
           >
             <div class="relative">
               <div class="aspect-[4/3] bg-slate-200">
@@ -345,13 +411,13 @@
                   :href="toWhatsappLink(vendor)"
                   target="_blank"
                   rel="noreferrer"
-                  class="flex-1 inline-flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold text-white shadow-sm hover:shadow-md transition-shadow bg-stage-red hover:bg-[#c02121]"
+                  class="flex-1 inline-flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold text-white shadow-sm hover:shadow-md transition-shadow bg-red-700 hover:bg-[#c02121]"
               >
                 Contact on WhatsApp
               </a>
               <button
                   type="button"
-                  class="inline-flex items-center justify-center rounded-xl px-3 py-2 text-[11px] font-medium border border-slate-200/70 text-slate-700 bg-white hover:bg-[#F3F2EC] transition-colors"
+                  class="inline-flex items-center justify-center rounded-xl px-3 py-2 text-[11px] font-medium text-black shadow-sm hover:shadow-md transition-shadow border-gray-400 hover:bg-[#c02121]"
               >
                 View details
               </button>
@@ -361,7 +427,7 @@
 
         <div
             v-else
-            class="mt-6 rounded-2xl border border-dashed border-slate-200/70 bg-white/80 p-6 text-sm text-center text-slate-600"
+            class="mt-6 border border-dashed border-slate-200/70 bg-white/80 p-6 text-sm text-center text-slate-600 rounded-none"
         >
           No vendors match your filters just yet. Try clearing your filters or switching
           to the AI planner to describe your event in your own words.
@@ -394,7 +460,7 @@
 
           <div
               id="how-it-works"
-              class="bg-white/95 border border-slate-200/60 rounded-2xl p-4 md:p-5 text-sm space-y-3 shadow-sm"
+              class="bg-white/95 border border-slate-200/60 p-4 md:p-5 text-sm space-y-3 shadow-sm rounded-none"
           >
             <h3 class="font-semibold mb-1">How it works</h3>
             <ol class="space-y-2 list-decimal list-inside text-slate-600">
@@ -415,7 +481,7 @@
             </ol>
 
             <div
-                class="mt-3 rounded-xl border border-dashed border-stage-teal/25 bg-stage-teal/5 px-3 py-3 flex items-start gap-3"
+                class="mt-3 border border-dashed border-stage-teal/25 bg-stage-teal/5 px-3 py-3 flex items-start gap-3 rounded-none"
             >
               <div
                   class="h-8 w-8 rounded-full flex items-center justify-center text-sm font-semibold text-white"
@@ -434,26 +500,101 @@
       </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="border-t border-slate-200/60 bg-white/90 mt-10">
-      <div
-          class="max-w-6xl mx-auto px-4 py-6 text-xs text-slate-500 flex flex-wrap gap-3 justify-between items-center"
-      >
-        <p>
-          &copy; {{ new Date().getFullYear() }} Stage &amp; Bloom. Built for people who
-          love good events and calm planning.
-        </p>
-        <p class="flex items-center gap-1">
-          <span class="h-1.5 w-1.5 rounded-full" style="background:#E62727;"></span>
-          Soft launch – vendor data is sample/mock for now.
-        </p>
+    <!-- Expanded Footer -->
+    <footer class="bg-[#0B1020] text-slate-300 mt-16">
+      <div class="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-4 gap-8">
+        <!-- Brand -->
+        <div class="space-y-3">
+          <div class="flex items-center gap-2">
+            <div
+                class="h-8 w-8 rounded-full flex items-center justify-center font-bold text-white text-sm"
+                style="background:#E62727;"
+            >
+              SB
+            </div>
+            <span class="font-semibold text-sm">Stage &amp; Bloom</span>
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            A calm way to discover decorators, caterers, photographers, DJs and more – all
+            in one place, all just a WhatsApp tap away.
+          </p>
+          <p class="text-[11px] text-slate-500">
+            Built in Accra for people who love good events.
+          </p>
+        </div>
+
+        <!-- Quick links -->
+        <div>
+          <h4 class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400 mb-3">
+            Product
+          </h4>
+          <ul class="space-y-2 text-xs text-slate-300">
+            <li><a href="#search" class="hover:text-white transition-colors">Plan an event</a></li>
+            <li><a href="#vendors" class="hover:text-white transition-colors">Browse vendors</a></li>
+            <li><a href="#how-it-works" class="hover:text-white transition-colors">How it works</a></li>
+            <li><a href="#why-exists" class="hover:text-white transition-colors">Why it exists</a></li>
+          </ul>
+        </div>
+
+        <!-- Event types -->
+        <div>
+          <h4 class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400 mb-3">
+            Event types
+          </h4>
+          <ul class="space-y-2 text-xs text-slate-300">
+            <li>Weddings &amp; engagements</li>
+            <li>Birthdays &amp; baby showers</li>
+            <li>Corporate &amp; brand events</li>
+            <li>Bridal &amp; pre-wedding shoots</li>
+          </ul>
+        </div>
+
+        <!-- Locations -->
+        <div>
+          <h4 class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400 mb-3">
+            Popular areas
+          </h4>
+          <div class="flex flex-wrap gap-2 text-[11px]">
+            <span class="px-2 py-1 rounded-full bg-white/5 border border-white/10">
+              East Legon
+            </span>
+            <span class="px-2 py-1 rounded-full bg-white/5 border border-white/10">
+              Osu
+            </span>
+            <span class="px-2 py-1 rounded-full bg-white/5 border border-white/10">
+              Airport
+            </span>
+            <span class="px-2 py-1 rounded-full bg-white/5 border border-white/10">
+              Spintex
+            </span>
+            <span class="px-2 py-1 rounded-full bg-white/5 border border-white/10">
+              Tema
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t border-slate-800/80">
+        <div
+            class="max-w-6xl mx-auto px-4 py-4 text-[11px] text-slate-500 flex flex-wrap gap-3 justify-between items-center"
+        >
+          <p>
+            &copy; {{ new Date().getFullYear() }} Stage &amp; Bloom. All rights reserved.
+          </p>
+          <p class="flex items-center gap-1">
+            <span class="h-1.5 w-1.5 rounded-full" style="background:#E62727;"></span>
+            Soft launch – vendor data is sample/mock for now.
+          </p>
+        </div>
       </div>
     </footer>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import {computed, ref} from 'vue'
+
+const selectedCountry = ref<'gh' | 'ke' | 'za'>('gh')
 
 type VendorCategory = {
   slug: string
@@ -478,16 +619,83 @@ type Vendor = {
   whatsappNumber: string
 }
 
+type EventType = {
+  slug: string
+  name: string
+  kicker: string
+  description: string
+  subcategories: { slug: string; name: string }[]
+}
+
 const mode = ref<'filters' | 'ai'>('filters')
 
 const categories: VendorCategory[] = [
-  { slug: 'decorator', name: 'Decor & Styling' },
-  { slug: 'caterer', name: 'Caterers & Food' },
-  { slug: 'photographer', name: 'Photographers' },
-  { slug: 'dj', name: 'DJs & Music' },
-  { slug: 'mc', name: 'MCs & Hosts' },
-  { slug: 'baker', name: 'Cakes & Desserts' }
+  {slug: 'decorator', name: 'Decor & Styling'},
+  {slug: 'caterer', name: 'Caterers & Food'},
+  {slug: 'photographer', name: 'Photographers'},
+  {slug: 'dj', name: 'DJs & Music'},
+  {slug: 'mc', name: 'MCs & Hosts'},
+  {slug: 'baker', name: 'Cakes & Desserts'}
 ]
+
+const eventTypes = ref<EventType[]>([
+  {
+    slug: 'wedding',
+    kicker: 'For your day',
+    name: 'Weddings',
+    description: 'Build a team for engagements, white weddings and receptions.',
+    subcategories: [
+      {slug: 'decorator', name: 'Decor & styling'},
+      {slug: 'photographer', name: 'Photography & video'},
+      {slug: 'caterer', name: 'Catering & drinks'},
+      {slug: 'mc', name: 'MCs & hosts'},
+      {slug: 'dj', name: 'DJs & live music'}
+    ]
+  },
+  {
+    slug: 'party',
+    kicker: 'For good vibes',
+    name: 'Parties',
+    description: 'Birthdays, baby showers and house parties that actually feel curated.',
+    subcategories: [
+      {slug: 'decorator', name: 'Decor & backdrops'},
+      {slug: 'baker', name: 'Cakes & desserts'},
+      {slug: 'dj', name: 'DJs & playlists'},
+      {slug: 'caterer', name: 'Finger foods & bites'}
+    ]
+  },
+  {
+    slug: 'corporate',
+    kicker: 'For the team',
+    name: 'Corporate',
+    description: 'Offsites, launches, townhalls and mixers for teams and brands.',
+    subcategories: [
+      {slug: 'caterer', name: 'Corporate catering'},
+      {slug: 'decorator', name: 'Brand & stage design'},
+      {slug: 'photographer', name: 'Photo & video recap'},
+      {slug: 'mc', name: 'Professional hosts'}
+    ]
+  },
+  {
+    slug: 'other',
+    kicker: 'Everything else',
+    name: 'Other events',
+    description: 'Church events, graduations, open mics and everything in between.',
+    subcategories: [
+      {slug: 'decorator', name: 'General decor'},
+      {slug: 'photographer', name: 'Event coverage'},
+      {slug: 'dj', name: 'Sound & music'},
+      {slug: 'caterer', name: 'Food & drinks'}
+    ]
+  }
+])
+
+const selectedSubcategories = ref<Record<string, string>>({
+  wedding: '',
+  party: '',
+  corporate: '',
+  other: ''
+})
 
 const vendors = ref<Vendor[]>([
   {
