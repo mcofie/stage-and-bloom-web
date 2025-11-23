@@ -38,7 +38,7 @@
               <option value="za">South Africa</option>
             </select>
           </div>
-          <NuxtLink to="/auth/login"
+          <NuxtLink to="/for-vendors"
                     class="hidden sm:inline-flex rounded-full bg-slate-900 text-white px-5 py-2.5 text-sm font-medium hover:bg-slate-800 hover:shadow-lg transition-all">
             List your business
           </NuxtLink>

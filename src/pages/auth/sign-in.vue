@@ -55,15 +55,6 @@
           <span v-else>Sign in</span>
         </button>
       </form>
-
-      <p class="text-xs text-slate-500 text-center">
-        Don’t have an account?
-        <NuxtLink
-            :to="{ path: '/auth/sign-up', query: { redirect: redirectTo } }"
-            class="text-rose-600 font-medium hover:underline">
-          Create one
-        </NuxtLink>
-      </p>
     </div>
   </div>
 </template>
@@ -78,7 +69,7 @@ const route = useRoute()
 const router = useRouter()
 const supabase = useSupabaseClient<Database>()
 
-const redirectTo = (route.query.redirect as string) || '/vendors'
+const redirectTo = (route.query.redirect as string) || '/admin'
 
 const email = ref('')
 const password = ref('')
