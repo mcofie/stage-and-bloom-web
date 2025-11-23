@@ -1,4 +1,3 @@
-<!-- components/VendorActions.vue -->
 <script setup lang="ts">
 const props = defineProps<{ vendorId: string }>();
 
@@ -13,7 +12,8 @@ const showQuoteModal = ref(false);
 function requireAuth(whenAuthed: () => void) {
   if (!user.value) {
     const redirect = encodeURIComponent(route.fullPath);
-    router.push(`/login?redirect=${redirect}`);
+    // Updated redirect path here
+    router.push(`/auth/sign-in?redirect=${redirect}`);
     return;
   }
   whenAuthed();
@@ -37,64 +37,82 @@ function openQuote() {
     <div class="flex gap-2">
       <button
           @click="openMessage"
-          class="border border-gray-300 rounded-full px-4 py-2 text-sm"
+          class="border border-gray-300 rounded-full px-4 py-2 text-sm transition-colors hover:bg-gray-50"
       >
         Message vendor
       </button>
       <button
           @click="openQuote"
-          class="bg-black text-white rounded-full px-4 py-2 text-sm"
+          class="bg-black text-white rounded-full px-4 py-2 text-sm hover:bg-gray-800 transition-colors"
       >
         Request a quote
       </button>
     </div>
 
-    <!-- Message modal skeleton -->
     <div
         v-if="showMessageModal"
-        class="fixed inset-0 bg-black/40 flex items-center justify-center"
+        class="fixed inset-0 z-50 bg-black/40 flex items-center justify-center backdrop-blur-sm p-4"
     >
-      <div class="bg-white rounded-lg p-4 w-full max-w-md">
-        <h2 class="font-semibold mb-2 text-sm">Message vendor</h2>
+      <div class="bg-white rounded-xl p-6 w-full max-w-md shadow-xl">
+        <h2 class="font-semibold mb-4 text-lg">Message vendor</h2>
         <textarea
-            class="w-full border rounded px-2 py-1 text-sm"
+            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-black focus:outline-none resize-none"
             rows="4"
-            placeholder="Write a message to the vendor..."
+            placeholder="Hi, I saw your profile on Stage & Bloom..."
         />
-        <div class="mt-3 flex justify-end gap-2">
+        <div class="mt-6 flex justify-end gap-3">
           <button
-              class="text-xs text-gray-500"
+              class="text-sm text-gray-600 hover:text-black px-3 py-2 transition-colors"
               @click="showMessageModal = false"
           >
             Cancel
           </button>
-          <button class="bg-black text-white text-xs px-3 py-1 rounded">
-            Send
+          <button
+              class="bg-black text-white text-sm font-medium px-5 py-2 rounded-full hover:bg-gray-800 transition-colors">
+            Send Message
           </button>
         </div>
       </div>
     </div>
 
-    <!-- Quote modal skeleton -->
     <div
         v-if="showQuoteModal"
-        class="fixed inset-0 bg-black/40 flex items-center justify-center"
+        class="fixed inset-0 z-50 bg-black/40 flex items-center justify-center backdrop-blur-sm p-4"
     >
-      <div class="bg-white rounded-lg p-4 w-full max-w-md">
-        <h2 class="font-semibold mb-2 text-sm">Request a quote</h2>
-        <!-- You can wire these refs and call submitQuote() -->
-        <p class="text-xs text-gray-500 mb-2">
-          (Here you capture event type, date, guests, budget, etc.)
-        </p>
-        <div class="mt-3 flex justify-end gap-2">
+      <div class="bg-white rounded-xl p-6 w-full max-w-md shadow-xl">
+        <h2 class="font-semibold mb-4 text-lg">Request a quote</h2>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1">Event Type</label>
+            <select
+                class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-black focus:outline-none">
+              <option>Wedding</option>
+              <option>Birthday Party</option>
+              <option>Corporate Event</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1">Additional Details</label>
+            <textarea
+                class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-black focus:outline-none resize-none"
+                rows="3"
+                placeholder="Date, guest count, venue..."
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="mt-6 flex justify-end gap-3">
           <button
-              class="text-xs text-gray-500"
+              class="text-sm text-gray-600 hover:text-black px-3 py-2 transition-colors"
               @click="showQuoteModal = false"
           >
             Cancel
           </button>
-          <button class="bg-black text-white text-xs px-3 py-1 rounded">
-            Submit
+          <button
+              class="bg-black text-white text-sm font-medium px-5 py-2 rounded-full hover:bg-gray-800 transition-colors">
+            Submit Request
           </button>
         </div>
       </div>

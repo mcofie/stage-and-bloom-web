@@ -1,33 +1,40 @@
-// server/api/vendors/search.post.ts
-import {serverSupabaseClient} from '#supabase/server';
+// src/server/api/vendors/search.post.ts
+import {serverSupabaseClient} from '#supabase/server'
+import type {Database} from '~/types/database.types'
 
 export default defineEventHandler(async (event) => {
     const body = await readBody<{
-        categorySlug?: string;
-        city?: string;
-        minBudget?: number;
-        maxBudget?: number;
-    }>(event);
+        categorySlug?: string
+        city?: string
+        minBudget?: number
+        maxBudget?: number
+        query?: string // Support AI text search if passed here
+    }>(event)
 
-    const supabase = await serverSupabaseClient(event);
+    const client = await serverSupabaseClient<Database>(event)
 
-    const {categorySlug, city, minBudget, maxBudget} = body;
-
-    let categoryId: string | undefined;
-    if (categorySlug) {
-        const {data: cat, error: catErr} = await supabase
-            .from('stagebloom.vendor_categories')
+    // 1) Optional: resolve category_id from slug
+    let categoryId: string | null = null
+    if (body.categorySlug) {
+        const {data: cat, error: catError} = await client
+            .schema('stagebloom')
+            .from('vendor_categories')
             .select('id')
-            .eq('slug', categorySlug)
-            .single();
+            .eq('slug', body.categorySlug)
+            .maybeSingle()
 
-        if (!catErr && cat) {
-            categoryId = (cat as { id: string }).id;
+        if (catError) {
+            console.error('Error fetching category:', catError)
+        }
+        if (cat?.id) {
+            categoryId = cat.id
         }
     }
 
-    let query = supabase
-        .from('stagebloom.vendors')
+    // 2) Base query
+    let query = client
+        .schema('stagebloom')
+        .from('vendors')
         .select(
             `
       id,
@@ -40,39 +47,67 @@ export default defineEventHandler(async (event) => {
       price_range_min,
       price_range_max,
       short_bio,
-      cover_image_url,
       is_verified,
-      vendor_categories:category_id ( slug, name )
+      vendor_categories:vendor_categories!vendors_category_id_fkey (
+        slug,
+        name
+      ),
+      vendor_photos (
+        image_url
+      )
     `
         )
-        .eq('is_active', true);
+        .eq('is_active', true)
+        // Filter the nested relationship to only get the cover photo
+        .eq('vendor_photos.is_cover', true)
+        // We limit to 1 photo per vendor in the join just in case
+        .limit(1, {foreignTable: 'vendor_photos'})
 
+    // 3) Apply filters
     if (categoryId) {
-        query = query.eq('category_id', categoryId);
+        query = query.eq('category_id', categoryId)
     }
 
-    if (city) {
-        query = query.ilike('city', city);
+    if (body.city) {
+        query = query.ilike('city', `%${body.city}%`)
     }
 
-    if (minBudget != null) {
-        query = query.or(
-            `price_range_min.is.null,price_range_min.lte.${minBudget}`
-        );
+    if (body.minBudget) {
+        query = query.gte('starting_price', body.minBudget)
     }
 
-    if (maxBudget != null) {
-        query = query.or(
-            `price_range_max.is.null,price_range_max.gte.${maxBudget}`
-        );
+    if (body.maxBudget) {
+        query = query.lte('starting_price', body.maxBudget)
     }
 
-    const {data, error} = await query.limit(30);
+    // 4) Execute
+    const {data, error} = await query
 
     if (error) {
-        console.error(error);
-        throw createError({statusCode: 500, statusMessage: error.message});
+        console.error('Error searching vendors:', error)
+        throw createError({
+            statusCode: 500,
+            statusMessage: 'Failed to search vendors'
+        })
     }
 
-    return {vendors: data};
-});
+    // 5) Transform / Flatten Data
+    // The frontend expects 'cover_image_url' as a string, but Supabase returns an array of objects for the join.
+    const flattenedVendors = (data ?? []).map((vendor) => {
+        const coverPhoto = Array.isArray(vendor.vendor_photos)
+            ? vendor.vendor_photos[0]
+            : null
+
+        // Remove the raw array from the response to keep payload clean
+        const {vendor_photos, ...rest} = vendor
+
+        return {
+            ...rest,
+            cover_image_url: coverPhoto?.image_url || null
+        }
+    })
+
+    return {
+        vendors: flattenedVendors
+    }
+})
