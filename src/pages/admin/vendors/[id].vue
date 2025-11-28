@@ -309,12 +309,19 @@
                   {{ rate.notes }}
                 </div>
               </div>
-              <div class="flex flex-col items-end gap-1 text-[10px]">
+              <div class="flex flex-col items-end gap-2 text-[10px]">
                 <button
                     class="text-slate-500 hover:text-slate-900"
                     @click="toggleRateActive(rate)"
                 >
                   {{ rate.is_active ? 'Deactivate' : 'Activate' }}
+                </button>
+
+                <button
+                    class="text-red-500 hover:text-red-700"
+                    @click="deleteRate(rate)"
+                >
+                  Delete
                 </button>
               </div>
             </div>
@@ -422,12 +429,19 @@
                 <p class="font-medium text-slate-800 line-clamp-2">
                   {{ photo.caption || 'No caption' }}
                 </p>
-                <div class="flex items-center justify-between">
+                <div class="flex items-center justify-between pt-1">
                   <button
                       class="text-slate-500 hover:text-slate-900"
                       @click="setCoverPhoto(photo)"
                   >
                     {{ photo.is_cover ? 'Cover' : 'Make cover' }}
+                  </button>
+
+                  <button
+                      class="text-red-500 hover:text-red-700"
+                      @click="deletePhoto(photo)"
+                  >
+                    Delete
                   </button>
                 </div>
               </div>
@@ -891,4 +905,42 @@ const setCoverPhoto = async (photo: PhotoRow) => {
     is_cover: p.id === photo.id
   }))
 }
+// ... existing code ...
+
+const deleteRate = async (rate: RateRow) => {
+  if (!confirm(`Are you sure you want to delete "${rate.service_name}"?`)) return
+
+  const {error} = await client
+      .schema('stagebloom')
+      .from('vendor_rates')
+      .delete()
+      .eq('id', rate.id)
+
+  if (error) {
+    alert('Failed to delete rate: ' + error.message)
+    return
+  }
+
+  // Remove from local state
+  rates.value = rates.value.filter((r) => r.id !== rate.id)
+}
+
+const deletePhoto = async (photo: PhotoRow) => {
+  if (!confirm('Delete this photo? This cannot be undone.')) return
+
+  const {error} = await client
+      .schema('stagebloom')
+      .from('vendor_photos')
+      .delete()
+      .eq('id', photo.id)
+
+  if (error) {
+    alert('Failed to delete photo: ' + error.message)
+    return
+  }
+
+  // Remove from local state
+  photos.value = photos.value.filter((p) => p.id !== photo.id)
+}
+
 </script>
