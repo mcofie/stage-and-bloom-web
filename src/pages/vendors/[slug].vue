@@ -83,18 +83,21 @@
 
         <section class="mb-12">
           <div
-              class="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-2 h-[400px] md:h-[500px] rounded-2xl overflow-hidden relative">
-            <div class="md:col-span-2 md:row-span-2 relative cursor-pointer group" @click="openLightbox(heroImage)">
+              class="grid grid-cols-2 md:grid-cols-4 md:grid-rows-2 gap-2 h-[400px] md:h-[500px] rounded-2xl overflow-hidden relative">
+
+            <div class="col-span-2 md:col-span-2 md:row-span-2 relative cursor-pointer group"
+                 @click="openLightbox(heroImage)">
               <img
                   :src="heroImage"
                   class="w-full h-full object-cover group-hover:brightness-95 transition-all"
                   alt="Main view"
               />
             </div>
+
             <div
                 v-for="(photo, index) in galleryPhotos.slice(0, 4)"
                 :key="photo.id"
-                class="relative hidden md:block cursor-pointer group"
+                class="relative cursor-pointer group"
                 @click="openLightbox(photo.image_url)"
             >
               <img
@@ -103,6 +106,7 @@
                   alt="Detail view"
               />
             </div>
+
             <button
                 @click="openLightbox(heroImage)"
                 class="absolute bottom-4 right-4 bg-white border border-slate-900/10 text-slate-900 px-4 py-1.5 rounded-lg text-sm font-bold shadow-sm hover:scale-105 transition-transform flex items-center gap-2"
@@ -116,7 +120,6 @@
             </button>
           </div>
         </section>
-
         <div class="flex flex-col lg:grid lg:grid-cols-12 gap-12 relative">
 
           <div class="lg:col-span-7 xl:col-span-8 space-y-10">
