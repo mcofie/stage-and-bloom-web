@@ -7,44 +7,7 @@
       .font-sans { font-family: 'Inter', sans-serif; }
     </component>
 
-    <header
-        class="fixed top-0 w-full z-40 border-b border-slate-200/50 bg-white/80 backdrop-blur-md transition-all duration-300">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
-        <NuxtLink to="/" class="flex items-center gap-3 group">
-          <div
-              class="relative flex items-center justify-center h-10 w-10 bg-rose-600 text-white font-serif font-bold text-xl rounded-xl shadow-lg shadow-rose-200 group-hover:scale-105 transition-transform">
-            SB
-          </div>
-          <div class="leading-none">
-            <h1 class="font-serif font-bold text-xl text-slate-900 tracking-tight">Stage &amp; Bloom</h1>
-            <p class="text-[10px] uppercase tracking-widest text-slate-500 mt-1">The Event Collective</p>
-          </div>
-        </NuxtLink>
-
-        <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
-          <a href="#vendors" class="hover:text-rose-600 transition-colors">Find Vendors</a>
-          <a href="#how-it-works" class="hover:text-rose-600 transition-colors">How it Works</a>
-          <a href="#inspiration" class="hover:text-rose-600 transition-colors">Inspiration</a>
-        </nav>
-
-        <div class="flex items-center gap-4">
-          <div
-              class="hidden sm:flex items-center gap-2 bg-slate-100/80 rounded-full px-3 py-1.5 border border-slate-200">
-            <span class="text-lg">🇬🇭</span>
-            <select v-model="selectedCountry"
-                    class="bg-transparent text-xs font-medium text-slate-700 focus:outline-none cursor-pointer">
-              <option value="gh">Ghana</option>
-              <option value="ke">Kenya</option>
-              <option value="za">South Africa</option>
-            </select>
-          </div>
-          <NuxtLink to="/for-vendors"
-                    class="hidden sm:inline-flex rounded-full bg-slate-900 text-white px-5 py-2.5 text-sm font-medium hover:bg-slate-800 hover:shadow-lg transition-all">
-            List your business
-          </NuxtLink>
-        </div>
-      </div>
-    </header>
+    <SiteNavbar/>
 
     <main class="pt-24 pb-20 space-y-24">
 
@@ -140,9 +103,23 @@
                            class="w-full h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-rose-600"/>
                   </div>
 
-                  <button @click="runFilterSearch"
-                          class="w-full bg-rose-600 hover:bg-rose-700 text-white font-medium py-3.5 rounded-xl shadow-lg shadow-rose-200 transition-all hover:-translate-y-0.5 active:translate-y-0">
-                    Search Vendors
+                  <button
+                      @click="runFilterSearch"
+                      :disabled="isSearching"
+                      class="w-full bg-rose-600 hover:bg-rose-700 text-white font-medium py-3.5 rounded-xl shadow-lg shadow-rose-200 transition-all hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
+                  >
+                    <svg
+                        v-if="isSearching"
+                        class="animate-spin h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                    >
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>{{ isSearching ? 'Searching...' : 'Search Vendors' }}</span>
                   </button>
                 </div>
 
@@ -154,9 +131,23 @@
                               class="w-full bg-slate-50 border-0 rounded-xl px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:ring-2 focus:ring-purple-500/20 transition-shadow resize-none"
                               placeholder="I need a photographer and cake for a baby shower in Osu next Saturday. Budget is around 5000 GHS."></textarea>
                   </div>
-                  <button @click="runAISearch"
-                          class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium py-3.5 rounded-xl shadow-lg shadow-purple-200 transition-all hover:-translate-y-0.5">
-                    Generate Plan with AI
+                  <button
+                      @click="runAISearch"
+                      :disabled="isSearching"
+                      class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium py-3.5 rounded-xl shadow-lg shadow-purple-200 transition-all hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
+                  >
+                    <svg
+                        v-if="isSearching"
+                        class="animate-spin h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                    >
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>{{ isSearching ? 'Generating Plan...' : 'Generate Plan with AI' }}</span>
                   </button>
                 </div>
               </div>
@@ -172,8 +163,9 @@
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div v-for="event in eventTypes" :key="event.slug"
-               class="group relative overflow-hidden rounded-2xl aspect-[4/5] cursor-pointer">
+          <NuxtLink v-for="event in eventTypes" :key="event.slug"
+                    :to="`/events/${event.slug}`"
+                    class="group relative overflow-hidden rounded-2xl aspect-[4/5] cursor-pointer">
             <div class="absolute inset-0 bg-slate-200 transition-transform duration-700 group-hover:scale-110">
               <img :src="event.image" class="h-full w-full object-cover opacity-90" :alt="event.name" loading="lazy"/>
             </div>
@@ -188,14 +180,14 @@
                 Explore Vendors <span class="text-lg">→</span>
               </div>
             </div>
-          </div>
+          </NuxtLink>
         </div>
       </section>
 
       <section id="vendors" class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="flex items-end justify-between mb-8">
           <div>
-            <h2 class="font-serif text-3xl font-bold text-slate-900">Featured Talent</h2>
+            <h2 class="font-serif text-3xl font-bold text-slate-900">Featured Vendors</h2>
             <p class="text-slate-500 mt-2">Hand-picked vendors available for your dates.</p>
           </div>
           <NuxtLink to="/vendors/search"
@@ -395,6 +387,8 @@ const location = ref('')
 const budgetPerVendor = ref(5000)
 const aiPrompt = ref('')
 
+const isSearching = ref(false)
+
 const categories = [
   {slug: 'decorator', name: 'Decor & Styling'},
   {slug: 'caterer', name: 'Caterers & Food'},
@@ -456,8 +450,10 @@ const toWhatsappLink = (vendor: any) => {
 }
 
 // --- ACTIONS ---
-const runFilterSearch = () => {
-  router.push({
+// Update the runFilterSearch function
+const runFilterSearch = async () => {
+  isSearching.value = true
+  await router.push({
     path: '/vendors/search',
     query: {
       categorySlug: selectedCategory.value || undefined,
@@ -465,15 +461,19 @@ const runFilterSearch = () => {
       minBudget: budgetPerVendor.value ? String(budgetPerVendor.value) : undefined
     }
   })
+  // We don't set isSearching = false because the page will navigate away
 }
 
-const runAISearch = () => {
+const runAISearch = async () => {
   if (!aiPrompt.value.trim()) return
-  router.push({
+
+  isSearching.value = true
+  await router.push({
     path: '/vendors/search',
     query: {q: aiPrompt.value}
   })
 }
+
 </script>
 
 <style>

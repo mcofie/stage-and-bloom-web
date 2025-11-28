@@ -1,120 +1,7 @@
 <template>
   <div class="font-sans bg-[#FDFCF8] text-slate-800 min-h-screen selection:bg-rose-100 selection:text-rose-900">
 
-    <header
-        class="fixed top-0 w-full z-50 border-b border-slate-200/50 bg-white/90 backdrop-blur-md transition-all duration-300">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-        <NuxtLink to="/" class="flex items-center gap-3 group">
-          <div
-              class="relative flex items-center justify-center h-9 w-9 bg-rose-600 text-white font-serif font-bold text-lg rounded-xl shadow-lg shadow-rose-200 group-hover:scale-105 transition-transform">
-            SB
-          </div>
-          <div class="leading-none hidden sm:block">
-            <h1 class="font-serif font-bold text-lg text-slate-900 tracking-tight">Stage &amp; Bloom</h1>
-          </div>
-        </NuxtLink>
-
-        <div class="flex-1 max-w-xl mx-auto px-4">
-          <button
-              @click="toggleSearchPanel"
-              class="w-full flex items-center justify-between gap-3 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-500 text-sm px-4 py-2 rounded-full transition-colors text-left"
-          >
-            <span v-if="isAiSearch">AI Search: "{{ queryText }}"</span>
-            <span v-else-if="filters.categorySlug || filters.city">
-              {{ filters.categorySlug ? categoryLabels[filters.categorySlug] : 'All Vendors' }}
-              {{ filters.city ? `in ${filters.city}` : '' }}
-            </span>
-            <span v-else>Search vendors, locations, or services...</span>
-
-            <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
-            </svg>
-          </button>
-        </div>
-
-        <nav class="flex items-center gap-4">
-          <NuxtLink to="/"
-                    class="text-sm font-medium text-slate-600 hover:text-rose-600 transition-colors hidden sm:block">
-            Home
-          </NuxtLink>
-          <div class="h-4 w-px bg-slate-200 hidden sm:block"></div>
-          <NuxtLink to="/auth/sign-in" class="text-sm font-medium text-slate-900 hover:text-rose-600 transition-colors">
-            Log in
-          </NuxtLink>
-        </nav>
-      </div>
-
-      <div v-show="isSearchPanelOpen"
-           class="border-t border-slate-100 bg-white/95 backdrop-blur-xl shadow-xl absolute w-full left-0 top-16 z-40 transition-all duration-300 ease-in-out">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6">
-
-          <div class="flex justify-center mb-6">
-            <div class="bg-slate-100/80 p-1 rounded-xl inline-flex">
-              <button
-                  @click="mode = 'filters'"
-                  class="px-6 py-2 rounded-lg text-sm font-medium transition-all duration-200"
-                  :class="mode === 'filters' ? 'bg-white text-rose-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'"
-              >
-                Filters
-              </button>
-              <button
-                  @click="mode = 'ai'"
-                  class="px-6 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2"
-                  :class="mode === 'ai' ? 'bg-white text-purple-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'"
-              >
-                <span class="text-xs">✨</span> AI Planner
-              </button>
-            </div>
-          </div>
-
-          <div v-if="mode === 'filters'" class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
-            <div class="md:col-span-4 space-y-1.5">
-              <label class="text-xs font-bold uppercase tracking-wider text-slate-400">Category</label>
-              <select v-model="selectedCategory"
-                      class="w-full bg-slate-50 border-slate-200 rounded-xl px-3 py-2.5 text-sm text-slate-700 focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500">
-                <option value="">All Categories</option>
-                <option v-for="cat in categories" :key="cat.slug" :value="cat.slug">{{ cat.name }}</option>
-              </select>
-            </div>
-            <div class="md:col-span-4 space-y-1.5">
-              <label class="text-xs font-bold uppercase tracking-wider text-slate-400">Location</label>
-              <input v-model="location" type="text" placeholder="e.g. East Legon"
-                     class="w-full bg-slate-50 border-slate-200 rounded-xl px-3 py-2.5 text-sm text-slate-700 focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500"/>
-            </div>
-            <div class="md:col-span-2 space-y-1.5">
-              <label class="text-xs font-bold uppercase tracking-wider text-slate-400">Max Price</label>
-              <input v-model="budgetPerVendor" type="number" placeholder="5000"
-                     class="w-full bg-slate-50 border-slate-200 rounded-xl px-3 py-2.5 text-sm text-slate-700 focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500"/>
-            </div>
-            <div class="md:col-span-2">
-              <button @click="runFilterSearch"
-                      class="w-full bg-rose-600 hover:bg-rose-700 text-white font-medium py-2.5 rounded-xl transition-colors text-sm">
-                Search
-              </button>
-            </div>
-          </div>
-
-          <div v-else class="max-w-2xl mx-auto">
-            <div class="relative">
-              <textarea
-                  v-model="aiPrompt"
-                  rows="2"
-                  class="w-full bg-slate-50 border-slate-200 rounded-2xl px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 resize-none pr-24"
-                  placeholder="Describe your event (e.g. 'I need a photographer for a wedding in Accra under 10k')"
-              ></textarea>
-              <button
-                  @click="runAISearch"
-                  class="absolute right-2 bottom-2 bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium px-4 py-1.5 rounded-lg transition-colors"
-              >
-                Generate
-              </button>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </header>
+    <SiteNavbar/>
 
     <main class="pt-28 pb-20 px-4 sm:px-6 max-w-7xl mx-auto">
 
@@ -203,71 +90,62 @@
           </button>
         </div>
 
-        <div v-else class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          <article
-              v-for="vendor in vendors"
-              :key="vendor.id"
-              class="group bg-white rounded-2xl border border-slate-200/60 overflow-hidden hover:shadow-xl hover:shadow-slate-200/50 hover:border-rose-100 transition-all duration-300 flex flex-col"
-          >
+        <div v-else class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <article v-for="vendor in vendors" :key="vendor.id"
+                   class="group bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col">
             <div class="relative aspect-[4/3] overflow-hidden bg-slate-100">
-              <img
-                  :src="vendor.cover_image_url || fallbackImage"
-                  :alt="vendor.display_name"
-                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  loading="lazy"
-              />
+              <img :src="vendor.cover_image_url || fallbackImage" :alt="vendor.display_name"
+                   class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                   loading="lazy"/>
 
-              <div
-                  class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60"></div>
-
-              <div class="absolute top-3 left-3 flex gap-2">
+              <div class="absolute top-3 left-3 flex flex-wrap gap-2">
                 <span
-                    class="px-2 py-1 rounded-md bg-white/90 backdrop-blur text-[10px] font-bold uppercase tracking-wider text-slate-800 shadow-sm">
-                  {{ vendor.vendor_categories?.name || 'Service' }}
+                    class="px-2.5 py-1 rounded-md bg-white/95 backdrop-blur text-[10px] font-bold uppercase tracking-wider text-slate-800 shadow-sm">
+                  {{ vendor.vendor_categories?.name || 'Vendor' }}
                 </span>
               </div>
-
-              <div v-if="vendor.is_verified"
-                   class="absolute bottom-3 left-3 flex items-center gap-1 text-white text-xs font-medium px-2 py-1 rounded-full bg-emerald-500/90 backdrop-blur-sm">
-                <svg class="w-3 h-3 fill-current" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clip-rule="evenodd"/>
-                </svg>
-                Verified
-              </div>
+              <button
+                  class="absolute top-3 right-3 h-8 w-8 rounded-full bg-white/90 backdrop-blur flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-white transition-colors shadow-sm">
+                ♥
+              </button>
             </div>
 
             <div class="p-5 flex-1 flex flex-col">
-              <div class="mb-3">
-                <h3 class="font-serif text-lg font-bold text-slate-900 leading-tight group-hover:text-rose-600 transition-colors">
-                  {{ vendor.display_name }}
-                </h3>
-                <div class="flex items-center gap-1 mt-1.5 text-xs text-slate-500">
-                  <svg class="w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+              <div class="flex justify-between items-start mb-2">
+                <div>
+                  <h3 class="font-serif text-lg font-bold text-slate-900 group-hover:text-rose-600 transition-colors line-clamp-1">
+                    {{ vendor.display_name }}
+                  </h3>
+                  <p class="text-xs text-slate-500 flex items-center gap-1 mt-1">
+                    <svg class="w-3 h-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    {{ vendor.area || 'Accra' }}, {{ vendor.city || 'Ghana' }}
+                  </p>
+                </div>
+                <div v-if="vendor.is_verified" class="text-emerald-500" title="Verified Vendor">
+                  <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                          clip-rule="evenodd"/>
                   </svg>
-                  <span>{{ vendor.area || 'Accra' }}, {{ vendor.city || 'Ghana' }}</span>
                 </div>
               </div>
 
               <p class="text-sm text-slate-600 line-clamp-2 mb-4 leading-relaxed">
-                {{ vendor.short_bio || 'Professional vendor available for your event needs.' }}
+                {{ vendor.short_bio || 'Professional vendor available for bookings.' }}
               </p>
 
               <div class="mt-auto pt-4 border-t border-slate-50 flex items-center justify-between">
-                <div class="flex flex-col">
-                  <span class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Starts from</span>
-                  <span class="text-slate-900 font-bold">GH₵ {{ startingFrom(vendor).toLocaleString() }}</span>
+                <div>
+                  <p class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Starting from</p>
+                  <p class="text-slate-900 font-semibold">GH₵ {{ getStartingPrice(vendor).toLocaleString() }}</p>
                 </div>
-
-                <NuxtLink
-                    :to="`/vendors/${vendor.slug}`"
-                    class="text-sm font-medium text-rose-600 hover:text-rose-700 hover:underline decoration-2 underline-offset-4"
-                >
+                <NuxtLink :to="`/vendors/${vendor.slug}`"
+                          class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-medium px-4 py-2 rounded-lg transition-colors">
                   View Profile
                 </NuxtLink>
               </div>
@@ -398,7 +276,8 @@ const vendorsCountLabel = computed(() => {
 
 const fallbackImage = 'https://images.pexels.com/photos/169190/pexels-photo-169190.jpeg?auto=compress&cs=tinysrgb&w=800'
 
-const startingFrom = (vendor: ApiVendor): number => {
+// Renamed to match template usage and consistency with other files
+const getStartingPrice = (vendor: ApiVendor): number => {
   return vendor.starting_price || vendor.price_range_min || vendor.price_range_max || 0
 }
 
