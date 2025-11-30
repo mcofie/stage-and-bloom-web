@@ -1,6 +1,7 @@
 <template>
   <div class="min-h-screen bg-gradient-to-b from-white to-gray-50 text-gray-900">
     <NuxtPage/>
+    <UNotifications />
   </div>
 </template>
 

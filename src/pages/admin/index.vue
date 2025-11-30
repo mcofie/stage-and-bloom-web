@@ -103,6 +103,33 @@
           </div>
         </NuxtLink>
 
+        <NuxtLink
+            to="/admin/requests"
+            class="group bg-white border border-slate-100 rounded-2xl p-6 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all flex flex-col justify-between"
+        >
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <h3 class="font-serif text-lg font-semibold text-slate-900 group-hover:text-rose-600">
+                Booking Requests
+              </h3>
+              <p class="mt-2 text-sm text-slate-500">
+                View incoming leads and quote requests from the website.
+              </p>
+            </div>
+            <div
+                class="h-10 w-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl"
+            >
+              📩
+            </div>
+          </div>
+          <div class="mt-4 flex items-center justify-between text-xs text-slate-400">
+            <span>View leads</span>
+            <span class="inline-flex items-center gap-1 text-rose-600 font-medium">
+              Open <span>→</span>
+            </span>
+          </div>
+        </NuxtLink>
+
         <!-- You can add more tiles later (photos, bookings, etc.) -->
       </section>
     </main>

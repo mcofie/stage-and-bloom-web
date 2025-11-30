@@ -261,6 +261,7 @@ const client = useSupabaseClient<Database>()
 
 // Load categories for the select
 const {data: categoriesData, error: catError} = await client
+    .schema('stagebloom')
     .from('vendor_categories')
     .select('id, slug, name')
     .eq('is_active', true)

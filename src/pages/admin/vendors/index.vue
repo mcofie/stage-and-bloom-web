@@ -299,6 +299,7 @@ const {
   refresh
 } = await useAsyncData<VendorRow[]>('admin-vendors', async () => {
   const {data, error} = await client
+      .schema('stagebloom')
       .from('vendors')
       .select(
           `
@@ -371,6 +372,7 @@ const filteredVendors = computed(() => {
 
 const toggleActive = async (vendor: VendorRow) => {
   const {error} = await (client
+      .schema('stagebloom')
       .from('vendors') as any) // eslint-disable-line @typescript-eslint/no-explicit-any
       .update({is_active: !vendor.is_active})
       .eq('id', vendor.id)
@@ -384,6 +386,7 @@ const toggleActive = async (vendor: VendorRow) => {
 
 const toggleVerified = async (vendor: VendorRow) => {
   const {error} = await (client
+      .schema('stagebloom')
       .from('vendors') as any) // eslint-disable-line @typescript-eslint/no-explicit-any
       .update({is_verified: !vendor.is_verified})
       .eq('id', vendor.id)

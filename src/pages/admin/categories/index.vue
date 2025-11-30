@@ -198,8 +198,8 @@
                       :class="cat.is_active ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-500'"
                   >
                     <span
-class="h-1.5 w-1.5 rounded-full"
-                          :class="cat.is_active ? 'bg-emerald-500' : 'bg-slate-400'"/>
+                        class="h-1.5 w-1.5 rounded-full"
+                        :class="cat.is_active ? 'bg-emerald-500' : 'bg-slate-400'"/>
                     {{ cat.is_active ? 'Active' : 'Hidden' }}
                   </span>
               </td>
@@ -229,7 +229,7 @@ class="h-1.5 w-1.5 rounded-full"
 
 <script setup lang="ts">
 import {ref} from 'vue'
-import type { Database } from '~/types/database.types'
+import type {Database} from '~/types/database.types'
 
 definePageMeta({
   middleware: 'admin'
@@ -246,7 +246,6 @@ type CategoryRow = {
 }
 
 
-
 const client = useSupabaseClient<Database>()
 
 // Load categories
@@ -257,6 +256,7 @@ const {
   refresh
 } = await useAsyncData<CategoryRow[]>('admin-categories', async () => {
   const {data, error} = await client
+      .schema('stagebloom')
       .from('vendor_categories')
       .select('*')
       .order('sort_order', {ascending: true})
@@ -297,6 +297,7 @@ const onCreate = async () => {
     }
 
     const {error} = await (client
+        .schema('stagebloom')
         .from('vendor_categories') as any) // eslint-disable-line @typescript-eslint/no-explicit-any
         .insert(payload)
 

@@ -11,6 +11,7 @@ const props = defineProps<{
 const showMessageModal = ref(false);
 const showQuoteModal = ref(false);
 const isSubmitting = ref(false);
+const toast = useToast();
 
 // Visitor State (Lead Capture)
 const visitor = ref({
@@ -87,12 +88,22 @@ async function submitBookingRequest(type: 'whatsapp' | 'quote' | 'call') {
        }
        showMessageModal.value = false;
     } else {
-      alert(`Quote requested for ${visitor.value.name}! We will notify ${props.vendorName}.`);
+      toast.add({
+        title: 'Quote Requested!',
+        description: `We have notified ${props.vendorName || 'the vendor'} of your interest.`,
+        icon: 'i-heroicons-check-circle',
+        color: 'success'
+      });
       showQuoteModal.value = false;
     }
   } catch (e) {
     console.error('Error submitting request:', e);
-    alert('Something went wrong. Please try again.');
+    toast.add({
+      title: 'Error',
+      description: 'Something went wrong. Please try again.',
+      icon: 'i-heroicons-exclamation-circle',
+      color: 'error'
+    });
     // Close the window if we opened it but failed
     if (newWindow) newWindow.close();
   } finally {
@@ -102,7 +113,11 @@ async function submitBookingRequest(type: 'whatsapp' | 'quote' | 'call') {
 
 function handleWhatsAppRedirect() {
   if (!visitor.value.name || !visitor.value.phone) {
-    alert('Please provide your name and number so the vendor knows who is contacting them.');
+    toast.add({
+      title: 'Missing Information',
+      description: 'Please provide your name and number so the vendor knows who is contacting them.',
+      color: 'warning'
+    });
     return;
   }
   submitBookingRequest('whatsapp');
@@ -110,7 +125,11 @@ function handleWhatsAppRedirect() {
 
 function handleCallRedirect() {
     if (!visitor.value.name || !visitor.value.phone) {
-        alert('Please provide your name and number so the vendor knows who is calling.');
+        toast.add({
+            title: 'Missing Information',
+            description: 'Please provide your name and number so the vendor knows who is calling.',
+            color: 'warning'
+        });
         return;
     }
     submitBookingRequest('call');
@@ -118,7 +137,11 @@ function handleCallRedirect() {
 
 function handleSubmitQuote() {
   if (!visitor.value.name || !visitor.value.email) {
-    alert('Please provide your contact details.');
+    toast.add({
+      title: 'Missing Information',
+      description: 'Please provide your contact details.',
+      color: 'warning'
+    });
     return;
   }
   submitBookingRequest('quote');

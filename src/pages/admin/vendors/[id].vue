@@ -291,8 +291,8 @@
                 <div class="font-semibold text-slate-900">
                   {{ rate.service_name }}
                   <span
-v-if="rate.is_primary"
-                        class="ml-2 rounded-full bg-slate-900 text-white px-2 py-0.5 text-[10px]">
+                      v-if="rate.is_primary"
+                      class="ml-2 rounded-full bg-slate-900 text-white px-2 py-0.5 text-[10px]">
                     Primary
                   </span>
                 </div>
@@ -501,7 +501,7 @@ v-if="rate.is_primary"
 
 <script setup lang="ts">
 import {computed, ref} from 'vue'
-import type { Database } from '~/types/database.types'
+import type {Database} from '~/types/database.types'
 
 definePageMeta({
   middleware: 'admin'
@@ -509,7 +509,6 @@ definePageMeta({
 
 const route = useRoute()
 const vendorId = route.params.id as string
-
 
 
 const client = useSupabaseClient<Database>()
@@ -572,6 +571,7 @@ const {
 } = await useAsyncData('admin-vendor-' + vendorId, async () => {
   const [vendorRes, catRes, rateRes, photoRes] = await Promise.all([
     client
+        .schema('stagebloom')
         .from('vendors')
         .select(
             `
@@ -714,6 +714,7 @@ const saveDetails = async () => {
     }
 
     const {error} = await (client
+        .schema('stagebloom')
         .from('vendors') as any) // eslint-disable-line @typescript-eslint/no-explicit-any
         .update(payload)
         .eq('id', vendorId)
@@ -766,6 +767,7 @@ const addRate = async () => {
     }
 
     const {error, data} = await (client
+        .schema('stagebloom')
         .from('vendor_rates') as any) // eslint-disable-line @typescript-eslint/no-explicit-any
         .insert(payload)
         .select('*')
@@ -796,6 +798,7 @@ const addRate = async () => {
 
 const toggleRateActive = async (rate: RateRow) => {
   const {error} = await (client
+      .schema('stagebloom')
       .from('vendor_rates') as any) // eslint-disable-line @typescript-eslint/no-explicit-any
       .update({is_active: !rate.is_active})
       .eq('id', rate.id)
@@ -829,6 +832,7 @@ const addPhoto = async () => {
     // If setting cover, clear existing covers
     if (newPhoto.value.is_cover && photos.value.length) {
       await (client
+          .schema('stagebloom')
           .from('vendor_photos') as any) // eslint-disable-line @typescript-eslint/no-explicit-any
           .update({is_cover: false})
           .eq('vendor_id', vendorId)
@@ -843,6 +847,7 @@ const addPhoto = async () => {
     }
 
     const {error, data} = await (client
+        .schema('stagebloom')
         .from('vendor_photos') as any) // eslint-disable-line @typescript-eslint/no-explicit-any
         .insert(payload)
         .select('*')
@@ -877,6 +882,7 @@ const setCoverPhoto = async (photo: PhotoRow) => {
   if (photo.is_cover) return
 
   const {error} = await (client
+      .schema('stagebloom')
       .from('vendor_photos') as any) // eslint-disable-line @typescript-eslint/no-explicit-any
       .update({is_cover: false})
       .eq('vendor_id', vendorId)
@@ -907,6 +913,7 @@ const deleteRate = async (rate: RateRow) => {
   if (!confirm(`Are you sure you want to delete "${rate.service_name}"?`)) return
 
   const {error} = await (client
+      .schema('stagebloom')
       .from('vendor_rates') as any) // eslint-disable-line @typescript-eslint/no-explicit-any
       .delete()
       .eq('id', rate.id)
@@ -924,6 +931,7 @@ const deletePhoto = async (photo: PhotoRow) => {
   if (!confirm('Delete this photo? This cannot be undone.')) return
 
   const {error} = await (client
+      .schema('stagebloom')
       .from('vendor_photos') as any) // eslint-disable-line @typescript-eslint/no-explicit-any
       .delete()
       .eq('id', photo.id)
