@@ -19,7 +19,7 @@
 
       <div class="flex-1 flex justify-center max-w-xl mx-auto px-4">
 
-        <nav v-if="isHome" class="hidden md:flex items-center gap-8 text-sm font-medium" :class="textColorClass">
+        <nav v-if="isHome && !isScrolled" class="hidden md:flex items-center gap-8 text-sm font-medium" :class="textColorClass">
           <a href="#vendors" class="hover:text-rose-600 dark:hover:text-rose-400 transition-colors">Find Vendors</a>
           <a href="#how-it-works" class="hover:text-rose-600 dark:hover:text-rose-400 transition-colors">How it Works</a>
           <NuxtLink to="/vendors/search" class="hover:text-rose-600 dark:hover:text-rose-400 transition-colors">Browse All</NuxtLink>
@@ -227,7 +227,8 @@ const form = ref({
 })
 
 // --- Computed ---
-const isHome = computed(() => route.path === '/')
+// --- Computed ---
+const isHome = computed(() => route.path === '/' || route.path === '/index')
 
 const headerClasses = computed(() => {
   // If on home and not scrolled: Transparent
@@ -235,7 +236,7 @@ const headerClasses = computed(() => {
     return 'bg-transparent border-transparent'
   }
   // Otherwise: White & Blurred
-  return 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-slate-200/50 dark:border-slate-700/50 shadow-sm'
+  return 'bg-white dark:bg-slate-900/95 backdrop-blur-md border-slate-200/50 dark:border-slate-700/50 shadow-sm'
 })
 
 const textColorClass = computed(() => {
@@ -279,10 +280,15 @@ const runSearch = () => {
 
 // --- Scroll & Watchers ---
 const handleScroll = () => {
-  isScrolled.value = window.scrollY > 50
+  if (import.meta.client) {
+    isScrolled.value = window.scrollY > 50
+  }
 }
 
-onMounted(() => window.addEventListener('scroll', handleScroll))
+onMounted(() => {
+  handleScroll()
+  window.addEventListener('scroll', handleScroll)
+})
 onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 
 // Sync URL to Form
@@ -293,5 +299,13 @@ watch(() => route.query, (newQ: LocationQuery) => {
   form.value.q = (newQ.q as string) || ''
   isSearchPanelOpen.value = false // Close on navigate
 }, {immediate: true})
+
+// Lock body scroll when mobile menu is open
+watch(isMobileMenuOpen, (isOpen) => {
+  if (import.meta.client) {
+    document.body.style.overflow = isOpen ? 'hidden' : ''
+  }
+})
+
 
 </script>

@@ -59,6 +59,20 @@
           >
             Already a partner? Sign In
           </NuxtLink>
+          <NuxtLink
+              to="/"
+              class="text-sm font-medium text-slate-300 hover:text-white py-2 border-b border-white/5"
+              @click="isMobileMenuOpen = false"
+          >
+            Home
+          </NuxtLink>
+          <NuxtLink
+              to="/vendors/search"
+              class="text-sm font-medium text-slate-300 hover:text-white py-2 border-b border-white/5"
+              @click="isMobileMenuOpen = false"
+          >
+            Browse Vendors
+          </NuxtLink>
           <a
               href="#apply"
               class="w-full text-center rounded-xl bg-amber-500 text-[#0B0F19] px-6 py-3 text-sm font-bold hover:bg-amber-400 transition-all"

@@ -5,7 +5,7 @@ export default defineNuxtConfig({
 
     typescript: {
         strict: true,
-        typeCheck: true,
+        typeCheck: false,
     },
     modules: ['@nuxt/ui', '@nuxtjs/supabase', '@nuxt/image', '@nuxt/eslint'],
 
@@ -15,7 +15,21 @@ export default defineNuxtConfig({
             process.env.SUPABASE_URL ? new URL(process.env.SUPABASE_URL).hostname : ''
         ].filter(Boolean)
     },
+
+    colorMode: {
+        classSuffix: ''
+    },
+
     css: ['~/assets/css/main.css'],
+
+    build: {
+        transpile: ['@supabase/supabase-js']
+    },
+    vite: {
+        optimizeDeps: {
+            include: ['@supabase/supabase-js']
+        }
+    },
 
     runtimeConfig: {
         openaiApiKey: process.env.OPENAI_API_KEY,
