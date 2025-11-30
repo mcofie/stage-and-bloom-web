@@ -59,6 +59,22 @@ class="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full border"
         </div>
 
         <button
+            class="p-2 rounded-full transition-colors relative"
+            :class="isHome && !isScrolled ? 'text-white hover:bg-white/10' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'"
+            @click="isPinnedDrawerOpen = true"
+        >
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+          </svg>
+          <span
+              v-if="vendors.length > 0"
+              class="absolute top-0 right-0 h-4 w-4 bg-rose-600 text-white text-[10px] font-bold flex items-center justify-center rounded-full ring-2 ring-white dark:ring-slate-900"
+          >
+            {{ vendors.length }}
+          </span>
+        </button>
+
+        <button
             class="p-2 rounded-full transition-colors"
             :class="isHome && !isScrolled ? 'text-white hover:bg-white/10' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'"
             @click="toggleTheme"
@@ -196,18 +212,24 @@ class="absolute right-2 bottom-2 bg-purple-600 hover:bg-purple-700 text-white te
         </div>
       </div>
     </div>
+    <PinnedVendorsDrawer :is-open="isPinnedDrawerOpen" @close="isPinnedDrawerOpen = false" />
   </header>
 </template>
 
 <script setup lang="ts">
 import {ref, computed, onMounted, onUnmounted, watch} from 'vue'
 import {useRoute, useRouter} from '#imports'
+import { usePinnedVendors } from '~/composables/usePinnedVendors'
+import PinnedVendorsDrawer from '~/components/PinnedVendorsDrawer.vue'
 
 import type { LocationQuery, LocationQueryValue } from 'vue-router'
 
 const route = useRoute()
 const router = useRouter()
 const colorMode = useColorMode()
+
+const { vendors } = usePinnedVendors()
+const isPinnedDrawerOpen = ref(false)
 
 const toggleTheme = () => {
   colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
@@ -226,7 +248,6 @@ const form = ref({
   q: ''
 })
 
-// --- Computed ---
 // --- Computed ---
 const isHome = computed(() => route.path === '/' || route.path === '/index')
 

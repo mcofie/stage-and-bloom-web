@@ -75,13 +75,14 @@ stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 Share
               </button>
               <button
-                  class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-sm font-medium underline underline-offset-2">
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path
-stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                  class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-sm font-medium underline underline-offset-2"
+                  :class="{ 'text-rose-500': isVendorPinned }"
+                  @click="toggleVendorPin"
+              >
+                <svg class="w-4 h-4" :fill="isVendorPinned ? 'currentColor' : 'none'" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                 </svg>
-                Save
+                {{ isVendorPinned ? 'Pinned' : 'Pin' }}
               </button>
             </div>
           </div>
@@ -366,6 +367,7 @@ type="email" placeholder="Email address"
 import {computed, ref} from 'vue'
 import {useRoute, useAsyncData, useSupabaseClient, useSeoMeta} from '#imports'
 import VendorActions from '~/components/VendorActions.vue'
+import { usePinnedVendors } from '~/composables/usePinnedVendors'
 
 // --- Lightbox ---
 const isLightboxOpen = ref(false)
@@ -484,6 +486,22 @@ const pricingModel = (r: VendorRate) => {
   if (r.pricing_model === 'per_guest') return 'Per guest'
   if (r.pricing_model === 'per_event') return 'Per event'
   return 'Flexible'
+}
+
+// --- Pinned Vendors ---
+const { isPinned, togglePin } = usePinnedVendors()
+const isVendorPinned = computed(() => vendor.value ? isPinned(vendor.value.id) : false)
+
+function toggleVendorPin() {
+  if (!vendor.value) return
+  togglePin({
+    id: vendor.value.id,
+    name: vendor.value.display_name,
+    slug: vendor.value.slug,
+    imageUrl: heroImage.value,
+    category: vendor.value.vendor_categories?.name || 'Vendor',
+    location: vendor.value.city || 'Ghana'
+  })
 }
 </script>
 

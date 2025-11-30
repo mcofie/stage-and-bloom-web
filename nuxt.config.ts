@@ -7,7 +7,7 @@ export default defineNuxtConfig({
         strict: true,
         typeCheck: false,
     },
-    modules: ['@nuxt/ui', '@nuxtjs/supabase', '@nuxt/image', '@nuxt/eslint'],
+    modules: ['@nuxt/ui', '@nuxtjs/supabase', '@nuxt/image', '@nuxt/eslint', '@vueuse/nuxt'],
 
     image: {
         domains: [
