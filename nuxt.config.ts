@@ -8,6 +8,13 @@ export default defineNuxtConfig({
         typeCheck: true,
     },
     modules: ['@nuxt/ui', '@nuxtjs/supabase', '@nuxt/image', '@nuxt/eslint'],
+
+    image: {
+        domains: [
+            'images.pexels.com',
+            process.env.SUPABASE_URL ? new URL(process.env.SUPABASE_URL).hostname : ''
+        ].filter(Boolean)
+    },
     css: ['~/assets/css/main.css'],
 
     runtimeConfig: {
