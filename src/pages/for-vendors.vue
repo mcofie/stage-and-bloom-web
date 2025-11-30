@@ -18,15 +18,56 @@
           </div>
         </NuxtLink>
 
-        <div class="flex items-center gap-6">
+        <!-- Desktop Nav -->
+        <div class="hidden md:flex items-center gap-6">
           <NuxtLink to="/auth/sign-in" class="text-sm font-medium text-slate-400 hover:text-white transition-colors">
             Already a partner?
           </NuxtLink>
-          <a href="#apply" class="hidden sm:inline-flex rounded-full bg-white text-[#0B0F19] px-6 py-2.5 text-sm font-semibold hover:bg-amber-50 transition-all shadow-lg shadow-white/5">
+          <a href="#apply" class="rounded-full bg-white text-[#0B0F19] px-6 py-2.5 text-sm font-semibold hover:bg-amber-50 transition-all shadow-lg shadow-white/5">
             List Your Business
           </a>
         </div>
+
+        <!-- Mobile Hamburger -->
+        <button
+            class="md:hidden text-slate-300 hover:text-white p-2"
+            @click="isMobileMenuOpen = !isMobileMenuOpen"
+        >
+          <svg v-if="!isMobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+          <svg v-else class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
       </div>
+
+      <!-- Mobile Menu Drawer -->
+      <transition
+          enter-active-class="transition duration-200 ease-out"
+          enter-from-class="opacity-0 -translate-y-2"
+          enter-to-class="opacity-100 translate-y-0"
+          leave-active-class="transition duration-150 ease-in"
+          leave-from-class="opacity-100 translate-y-0"
+          leave-to-class="opacity-0 -translate-y-2"
+      >
+        <div v-if="isMobileMenuOpen" class="md:hidden absolute top-20 left-0 w-full bg-[#0B0F19] border-b border-white/10 shadow-2xl p-4 flex flex-col gap-4">
+          <NuxtLink
+              to="/auth/sign-in"
+              class="text-sm font-medium text-slate-300 hover:text-white py-2 border-b border-white/5"
+              @click="isMobileMenuOpen = false"
+          >
+            Already a partner? Sign In
+          </NuxtLink>
+          <a
+              href="#apply"
+              class="w-full text-center rounded-xl bg-amber-500 text-[#0B0F19] px-6 py-3 text-sm font-bold hover:bg-amber-400 transition-all"
+              @click="isMobileMenuOpen = false"
+          >
+            List Your Business
+          </a>
+        </div>
+      </transition>
     </header>
 
     <main>
@@ -236,6 +277,7 @@ useSeoMeta({
 })
 
 const isSubmitting = ref(false)
+const isMobileMenuOpen = ref(false)
 
 const form = reactive({
   businessName: '',

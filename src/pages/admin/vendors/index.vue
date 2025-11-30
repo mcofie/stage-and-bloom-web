@@ -121,7 +121,7 @@
 
         <!-- Error -->
         <div v-else-if="loadError" class="text-sm text-red-600">
-          Failed to load vendors: {{ (loadError as any).message || loadError }}
+          Failed to load vendors: {{ (loadError as {message?: string})?.message || loadError }}
         </div>
 
         <!-- Empty -->
@@ -259,6 +259,7 @@
 
 <script setup lang="ts">
 import {computed, ref} from 'vue'
+import type { Database } from '~/types/database.types'
 
 definePageMeta({
   middleware: 'admin'
@@ -286,7 +287,7 @@ type VendorRow = {
   vendor_categories: { id: string; slug: string; name: string }[] | null
 }
 
-import type { Database } from '~/types/database.types'
+
 
 const client = useSupabaseClient<Database>()
 
@@ -370,7 +371,7 @@ const filteredVendors = computed(() => {
 
 const toggleActive = async (vendor: VendorRow) => {
   const {error} = await (client
-      .from('vendors') as any)
+      .from('vendors') as any) // eslint-disable-line @typescript-eslint/no-explicit-any
       .update({is_active: !vendor.is_active})
       .eq('id', vendor.id)
 
@@ -383,7 +384,7 @@ const toggleActive = async (vendor: VendorRow) => {
 
 const toggleVerified = async (vendor: VendorRow) => {
   const {error} = await (client
-      .from('vendors') as any)
+      .from('vendors') as any) // eslint-disable-line @typescript-eslint/no-explicit-any
       .update({is_verified: !vendor.is_verified})
       .eq('id', vendor.id)
 

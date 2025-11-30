@@ -128,18 +128,17 @@ Field rules:
     let categoryId: string | null = null
     if (categorySlug) {
         const { data: cat, error: catError } = await supabase
-            // @ts-ignore
             .schema('stagebloom')
             .from('vendor_categories')
             .select('id')
             .eq('slug', categorySlug)
-            .maybeSingle() as { data: { id: string } | null, error: any }
+            .maybeSingle() as { data: { id: string } | null, error: unknown }
 
         if (catError) {
             console.error('Category lookup error:', catError)
             throw createError({
                 statusCode: 500,
-                statusMessage: `Category lookup failed: ${catError.message}`
+                statusMessage: `Category lookup failed: ${(catError as Error).message}`
             })
         }
 
@@ -148,7 +147,6 @@ Field rules:
 
     // 2) Build vendor query
     let query = supabase
-        // @ts-ignore
         .schema('stagebloom')
         .from('vendors')
         .select(

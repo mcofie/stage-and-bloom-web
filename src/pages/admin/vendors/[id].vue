@@ -501,6 +501,7 @@ v-if="rate.is_primary"
 
 <script setup lang="ts">
 import {computed, ref} from 'vue'
+import type { Database } from '~/types/database.types'
 
 definePageMeta({
   middleware: 'admin'
@@ -509,7 +510,7 @@ definePageMeta({
 const route = useRoute()
 const vendorId = route.params.id as string
 
-import type { Database } from '~/types/database.types'
+
 
 const client = useSupabaseClient<Database>()
 
@@ -713,7 +714,7 @@ const saveDetails = async () => {
     }
 
     const {error} = await (client
-        .from('vendors') as any)
+        .from('vendors') as any) // eslint-disable-line @typescript-eslint/no-explicit-any
         .update(payload)
         .eq('id', vendorId)
 
@@ -751,7 +752,7 @@ const addRate = async () => {
 
   savingRate.value = true
   try {
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const payload: any = {
       vendor_id: vendorId,
       service_name: newRate.value.service_name.trim(),
@@ -765,7 +766,7 @@ const addRate = async () => {
     }
 
     const {error, data} = await (client
-        .from('vendor_rates') as any)
+        .from('vendor_rates') as any) // eslint-disable-line @typescript-eslint/no-explicit-any
         .insert(payload)
         .select('*')
         .maybeSingle()
@@ -795,7 +796,7 @@ const addRate = async () => {
 
 const toggleRateActive = async (rate: RateRow) => {
   const {error} = await (client
-      .from('vendor_rates') as any)
+      .from('vendor_rates') as any) // eslint-disable-line @typescript-eslint/no-explicit-any
       .update({is_active: !rate.is_active})
       .eq('id', rate.id)
 
@@ -828,12 +829,12 @@ const addPhoto = async () => {
     // If setting cover, clear existing covers
     if (newPhoto.value.is_cover && photos.value.length) {
       await (client
-          .from('vendor_photos') as any)
+          .from('vendor_photos') as any) // eslint-disable-line @typescript-eslint/no-explicit-any
           .update({is_cover: false})
           .eq('vendor_id', vendorId)
     }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const payload: any = {
       vendor_id: vendorId,
       image_url: newPhoto.value.image_url.trim(),
@@ -842,7 +843,7 @@ const addPhoto = async () => {
     }
 
     const {error, data} = await (client
-        .from('vendor_photos') as any)
+        .from('vendor_photos') as any) // eslint-disable-line @typescript-eslint/no-explicit-any
         .insert(payload)
         .select('*')
         .maybeSingle()
@@ -876,7 +877,7 @@ const setCoverPhoto = async (photo: PhotoRow) => {
   if (photo.is_cover) return
 
   const {error} = await (client
-      .from('vendor_photos') as any)
+      .from('vendor_photos') as any) // eslint-disable-line @typescript-eslint/no-explicit-any
       .update({is_cover: false})
       .eq('vendor_id', vendorId)
 
@@ -886,7 +887,7 @@ const setCoverPhoto = async (photo: PhotoRow) => {
   }
 
   const {error: error2} = await (client
-      .from('vendor_photos') as any)
+      .from('vendor_photos') as any) // eslint-disable-line @typescript-eslint/no-explicit-any
       .update({is_cover: true})
       .eq('id', photo.id)
 
@@ -906,7 +907,7 @@ const deleteRate = async (rate: RateRow) => {
   if (!confirm(`Are you sure you want to delete "${rate.service_name}"?`)) return
 
   const {error} = await (client
-      .from('vendor_rates') as any)
+      .from('vendor_rates') as any) // eslint-disable-line @typescript-eslint/no-explicit-any
       .delete()
       .eq('id', rate.id)
 
@@ -923,7 +924,7 @@ const deletePhoto = async (photo: PhotoRow) => {
   if (!confirm('Delete this photo? This cannot be undone.')) return
 
   const {error} = await (client
-      .from('vendor_photos') as any)
+      .from('vendor_photos') as any) // eslint-disable-line @typescript-eslint/no-explicit-any
       .delete()
       .eq('id', photo.id)
 

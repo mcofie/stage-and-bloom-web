@@ -229,6 +229,7 @@ class="h-1.5 w-1.5 rounded-full"
 
 <script setup lang="ts">
 import {ref} from 'vue'
+import type { Database } from '~/types/database.types'
 
 definePageMeta({
   middleware: 'admin'
@@ -244,7 +245,7 @@ type CategoryRow = {
   is_active: boolean
 }
 
-import type { Database } from '~/types/database.types'
+
 
 const client = useSupabaseClient<Database>()
 
@@ -296,7 +297,7 @@ const onCreate = async () => {
     }
 
     const {error} = await (client
-        .from('vendor_categories') as any)
+        .from('vendor_categories') as any) // eslint-disable-line @typescript-eslint/no-explicit-any
         .insert(payload)
 
     if (error) {
@@ -321,7 +322,7 @@ const onCreate = async () => {
 
 const toggleActive = async (cat: CategoryRow) => {
   const {error} = await (client
-      .from('vendor_categories') as any)
+      .from('vendor_categories') as any) // eslint-disable-line @typescript-eslint/no-explicit-any
       .update({is_active: !cat.is_active})
       .eq('id', cat.id)
 
@@ -336,7 +337,7 @@ const confirmDelete = async (cat: CategoryRow) => {
   if (!confirm(`Delete category "${cat.name}"? This cannot be undone.`)) return
 
   const {error} = await (client
-      .from('vendor_categories') as any)
+      .from('vendor_categories') as any) // eslint-disable-line @typescript-eslint/no-explicit-any
       .delete()
       .eq('id', cat.id)
 

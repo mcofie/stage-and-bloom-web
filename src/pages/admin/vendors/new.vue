@@ -243,6 +243,7 @@
 
 <script setup lang="ts">
 import {ref} from 'vue'
+import type { Database } from '~/types/database.types'
 
 definePageMeta({
   middleware: 'admin'
@@ -254,7 +255,7 @@ type CategoryRow = {
   name: string
 }
 
-import type { Database } from '~/types/database.types'
+
 
 const client = useSupabaseClient<Database>()
 
@@ -337,8 +338,8 @@ const onSubmit = async () => {
       currency_code: 'GHS'
     }
 
-    const {error} = await client
-        .from('vendors')
+    const {error} = await (client
+        .from('vendors') as any) // eslint-disable-line @typescript-eslint/no-explicit-any
         .insert(payload)
 
     if (error) {

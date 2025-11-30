@@ -17,12 +17,11 @@ export default defineEventHandler(async (event) => {
     let categoryId: string | null = null
     if (body.categorySlug) {
         const { data: cat, error: catError } = await client
-            // @ts-ignore
             .schema('stagebloom')
             .from('vendor_categories')
             .select('id')
             .eq('slug', body.categorySlug)
-            .maybeSingle() as { data: { id: string } | null, error: any }
+            .maybeSingle() as { data: { id: string } | null, error: unknown }
 
         if (catError) {
             console.error('Error fetching category:', catError)
@@ -34,7 +33,6 @@ export default defineEventHandler(async (event) => {
 
     // 2) Base query
     let query = client
-        // @ts-ignore
         .schema('stagebloom')
         .from('vendors')
         .select(

@@ -10,7 +10,6 @@ export const useVendor = async (slug: string) => {
   const supabase = await serverSupabaseClient<Database>(event)
 
   const { data, error } = await supabase
-    // @ts-ignore
     .schema('stagebloom')
     .from('vendors')
     .select(

@@ -1,14 +1,14 @@
 <template>
-  <div class="min-h-screen bg-[#FDFCF8] font-sans selection:bg-rose-100 selection:text-rose-900">
+  <div class="min-h-screen bg-[#FDFCF8] dark:bg-slate-900 font-sans selection:bg-rose-100 selection:text-rose-900 transition-colors duration-300">
     <SiteNavbar/>
 
     <div v-if="!currentEvent" class="pt-32 pb-20 text-center max-w-md mx-auto px-4">
       <div class="text-6xl mb-6">🥀</div>
-      <h1 class="font-serif text-3xl font-bold text-slate-900">Occasion not found</h1>
-      <p class="text-slate-500 mt-3 mb-8">We couldn't find the event type you are looking for.</p>
+      <h1 class="font-serif text-3xl font-bold text-slate-900 dark:text-white">Occasion not found</h1>
+      <p class="text-slate-500 dark:text-slate-400 mt-3 mb-8">We couldn't find the event type you are looking for.</p>
       <NuxtLink
 to="/"
-                class="inline-flex items-center justify-center px-6 py-3 rounded-full border border-slate-200 hover:bg-slate-50 transition-colors text-sm font-medium">
+                class="inline-flex items-center justify-center px-6 py-3 rounded-full border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-sm font-medium text-slate-900 dark:text-white">
         Return Home
       </NuxtLink>
     </div>
@@ -50,18 +50,18 @@ to="/"
       <main id="content" class="max-w-7xl mx-auto px-4 sm:px-6 -mt-10 relative z-20 space-y-24 pb-24">
 
         <section>
-          <div class="bg-white rounded-2xl shadow-xl shadow-slate-200/50 p-6 border border-slate-100">
+          <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-none p-6 border border-slate-100 dark:border-slate-700">
             <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 text-center">Essential Vendors</p>
             <div class="flex flex-wrap justify-center gap-3 md:gap-4">
               <NuxtLink
                   v-for="cat in currentEvent.recommendedCategories"
                   :key="cat.slug"
                   :to="`/vendors/search?categorySlug=${cat.slug}`"
-                  class="group flex items-center gap-3 px-5 py-3 rounded-xl bg-slate-50 border border-slate-100 hover:bg-white hover:border-rose-200 hover:shadow-md transition-all duration-300"
+                  class="group flex items-center gap-3 px-5 py-3 rounded-xl bg-slate-50 dark:bg-slate-700 border border-slate-100 dark:border-slate-600 hover:bg-white dark:hover:bg-slate-600 hover:border-rose-200 dark:hover:border-rose-500 hover:shadow-md transition-all duration-300"
               >
                 <span class="text-2xl group-hover:scale-110 transition-transform duration-300">{{ cat.icon }}</span>
                 <div class="text-left">
-                  <span class="block text-sm font-bold text-slate-900 group-hover:text-rose-600 transition-colors">{{
+                  <span class="block text-sm font-bold text-slate-900 dark:text-white group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">{{
                       cat.name
                     }}</span>
                 </div>
@@ -71,16 +71,16 @@ to="/"
         </section>
 
         <section>
-          <div class="flex items-end justify-between mb-10 border-b border-slate-100 pb-4">
+          <div class="flex items-end justify-between mb-10 border-b border-slate-100 dark:border-slate-700 pb-4">
             <div>
-              <h2 class="font-serif text-4xl md:text-5xl font-bold text-slate-900">Top Rated Talent</h2>
-              <p class="text-slate-500 mt-2 text-lg font-light">Hand-picked professionals for your {{
+              <h2 class="font-serif text-4xl md:text-5xl font-bold text-slate-900 dark:text-white">Top Rated Vendors</h2>
+              <p class="text-slate-500 dark:text-slate-400 mt-2 text-lg font-light">Hand-picked professionals for your {{
                   currentEvent.slug
                 }}.</p>
             </div>
             <NuxtLink
 to="/vendors/search"
-                      class="hidden sm:flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-900 text-white text-sm font-medium hover:bg-slate-800 transition-all">
+                      class="hidden sm:flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-medium hover:bg-slate-800 dark:hover:bg-slate-100 transition-all">
               View All Vendors <span>→</span>
             </NuxtLink>
           </div>
@@ -88,12 +88,12 @@ to="/vendors/search"
           <div v-if="pending" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
             <div
 v-for="n in 3" :key="n"
-                 class="bg-white rounded-2xl h-[450px] border border-slate-100 animate-pulse"/>
+                 class="bg-white dark:bg-slate-800 rounded-2xl h-[450px] border border-slate-100 dark:border-slate-700 animate-pulse"/>
           </div>
 
           <div
 v-else-if="filteredVendors.length === 0"
-               class="py-20 text-center bg-slate-50 rounded-3xl border border-dashed border-slate-200">
+               class="py-20 text-center bg-slate-50 dark:bg-slate-800/50 rounded-3xl border border-dashed border-slate-200 dark:border-slate-700">
             <p class="text-slate-400 text-lg">No featured vendors found for this category yet.</p>
             <button class="mt-4 text-rose-600 font-medium hover:underline" @click="router.push('/vendors/search')">
               Browse all categories
@@ -103,9 +103,9 @@ v-else-if="filteredVendors.length === 0"
           <div v-else class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
             <article
 v-for="(vendor, index) in filteredVendors" :key="vendor.id"
-                     class="group bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-rose-900/5 hover:-translate-y-1 transition-all duration-500 overflow-hidden flex flex-col"
+                     class="group bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-2xl hover:shadow-rose-900/5 dark:hover:shadow-rose-900/20 hover:-translate-y-1 transition-all duration-500 overflow-hidden flex flex-col"
                      :style="{ animationDelay: `${index * 100}ms` }">
-              <div class="relative aspect-[4/3] overflow-hidden bg-slate-100">
+              <div class="relative aspect-[4/3] overflow-hidden bg-slate-100 dark:bg-slate-700">
                 <img
 :src="vendor.cover_image_url || fallbackImage" :alt="vendor.display_name"
                      class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -113,12 +113,12 @@ v-for="(vendor, index) in filteredVendors" :key="vendor.id"
 
                 <div class="absolute top-3 left-3 flex flex-wrap gap-2">
                   <span
-                      class="px-2.5 py-1 rounded-md bg-white/95 backdrop-blur text-[10px] font-bold uppercase tracking-wider text-slate-800 shadow-sm">
+                      class="px-2.5 py-1 rounded-md bg-white/95 dark:bg-slate-900/95 backdrop-blur text-[10px] font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200 shadow-sm">
                     {{ Array.isArray(vendor.vendor_categories) ? vendor.vendor_categories[0]?.name : 'Vendor' }}
                   </span>
                 </div>
                 <button
-                    class="absolute top-3 right-3 h-8 w-8 rounded-full bg-white/90 backdrop-blur flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-white transition-colors shadow-sm">
+                    class="absolute top-3 right-3 h-8 w-8 rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-white dark:hover:bg-slate-800 transition-colors shadow-sm">
                   ♥
                 </button>
               </div>
@@ -126,7 +126,7 @@ v-for="(vendor, index) in filteredVendors" :key="vendor.id"
               <div class="p-6 flex-1 flex flex-col">
                 <div class="flex justify-between items-start mb-3">
                   <div>
-                    <h3 class="font-serif text-xl font-bold text-slate-900 group-hover:text-rose-600 transition-colors line-clamp-1">
+                    <h3 class="font-serif text-xl font-bold text-slate-900 dark:text-white group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors line-clamp-1">
                       {{ vendor.display_name }}
                     </h3>
                     <p class="text-xs text-slate-500 flex items-center gap-1 mt-1">
@@ -151,19 +151,19 @@ fill-rule="evenodd"
                   </div>
                 </div>
 
-                <p class="text-sm text-slate-600 line-clamp-2 mb-6 leading-relaxed">
+                <p class="text-sm text-slate-600 dark:text-slate-300 line-clamp-2 mb-6 leading-relaxed">
                   {{ vendor.short_bio || 'Professional vendor available for bookings.' }}
                 </p>
 
-                <div class="mt-auto pt-4 border-t border-slate-50 flex items-center justify-between">
+                <div class="mt-auto pt-4 border-t border-slate-50 dark:border-slate-700 flex items-center justify-between">
                   <div>
                     <p class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Starting from</p>
-                    <p class="text-slate-900 font-serif font-semibold text-lg">GH₵
+                    <p class="text-slate-900 dark:text-white font-serif font-semibold text-lg">GH₵
                       {{ getStartingPrice(vendor).toLocaleString() }}</p>
                   </div>
                   <NuxtLink
 :to="`/vendors/${vendor.slug}`"
-                            class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-medium px-5 py-2.5 rounded-lg transition-all hover:shadow-lg">
+                            class="inline-flex items-center gap-2 bg-slate-900 dark:bg-white hover:bg-slate-800 dark:hover:bg-slate-100 text-white dark:text-slate-900 text-xs font-medium px-5 py-2.5 rounded-lg transition-all hover:shadow-lg">
                     View Profile
                   </NuxtLink>
                 </div>
@@ -174,7 +174,7 @@ fill-rule="evenodd"
           <div class="mt-8 text-center sm:hidden">
             <NuxtLink
 to="/vendors/search"
-                      class="inline-flex w-full justify-center items-center gap-2 px-5 py-3 rounded-xl bg-slate-100 text-slate-900 text-sm font-medium hover:bg-slate-200 transition-all">
+                      class="inline-flex w-full justify-center items-center gap-2 px-5 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white text-sm font-medium hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">
               View All Vendors
             </NuxtLink>
           </div>
@@ -322,6 +322,7 @@ to="/vendors/search"
 <script setup lang="ts">
 import {computed} from 'vue'
 import {useRoute, useRouter, useAsyncData, useHead} from '#imports'
+import type { Database } from '~/types/database.types'
 
 const route = useRoute()
 const router = useRouter()
@@ -411,7 +412,7 @@ useHead(() => ({
   ]
 }))
 
-import type { Database } from '~/types/database.types'
+
 
 // --- 3. Data Fetching ---
 const client = useSupabaseClient<Database>()
@@ -425,6 +426,7 @@ const {data: vendorsData, pending} = await useAsyncData(
       const targetCategorySlugs = currentEvent.value.recommendedCategories.map((c: any) => c.slug)
 
       const {data, error} = await client
+          .schema('stagebloom')
           .from('vendors')
           .select(`
             id, slug, display_name, city, area,
