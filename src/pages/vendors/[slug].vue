@@ -64,7 +64,7 @@ fill-rule="evenodd"
               </span>
             </div>
 
-            <div class="hidden sm:flex items-center gap-2">
+            <div class="flex items-center gap-2">
               <button
                   class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-sm font-medium underline underline-offset-2">
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
