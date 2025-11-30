@@ -18,7 +18,7 @@
         </p>
       </div>
 
-      <form @submit.prevent="onSubmit" class="space-y-4 text-sm">
+      <form class="space-y-4 text-sm" @submit.prevent="onSubmit">
         <div class="space-y-1">
           <label class="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-400">
             Email
@@ -28,7 +28,7 @@
               type="email"
               required
               class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-300"
-          />
+          >
         </div>
 
         <div class="space-y-1">
@@ -40,7 +40,7 @@
               type="password"
               required
               class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-300"
-          />
+          >
         </div>
 
         <p v-if="error" class="text-xs text-red-600 bg-red-50 border border-red-100 rounded-xl px-3 py-2">
@@ -61,8 +61,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRoute, useRouter } from '#imports'
-import { useSupabaseClient } from '#imports'
+import { useRoute, useRouter, useSupabaseClient  } from '#imports'
 import type { Database } from '~/types/database.types'
 
 const route = useRoute()

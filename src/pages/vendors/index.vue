@@ -4,6 +4,7 @@ const categorySlug = ref('');
 const city = ref('');
 const minBudget = ref<string>('');
 const maxBudget = ref<string>('');
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const vendors = ref<any[]>([]);
 const loading = ref(false);
 
@@ -20,6 +21,7 @@ async function search() {
   });
 
   if (!error.value && data.value) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     vendors.value = (data.value as any).vendors || [];
   }
   loading.value = false;
@@ -30,7 +32,7 @@ async function search() {
   <div class="max-w-5xl mx-auto px-4 py-8">
     <h1 class="text-2xl font-semibold mb-4">Find vendors</h1>
 
-    <form @submit.prevent="search" class="grid gap-4 md:grid-cols-4 mb-6">
+    <form class="grid gap-4 md:grid-cols-4 mb-6" @submit.prevent="search">
       <select
           v-model="categorySlug"
           class="border rounded px-3 py-2"
@@ -47,21 +49,21 @@ async function search() {
           v-model="city"
           class="border rounded px-3 py-2"
           placeholder="City (e.g. Accra)"
-      />
+      >
 
       <input
           v-model="minBudget"
           type="number"
           class="border rounded px-3 py-2"
           placeholder="Min budget"
-      />
+      >
 
       <input
           v-model="maxBudget"
           type="number"
           class="border rounded px-3 py-2"
           placeholder="Max budget"
-      />
+      >
 
       <button
           type="submit"
@@ -83,7 +85,7 @@ async function search() {
               :src="v.cover_image_url"
               :alt="v.display_name"
               class="w-full h-full object-cover"
-          />
+          >
         </div>
         <div class="p-3">
           <div class="flex items-center gap-2">

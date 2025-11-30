@@ -1,8 +1,11 @@
 <!-- pages/vendors/natural.vue -->
 <script setup lang="ts">
 const q = ref('');
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const vendors = ref<any[]>([]);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const filters = ref<any | null>(null);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const planner = ref<any | null>(null);
 const loading = ref(false);
 
@@ -13,6 +16,7 @@ async function search() {
     body: {query: q.value},
   });
   if (!error.value && data.value) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
     const val: any = data.value;
     vendors.value = val.vendors || [];
     filters.value = val.filters || null;
@@ -28,7 +32,7 @@ async function search() {
       Describe what you need in plain English
     </h1>
 
-    <form @submit.prevent="search" class="mb-4 space-y-2">
+    <form class="mb-4 space-y-2" @submit.prevent="search">
       <textarea
           v-model="q"
           class="w-full border rounded px-3 py-2 h-24"

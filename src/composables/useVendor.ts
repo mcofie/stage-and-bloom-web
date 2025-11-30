@@ -1,16 +1,20 @@
 // src/composables/useVendor.ts
-import {serverSupabaseClient} from '#supabase/server'
-import type {Database} from '~/types/database.types'
+import { serverSupabaseClient } from '#supabase/server'
+import type { Database } from '~/types/database.types'
 
 export const useVendor = async (slug: string) => {
-    const event = useRequestEvent()
-    const supabase = await serverSupabaseClient<Database>(event)
+  const event = useRequestEvent()
+  if (!event) {
+    throw createError({ statusCode: 500, statusMessage: 'Event not found' })
+  }
+  const supabase = await serverSupabaseClient<Database>(event)
 
-    const {data, error} = await supabase
-        .schema('stagebloom')
-        .from('vendors')
-        .select(
-            `
+  const { data, error } = await supabase
+    // @ts-ignore
+    .schema('stagebloom')
+    .from('vendors')
+    .select(
+      `
       id,
       slug,
       display_name,
@@ -35,7 +39,7 @@ export const useVendor = async (slug: string) => {
         name,
         description
       ),
-      vendor_rates:stagebloom.vendor_rates (
+      vendor_rates:vendor_rates (
         id,
         service_name,
         pricing_model,
@@ -48,7 +52,7 @@ export const useVendor = async (slug: string) => {
         is_active,
         notes
       ),
-      vendor_photos:stagebloom.vendor_photos (
+      vendor_photos:vendor_photos (
         id,
         image_url,
         caption,
@@ -56,18 +60,18 @@ export const useVendor = async (slug: string) => {
         is_cover
       )
     `
-        )
-        .eq('slug', slug)
-        .eq('is_active', true)
-        .maybeSingle()
+    )
+    .eq('slug', slug)
+    .eq('is_active', true)
+    .maybeSingle()
 
-    if (error) {
-        throw createError({statusCode: 500, statusMessage: 'Error loading vendor'})
-    }
+  if (error) {
+    throw createError({ statusCode: 500, statusMessage: 'Error loading vendor' })
+  }
 
-    if (!data) {
-        throw createError({statusCode: 404, statusMessage: 'Vendor not found'})
-    }
+  if (!data) {
+    throw createError({ statusCode: 404, statusMessage: 'Vendor not found' })
+  }
 
-    return data
+  return data
 }

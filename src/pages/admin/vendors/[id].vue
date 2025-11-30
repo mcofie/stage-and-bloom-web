@@ -104,8 +104,8 @@
             </h3>
             <button
                 :disabled="savingDetails"
-                @click="saveDetails"
                 class="inline-flex items-center gap-2 rounded-full bg-slate-900 text-white px-4 py-1.5 text-xs font-medium hover:bg-slate-800 disabled:opacity-60 disabled:cursor-not-allowed"
+                @click="saveDetails"
             >
               <span v-if="savingDetails">Saving…</span>
               <span v-else>Save changes</span>
@@ -119,7 +119,7 @@
                   v-model="vendorForm.display_name"
                   type="text"
                   class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-              />
+              >
             </div>
 
             <div class="space-y-1.5">
@@ -128,7 +128,7 @@
                   v-model="vendorForm.slug"
                   type="text"
                   class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-mono text-[11px] focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-              />
+              >
               <p class="text-[10px] text-slate-400">
                 /vendors/{{ vendorForm.slug || 'vendor-slug' }}
               </p>
@@ -158,7 +158,7 @@
                   v-model="vendorForm.city"
                   type="text"
                   class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-              />
+              >
             </div>
             <div class="space-y-1.5">
               <label class="text-xs font-semibold text-slate-600">Area</label>
@@ -166,7 +166,7 @@
                   v-model="vendorForm.area"
                   type="text"
                   class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-              />
+              >
             </div>
           </div>
 
@@ -178,7 +178,7 @@
                   type="number"
                   min="0"
                   class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-              />
+              >
             </div>
             <div class="space-y-1.5">
               <label class="text-xs font-semibold text-slate-600">Price range min</label>
@@ -187,7 +187,7 @@
                   type="number"
                   min="0"
                   class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-              />
+              >
             </div>
             <div class="space-y-1.5">
               <label class="text-xs font-semibold text-slate-600">Price range max</label>
@@ -196,7 +196,7 @@
                   type="number"
                   min="0"
                   class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-              />
+              >
             </div>
           </div>
 
@@ -207,7 +207,7 @@
                   v-model="vendorForm.whatsapp_number"
                   type="text"
                   class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-              />
+              >
             </div>
             <div class="space-y-1.5">
               <label class="text-xs font-semibold text-slate-600">Instagram handle</label>
@@ -215,7 +215,7 @@
                   v-model="vendorForm.instagram_handle"
                   type="text"
                   class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-              />
+              >
             </div>
           </div>
 
@@ -225,7 +225,7 @@
                 v-model="vendorForm.cover_image_url"
                 type="text"
                 class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-            />
+            >
             <p class="text-[10px] text-slate-400">
               Shown on search cards and vendor profile hero.
             </p>
@@ -246,7 +246,7 @@
                   v-model="vendorForm.is_active"
                   type="checkbox"
                   class="rounded border-slate-300 text-rose-600 focus:ring-rose-500/30"
-              />
+              >
               Active in search
             </label>
             <label class="inline-flex items-center gap-2">
@@ -254,7 +254,7 @@
                   v-model="vendorForm.is_verified"
                   type="checkbox"
                   class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500/30"
-              />
+              >
               Verified vendor
             </label>
           </div>
@@ -290,7 +290,8 @@
               <div>
                 <div class="font-semibold text-slate-900">
                   {{ rate.service_name }}
-                  <span v-if="rate.is_primary"
+                  <span
+v-if="rate.is_primary"
                         class="ml-2 rounded-full bg-slate-900 text-white px-2 py-0.5 text-[10px]">
                     Primary
                   </span>
@@ -341,7 +342,7 @@
                   type="text"
                   placeholder="Service (e.g. Full wedding decor)"
                   class="md:col-span-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-              />
+              >
               <select
                   v-model="newRate.pricing_model"
                   class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
@@ -355,7 +356,7 @@
                   min="0"
                   placeholder="From (GHS)"
                   class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-              />
+              >
             </div>
             <div class="grid gap-3 md:grid-cols-4">
               <input
@@ -363,21 +364,21 @@
                   type="text"
                   placeholder="e.g. up to 200 guests"
                   class="md:col-span-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-              />
+              >
               <input
                   v-model.number="newRate.min_guests"
                   type="number"
                   min="0"
                   placeholder="Min guests"
                   class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-              />
+              >
               <input
                   v-model.number="newRate.max_guests"
                   type="number"
                   min="0"
                   placeholder="Max guests"
                   class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-              />
+              >
             </div>
             <div class="flex items-center justify-between text-[11px]">
               <p class="text-slate-400">
@@ -385,8 +386,8 @@
               </p>
               <button
                   :disabled="savingRate"
-                  @click="addRate"
                   class="inline-flex items-center gap-2 rounded-full bg-slate-900 text-white px-4 py-1.5 text-[11px] font-medium hover:bg-slate-800 disabled:opacity-60 disabled:cursor-not-allowed"
+                  @click="addRate"
               >
                 <span v-if="savingRate">Adding…</span>
                 <span v-else>Add rate</span>
@@ -423,7 +424,7 @@
                     :src="photo.image_url"
                     class="w-full h-full object-cover"
                     :alt="photo.caption || 'Vendor photo'"
-                />
+                >
               </div>
               <div class="p-2 space-y-1 text-[11px]">
                 <p class="font-medium text-slate-800 line-clamp-2">
@@ -462,13 +463,13 @@
                   type="text"
                   placeholder="Image URL"
                   class="md:col-span-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-              />
+              >
               <input
                   v-model="newPhoto.caption"
                   type="text"
                   placeholder="Caption (optional)"
                   class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-              />
+              >
             </div>
             <div class="flex items-center justify-between text-[11px]">
               <label class="inline-flex items-center gap-2 text-slate-600">
@@ -476,13 +477,13 @@
                     v-model="newPhoto.is_cover"
                     type="checkbox"
                     class="rounded border-slate-300 text-rose-600 focus:ring-rose-500/30"
-                />
+                >
                 Set as cover
               </label>
               <button
                   :disabled="savingPhoto"
-                  @click="addPhoto"
                   class="inline-flex items-center gap-2 rounded-full bg-slate-900 text-white px-4 py-1.5 text-[11px] font-medium hover:bg-slate-800 disabled:opacity-60 disabled:cursor-not-allowed"
+                  @click="addPhoto"
               >
                 <span v-if="savingPhoto">Adding…</span>
                 <span v-else>Add photo</span>
@@ -508,7 +509,9 @@ definePageMeta({
 const route = useRoute()
 const vendorId = route.params.id as string
 
-const client = useSupabaseClient()
+import type { Database } from '~/types/database.types'
+
+const client = useSupabaseClient<Database>()
 
 type VendorRow = {
   id: string
@@ -568,7 +571,6 @@ const {
 } = await useAsyncData('admin-vendor-' + vendorId, async () => {
   const [vendorRes, catRes, rateRes, photoRes] = await Promise.all([
     client
-        .schema('stagebloom')
         .from('vendors')
         .select(
             `
@@ -599,14 +601,12 @@ const {
         .eq('id', vendorId)
         .maybeSingle(),
     client
-        .schema('stagebloom')
         .from('vendor_categories')
         .select('id, slug, name')
         .eq('is_active', true)
         .order('sort_order', {ascending: true})
         .order('name', {ascending: true}),
     client
-        .schema('stagebloom')
         .from('vendor_rates')
         .select(
             'id, vendor_id, service_name, pricing_model, unit_label, starting_from_amount, currency_code, min_guests, max_guests, is_primary, is_active, notes'
@@ -614,7 +614,6 @@ const {
         .eq('vendor_id', vendorId)
         .order('created_at', {ascending: false}),
     client
-        .schema('stagebloom')
         .from('vendor_photos')
         .select('id, vendor_id, image_url, caption, is_cover')
         .eq('vendor_id', vendorId)
@@ -694,6 +693,7 @@ const saveDetails = async () => {
   detailsSuccess.value = ''
   savingDetails.value = true
   try {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
     const payload: any = {
       slug: vendorForm.value.slug.trim(),
       display_name: vendorForm.value.display_name.trim(),
@@ -712,9 +712,8 @@ const saveDetails = async () => {
       currency_code: 'GHS'
     }
 
-    const {error} = await client
-        .schema('stagebloom')
-        .from('vendors')
+    const {error} = await (client
+        .from('vendors') as any)
         .update(payload)
         .eq('id', vendorId)
 
@@ -752,6 +751,7 @@ const addRate = async () => {
 
   savingRate.value = true
   try {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
     const payload: any = {
       vendor_id: vendorId,
       service_name: newRate.value.service_name.trim(),
@@ -764,9 +764,8 @@ const addRate = async () => {
       is_active: true
     }
 
-    const {error, data} = await client
-        .schema('stagebloom')
-        .from('vendor_rates')
+    const {error, data} = await (client
+        .from('vendor_rates') as any)
         .insert(payload)
         .select('*')
         .maybeSingle()
@@ -795,9 +794,8 @@ const addRate = async () => {
 }
 
 const toggleRateActive = async (rate: RateRow) => {
-  const {error} = await client
-      .schema('stagebloom')
-      .from('vendor_rates')
+  const {error} = await (client
+      .from('vendor_rates') as any)
       .update({is_active: !rate.is_active})
       .eq('id', rate.id)
 
@@ -829,13 +827,13 @@ const addPhoto = async () => {
   try {
     // If setting cover, clear existing covers
     if (newPhoto.value.is_cover && photos.value.length) {
-      await client
-          .schema('stagebloom')
-          .from('vendor_photos')
+      await (client
+          .from('vendor_photos') as any)
           .update({is_cover: false})
           .eq('vendor_id', vendorId)
     }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
     const payload: any = {
       vendor_id: vendorId,
       image_url: newPhoto.value.image_url.trim(),
@@ -843,9 +841,8 @@ const addPhoto = async () => {
       is_cover: newPhoto.value.is_cover
     }
 
-    const {error, data} = await client
-        .schema('stagebloom')
-        .from('vendor_photos')
+    const {error, data} = await (client
+        .from('vendor_photos') as any)
         .insert(payload)
         .select('*')
         .maybeSingle()
@@ -878,9 +875,8 @@ const addPhoto = async () => {
 const setCoverPhoto = async (photo: PhotoRow) => {
   if (photo.is_cover) return
 
-  const {error} = await client
-      .schema('stagebloom')
-      .from('vendor_photos')
+  const {error} = await (client
+      .from('vendor_photos') as any)
       .update({is_cover: false})
       .eq('vendor_id', vendorId)
 
@@ -889,9 +885,8 @@ const setCoverPhoto = async (photo: PhotoRow) => {
     return
   }
 
-  const {error: error2} = await client
-      .schema('stagebloom')
-      .from('vendor_photos')
+  const {error: error2} = await (client
+      .from('vendor_photos') as any)
       .update({is_cover: true})
       .eq('id', photo.id)
 
@@ -910,9 +905,8 @@ const setCoverPhoto = async (photo: PhotoRow) => {
 const deleteRate = async (rate: RateRow) => {
   if (!confirm(`Are you sure you want to delete "${rate.service_name}"?`)) return
 
-  const {error} = await client
-      .schema('stagebloom')
-      .from('vendor_rates')
+  const {error} = await (client
+      .from('vendor_rates') as any)
       .delete()
       .eq('id', rate.id)
 
@@ -928,9 +922,8 @@ const deleteRate = async (rate: RateRow) => {
 const deletePhoto = async (photo: PhotoRow) => {
   if (!confirm('Delete this photo? This cannot be undone.')) return
 
-  const {error} = await client
-      .schema('stagebloom')
-      .from('vendor_photos')
+  const {error} = await (client
+      .from('vendor_photos') as any)
       .delete()
       .eq('id', photo.id)
 

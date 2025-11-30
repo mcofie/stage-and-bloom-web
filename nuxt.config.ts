@@ -5,9 +5,9 @@ export default defineNuxtConfig({
 
     typescript: {
         strict: true,
-        typeCheck: false,
+        typeCheck: true,
     },
-    modules: ['@nuxt/ui', '@nuxtjs/supabase'],
+    modules: ['@nuxt/ui', '@nuxtjs/supabase', '@nuxt/image', '@nuxt/eslint'],
     css: ['~/assets/css/main.css'],
 
     runtimeConfig: {

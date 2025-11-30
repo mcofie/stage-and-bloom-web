@@ -43,7 +43,7 @@
 
       <!-- Form -->
       <section class="bg-white border border-slate-100 rounded-2xl shadow-sm p-6 space-y-6">
-        <form @submit.prevent="onSubmit" class="space-y-6">
+        <form class="space-y-6" @submit.prevent="onSubmit">
           <!-- Basic info -->
           <div class="grid gap-4 md:grid-cols-2">
             <div class="space-y-1.5 md:col-span-2">
@@ -55,7 +55,7 @@
                   placeholder="Bloom & Lace Events"
                   class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
                   @blur="maybeGenerateSlug"
-              />
+              >
             </div>
 
             <div class="space-y-1.5">
@@ -66,7 +66,7 @@
                   required
                   placeholder="bloom-and-lace-events"
                   class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400 font-mono text-[11px]"
-              />
+              >
               <p class="text-[10px] text-slate-400">
                 Used in URLs: /vendors/<span class="italic">{{ form.slug || 'vendor-slug' }}</span>
               </p>
@@ -100,7 +100,7 @@
                   type="text"
                   placeholder="Accra"
                   class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-              />
+              >
             </div>
             <div class="space-y-1.5 md:col-span-1">
               <label class="text-xs font-semibold text-slate-600">Area / Neighbourhood</label>
@@ -109,7 +109,7 @@
                   type="text"
                   placeholder="East Legon"
                   class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-              />
+              >
             </div>
           </div>
 
@@ -123,7 +123,7 @@
                   min="0"
                   placeholder="2500"
                   class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-              />
+              >
             </div>
             <div class="space-y-1.5">
               <label class="text-xs font-semibold text-slate-600">Price range min (GHS)</label>
@@ -133,7 +133,7 @@
                   min="0"
                   placeholder="2000"
                   class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-              />
+              >
             </div>
             <div class="space-y-1.5">
               <label class="text-xs font-semibold text-slate-600">Price range max (GHS)</label>
@@ -143,7 +143,7 @@
                   min="0"
                   placeholder="8000"
                   class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-              />
+              >
             </div>
           </div>
 
@@ -156,7 +156,7 @@
                   type="text"
                   placeholder="+23320XXXXXXX"
                   class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-              />
+              >
             </div>
             <div class="space-y-1.5">
               <label class="text-xs font-semibold text-slate-600">Instagram handle</label>
@@ -165,7 +165,7 @@
                   type="text"
                   placeholder="@bloomandlace"
                   class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-              />
+              >
             </div>
           </div>
 
@@ -176,7 +176,7 @@
                 type="text"
                 placeholder="https://images.pexels.com/..."
                 class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-            />
+            >
             <p class="text-[10px] text-slate-400">
               Used in cards and vendor profile hero. You can hook this up to Supabase Storage later.
             </p>
@@ -200,7 +200,7 @@
                   v-model="form.is_active"
                   type="checkbox"
                   class="rounded border-slate-300 text-rose-600 focus:ring-rose-500/30"
-              />
+              >
               Active (show in search)
             </label>
             <label class="inline-flex items-center gap-2">
@@ -208,7 +208,7 @@
                   v-model="form.is_verified"
                   type="checkbox"
                   class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500/30"
-              />
+              >
               Verified vendor
             </label>
           </div>
@@ -254,11 +254,12 @@ type CategoryRow = {
   name: string
 }
 
-const client = useSupabaseClient()
+import type { Database } from '~/types/database.types'
+
+const client = useSupabaseClient<Database>()
 
 // Load categories for the select
 const {data: categoriesData, error: catError} = await client
-    .schema('stagebloom')
     .from('vendor_categories')
     .select('id, slug, name')
     .eq('is_active', true)
@@ -316,6 +317,7 @@ const onSubmit = async () => {
       return
     }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
     const payload: any = {
       display_name: form.value.display_name.trim(),
       slug: form.value.slug.trim(),
@@ -336,7 +338,6 @@ const onSubmit = async () => {
     }
 
     const {error} = await client
-        .schema('stagebloom')
         .from('vendors')
         .insert(payload)
 

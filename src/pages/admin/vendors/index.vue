@@ -70,14 +70,14 @@
               type="text"
               placeholder="Filter by city (e.g. Accra)"
               class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-          />
+          >
 
           <label class="inline-flex items-center gap-2 text-slate-600">
             <input
                 v-model="onlyActive"
                 type="checkbox"
                 class="rounded border-slate-300 text-rose-600 focus:ring-rose-500/30"
-            />
+            >
             Active only
           </label>
 
@@ -86,7 +86,7 @@
                 v-model="onlyVerified"
                 type="checkbox"
                 class="rounded border-slate-300 text-rose-600 focus:ring-rose-500/30"
-            />
+            >
             Verified only
           </label>
         </div>
@@ -103,7 +103,7 @@
             <span v-else>{{ filteredVendors.length }} vendors</span>
             <button
                 class="text-slate-500 hover:text-slate-800"
-                @click="refresh"
+                @click="() => refresh()"
             >
               Refresh
             </button>
@@ -172,10 +172,10 @@
 
               <td class="py-2 px-3 text-[11px] text-slate-600">
                   <span class="font-medium">
-                    {{ vendor.vendor_categories?.name || '—' }}
+                    {{ vendor.vendor_categories?.[0]?.name || '—' }}
                   </span>
-                <p v-if="vendor.vendor_categories" class="text-[10px] text-slate-400">
-                  {{ vendor.vendor_categories.slug }}
+                <p v-if="vendor.vendor_categories?.[0]" class="text-[10px] text-slate-400">
+                  {{ vendor.vendor_categories[0].slug }}
                 </p>
               </td>
 
@@ -283,10 +283,12 @@ type VendorRow = {
   instagram_handle: string | null
   is_verified: boolean
   is_active: boolean
-  vendor_categories: { id: string; slug: string; name: string } | null
+  vendor_categories: { id: string; slug: string; name: string }[] | null
 }
 
-const client = useSupabaseClient()
+import type { Database } from '~/types/database.types'
+
+const client = useSupabaseClient<Database>()
 
 // Load vendors with category join
 const {
@@ -296,7 +298,6 @@ const {
   refresh
 } = await useAsyncData<VendorRow[]>('admin-vendors', async () => {
   const {data, error} = await client
-      .schema('stagebloom')
       .from('vendors')
       .select(
           `
@@ -326,15 +327,16 @@ const {
     throw error
   }
 
-  return data || []
+  // Cast the data to match our expected type since Supabase types might be slightly different
+  return (data || []) as unknown as VendorRow[]
 })
 
 // Category dropdown options
 const categoryOptions = computed<CategoryOption[]>(() => {
   const map = new Map<string, string>()
   ;(vendors.value || []).forEach((v) => {
-    if (v.vendor_categories) {
-      map.set(v.vendor_categories.slug, v.vendor_categories.name)
+    if (v.vendor_categories && v.vendor_categories.length > 0 && v.vendor_categories[0]) {
+      map.set(v.vendor_categories[0].slug, v.vendor_categories[0].name)
     }
   })
   return Array.from(map.entries()).map(([slug, name]) => ({slug, name}))
@@ -349,7 +351,7 @@ const onlyVerified = ref(false)
 const filteredVendors = computed(() => {
   const list = vendors.value || []
   return list.filter((v) => {
-    if (filterCategory.value && v.vendor_categories?.slug !== filterCategory.value) {
+    if (filterCategory.value && v.vendor_categories?.[0]?.slug !== filterCategory.value) {
       return false
     }
     if (filterCity.value) {
@@ -367,9 +369,8 @@ const filteredVendors = computed(() => {
 })
 
 const toggleActive = async (vendor: VendorRow) => {
-  const {error} = await client
-      .schema('stagebloom')
-      .from('vendors')
+  const {error} = await (client
+      .from('vendors') as any)
       .update({is_active: !vendor.is_active})
       .eq('id', vendor.id)
 
@@ -381,9 +382,8 @@ const toggleActive = async (vendor: VendorRow) => {
 }
 
 const toggleVerified = async (vendor: VendorRow) => {
-  const {error} = await client
-      .schema('stagebloom')
-      .from('vendors')
+  const {error} = await (client
+      .from('vendors') as any)
       .update({is_verified: !vendor.is_verified})
       .eq('id', vendor.id)
 

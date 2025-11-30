@@ -32,18 +32,18 @@
     <main>
 
       <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 px-4 sm:px-6 overflow-hidden">
-        <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-amber-900/10 to-transparent opacity-60 pointer-events-none"></div>
-        <div class="absolute bottom-0 left-1/4 w-96 h-96 bg-rose-900/10 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-amber-900/10 to-transparent opacity-60 pointer-events-none"/>
+        <div class="absolute bottom-0 left-1/4 w-96 h-96 bg-rose-900/10 rounded-full blur-[120px] pointer-events-none"/>
 
         <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center relative z-10">
           <div class="space-y-8">
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-400 text-xs font-bold uppercase tracking-wider">
-              <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+              <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"/>
               Join 500+ Top Vendors
             </div>
 
             <h1 class="font-serif text-5xl md:text-7xl font-medium text-white leading-[1.1]">
-              Get Discovered by <br/>
+              Get Discovered by <br>
               <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-rose-300 italic">Serious Clients.</span>
             </h1>
 
@@ -60,10 +60,10 @@
           </div>
 
           <div class="relative lg:h-[600px] w-full hidden lg:block">
-            <div class="absolute inset-0 bg-gradient-to-tr from-amber-500/20 to-transparent rounded-[3rem] rotate-3 border border-white/5"></div>
+            <div class="absolute inset-0 bg-gradient-to-tr from-amber-500/20 to-transparent rounded-[3rem] rotate-3 border border-white/5"/>
             <div class="absolute inset-0 bg-[#151925] rounded-[3rem] -rotate-3 border border-white/5 overflow-hidden shadow-2xl">
-              <img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070&auto=format&fit=crop" alt="Wedding setup" class="w-full h-full object-cover opacity-60 hover:scale-105 transition-transform duration-700" />
-              <div class="absolute inset-0 bg-gradient-to-t from-[#0B0F19] via-transparent to-transparent"></div>
+              <img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070&auto=format&fit=crop" alt="Wedding setup" class="w-full h-full object-cover opacity-60 hover:scale-105 transition-transform duration-700" >
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0B0F19] via-transparent to-transparent"/>
 
               <div class="absolute bottom-10 left-10 right-10 p-5 bg-[#0B0F19]/80 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl">
                 <div class="flex items-center gap-4">
@@ -127,7 +127,7 @@
       </section>
 
       <section id="apply" class="py-24 relative">
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-amber-500/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-amber-500/5 rounded-full blur-3xl pointer-events-none"/>
 
         <div class="max-w-4xl mx-auto px-4 sm:px-6 relative z-10">
 
@@ -138,7 +138,7 @@
               <p class="text-slate-400 mt-2">Tell us about your business. We review every application within 48 hours.</p>
             </div>
 
-            <form @submit.prevent="submitApplication" class="space-y-8">
+            <form class="space-y-8" @submit.prevent="submitApplication">
 
               <div class="space-y-6">
                 <h3 class="text-sm font-bold text-white uppercase tracking-wider border-b border-white/10 pb-2">1. Business Details</h3>
@@ -146,7 +146,7 @@
                 <div class="grid md:grid-cols-2 gap-6">
                   <div class="space-y-2">
                     <label class="text-sm font-medium text-slate-300">Business Name</label>
-                    <input v-model="form.businessName" type="text" class="w-full bg-[#0B0F19] border border-white/10 rounded-xl px-4 py-3 text-white focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none transition-all" placeholder="e.g. Accents & Petals" required />
+                    <input v-model="form.businessName" type="text" class="w-full bg-[#0B0F19] border border-white/10 rounded-xl px-4 py-3 text-white focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none transition-all" placeholder="e.g. Accents & Petals" required >
                   </div>
 
                   <div class="space-y-2">
@@ -165,7 +165,7 @@
 
                 <div class="space-y-2">
                   <label class="text-sm font-medium text-slate-300">Short Bio / Pitch</label>
-                  <textarea v-model="form.bio" rows="3" class="w-full bg-[#0B0F19] border border-white/10 rounded-xl px-4 py-3 text-white focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none transition-all resize-none" placeholder="What makes your service unique? (e.g. We specialize in rustic outdoor weddings...)"></textarea>
+                  <textarea v-model="form.bio" rows="3" class="w-full bg-[#0B0F19] border border-white/10 rounded-xl px-4 py-3 text-white focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none transition-all resize-none" placeholder="What makes your service unique? (e.g. We specialize in rustic outdoor weddings...)"/>
                 </div>
               </div>
 
@@ -177,25 +177,25 @@
                     <label class="text-sm font-medium text-slate-300">Instagram Handle</label>
                     <div class="relative">
                       <span class="absolute left-4 top-3 text-slate-500">@</span>
-                      <input v-model="form.instagram" type="text" class="w-full bg-[#0B0F19] border border-white/10 rounded-xl pl-8 pr-4 py-3 text-white focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none transition-all" placeholder="stageandbloom" />
+                      <input v-model="form.instagram" type="text" class="w-full bg-[#0B0F19] border border-white/10 rounded-xl pl-8 pr-4 py-3 text-white focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none transition-all" placeholder="stageandbloom" >
                     </div>
                   </div>
 
                   <div class="space-y-2">
                     <label class="text-sm font-medium text-slate-300">WhatsApp Number</label>
-                    <input v-model="form.whatsapp" type="tel" class="w-full bg-[#0B0F19] border border-white/10 rounded-xl px-4 py-3 text-white focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none transition-all" placeholder="+233 XX XXX XXXX" required />
+                    <input v-model="form.whatsapp" type="tel" class="w-full bg-[#0B0F19] border border-white/10 rounded-xl px-4 py-3 text-white focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none transition-all" placeholder="+233 XX XXX XXXX" required >
                   </div>
                 </div>
 
                 <div class="space-y-2">
                   <label class="text-sm font-medium text-slate-300">Email Address</label>
-                  <input v-model="form.email" type="email" class="w-full bg-[#0B0F19] border border-white/10 rounded-xl px-4 py-3 text-white focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none transition-all" placeholder="hello@yourbusiness.com" required />
+                  <input v-model="form.email" type="email" class="w-full bg-[#0B0F19] border border-white/10 rounded-xl px-4 py-3 text-white focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none transition-all" placeholder="hello@yourbusiness.com" required >
                 </div>
               </div>
 
               <div class="pt-4">
                 <button type="submit" :disabled="isSubmitting" class="w-full bg-amber-500 hover:bg-amber-400 text-[#0B0F19] font-bold py-4 rounded-xl shadow-lg shadow-amber-500/20 transition-all transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
-                  <span v-if="isSubmitting" class="animate-spin rounded-full h-5 w-5 border-b-2 border-[#0B0F19]"></span>
+                  <span v-if="isSubmitting" class="animate-spin rounded-full h-5 w-5 border-b-2 border-[#0B0F19]"/>
                   <span v-else>Submit Application</span>
                 </button>
                 <p class="text-center text-slate-500 text-xs mt-4">
@@ -226,6 +226,14 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
+import { useSeoMeta } from '#imports'
+
+useSeoMeta({
+  title: 'List Your Business | Stage & Bloom Partner Network',
+  description: 'Join Ghana\'s premier event marketplace. Get discovered by serious clients, manage bookings, and grow your business with Stage & Bloom.',
+  ogTitle: 'List Your Business | Stage & Bloom Partner Network',
+  ogDescription: 'Join Ghana\'s premier event marketplace. Get discovered by serious clients and grow your business.',
+})
 
 const isSubmitting = ref(false)
 

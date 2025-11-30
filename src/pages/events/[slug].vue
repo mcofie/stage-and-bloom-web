@@ -6,7 +6,8 @@
       <div class="text-6xl mb-6">🥀</div>
       <h1 class="font-serif text-3xl font-bold text-slate-900">Occasion not found</h1>
       <p class="text-slate-500 mt-3 mb-8">We couldn't find the event type you are looking for.</p>
-      <NuxtLink to="/"
+      <NuxtLink
+to="/"
                 class="inline-flex items-center justify-center px-6 py-3 rounded-full border border-slate-200 hover:bg-slate-50 transition-colors text-sm font-medium">
         Return Home
       </NuxtLink>
@@ -19,14 +20,14 @@
               :src="currentEvent.heroImage"
               :alt="currentEvent.title"
               class="w-full h-full object-cover transform scale-105 animate-slow-zoom"
-          />
-          <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-slate-900/30"></div>
+          >
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-slate-900/30"/>
         </div>
 
         <div class="relative z-10 text-center max-w-5xl mx-auto px-4 w-full animate-fade-in-up">
           <div
               class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white mb-6">
-            <span class="h-1.5 w-1.5 rounded-full bg-rose-500 animate-pulse"></span>
+            <span class="h-1.5 w-1.5 rounded-full bg-rose-500 animate-pulse"/>
             <span class="text-[10px] font-bold uppercase tracking-[0.25em]">Curated Collection</span>
           </div>
 
@@ -38,7 +39,7 @@
             {{ currentEvent.description }}
           </p>
 
-          <button @click="scrollToContent" class="animate-bounce text-white/50 hover:text-white transition-colors">
+          <button class="animate-bounce text-white/50 hover:text-white transition-colors" @click="scrollToContent">
             <svg class="w-8 h-8 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
             </svg>
@@ -77,38 +78,43 @@
                   currentEvent.slug
                 }}.</p>
             </div>
-            <NuxtLink to="/vendors/search"
+            <NuxtLink
+to="/vendors/search"
                       class="hidden sm:flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-900 text-white text-sm font-medium hover:bg-slate-800 transition-all">
               View All Vendors <span>→</span>
             </NuxtLink>
           </div>
 
           <div v-if="pending" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div v-for="n in 3" :key="n"
-                 class="bg-white rounded-2xl h-[450px] border border-slate-100 animate-pulse"></div>
+            <div
+v-for="n in 3" :key="n"
+                 class="bg-white rounded-2xl h-[450px] border border-slate-100 animate-pulse"/>
           </div>
 
-          <div v-else-if="filteredVendors.length === 0"
+          <div
+v-else-if="filteredVendors.length === 0"
                class="py-20 text-center bg-slate-50 rounded-3xl border border-dashed border-slate-200">
             <p class="text-slate-400 text-lg">No featured vendors found for this category yet.</p>
-            <button @click="router.push('/vendors/search')" class="mt-4 text-rose-600 font-medium hover:underline">
+            <button class="mt-4 text-rose-600 font-medium hover:underline" @click="router.push('/vendors/search')">
               Browse all categories
             </button>
           </div>
 
           <div v-else class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            <article v-for="(vendor, index) in filteredVendors" :key="vendor.id"
+            <article
+v-for="(vendor, index) in filteredVendors" :key="vendor.id"
                      class="group bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-rose-900/5 hover:-translate-y-1 transition-all duration-500 overflow-hidden flex flex-col"
                      :style="{ animationDelay: `${index * 100}ms` }">
               <div class="relative aspect-[4/3] overflow-hidden bg-slate-100">
-                <img :src="vendor.cover_image_url || fallbackImage" :alt="vendor.display_name"
+                <img
+:src="vendor.cover_image_url || fallbackImage" :alt="vendor.display_name"
                      class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                     loading="lazy"/>
+                     loading="lazy">
 
                 <div class="absolute top-3 left-3 flex flex-wrap gap-2">
                   <span
                       class="px-2.5 py-1 rounded-md bg-white/95 backdrop-blur text-[10px] font-bold uppercase tracking-wider text-slate-800 shadow-sm">
-                    {{ vendor.vendor_categories?.name || 'Vendor' }}
+                    {{ Array.isArray(vendor.vendor_categories) ? vendor.vendor_categories[0]?.name : 'Vendor' }}
                   </span>
                 </div>
                 <button
@@ -125,9 +131,11 @@
                     </h3>
                     <p class="text-xs text-slate-500 flex items-center gap-1 mt-1">
                       <svg class="w-3 h-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        <path
+stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        <path
+stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                       </svg>
                       {{ vendor.area || 'Accra' }}, {{ vendor.city || 'Ghana' }}
@@ -135,7 +143,8 @@
                   </div>
                   <div v-if="vendor.is_verified" class="text-emerald-500" title="Verified Vendor">
                     <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
-                      <path fill-rule="evenodd"
+                      <path
+fill-rule="evenodd"
                             d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                             clip-rule="evenodd"/>
                     </svg>
@@ -152,7 +161,8 @@
                     <p class="text-slate-900 font-serif font-semibold text-lg">GH₵
                       {{ getStartingPrice(vendor).toLocaleString() }}</p>
                   </div>
-                  <NuxtLink :to="`/vendors/${vendor.slug}`"
+                  <NuxtLink
+:to="`/vendors/${vendor.slug}`"
                             class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-medium px-5 py-2.5 rounded-lg transition-all hover:shadow-lg">
                     View Profile
                   </NuxtLink>
@@ -162,7 +172,8 @@
           </div>
 
           <div class="mt-8 text-center sm:hidden">
-            <NuxtLink to="/vendors/search"
+            <NuxtLink
+to="/vendors/search"
                       class="inline-flex w-full justify-center items-center gap-2 px-5 py-3 rounded-xl bg-slate-100 text-slate-900 text-sm font-medium hover:bg-slate-200 transition-all">
               View All Vendors
             </NuxtLink>
@@ -170,15 +181,15 @@
         </section>
 
         <section class="bg-slate-900 rounded-[2.5rem] p-8 md:p-16 relative overflow-hidden text-white shadow-2xl">
-          <div class="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 bg-rose-600/20 rounded-full blur-3xl"></div>
-          <div class="absolute bottom-0 left-0 -mb-20 -ml-20 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl"></div>
+          <div class="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 bg-rose-600/20 rounded-full blur-3xl"/>
+          <div class="absolute bottom-0 left-0 -mb-20 -ml-20 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl"/>
 
           <div class="relative z-10 grid lg:grid-cols-2 gap-16 items-center">
             <div class="space-y-8">
               <div>
                 <span class="text-rose-400 font-bold uppercase tracking-widest text-xs">Expert Guidance</span>
                 <h2 class="font-serif text-4xl md:text-5xl font-bold mt-3 leading-tight">
-                  Planning a {{ currentEvent.slug }} <br/> doesn't have to be chaos.
+                  Planning a {{ currentEvent.slug }} <br> doesn't have to be chaos.
                 </h2>
               </div>
 
@@ -215,8 +226,8 @@
 
               <div class="pt-2">
                 <button
-                    @click="triggerAiPlan"
-                    class="group inline-flex items-center gap-3 bg-white text-slate-900 px-8 py-4 rounded-xl text-sm font-bold hover:bg-rose-50 transition-all shadow-lg hover:shadow-rose-500/20">
+                    class="group inline-flex items-center gap-3 bg-white text-slate-900 px-8 py-4 rounded-xl text-sm font-bold hover:bg-rose-50 transition-all shadow-lg hover:shadow-rose-500/20"
+                    @click="triggerAiPlan">
                   <span class="text-lg">✨</span>
                   Plan with AI
                   <span class="group-hover:translate-x-1 transition-transform">→</span>
@@ -226,8 +237,9 @@
 
             <div class="relative hidden lg:block">
               <div class="relative z-10 transform rotate-2 hover:rotate-0 transition-transform duration-700">
-                <img :src="currentEvent.heroImage"
-                     class="rounded-2xl shadow-2xl border-4 border-slate-800/50 object-cover h-[400px] w-full"/>
+                <img
+:src="currentEvent.heroImage"
+                     class="rounded-2xl shadow-2xl border-4 border-slate-800/50 object-cover h-[400px] w-full">
               </div>
             </div>
           </div>
@@ -237,8 +249,8 @@
 
       <footer class="bg-slate-900 text-white border-t border-slate-800 pt-16 pb-8 mt-auto relative overflow-hidden">
 
-        <div class="absolute top-0 left-1/4 w-96 h-96 bg-rose-600/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-rose-600/10 rounded-full blur-3xl pointer-events-none"/>
+        <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none"/>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
           <div class="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
@@ -285,7 +297,7 @@
               <h4 class="font-bold text-xs uppercase tracking-widest text-slate-500 mb-6">Stay in the loop</h4>
               <p class="text-xs text-slate-400 mb-4">Get the latest vendor spotlights and planning tips delivered to your inbox.</p>
               <div class="flex flex-col gap-2">
-                <input type="email" placeholder="Email address" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition-colors" />
+                <input type="email" placeholder="Email address" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition-colors" >
                 <button class="bg-white text-slate-900 hover:bg-rose-50 rounded-lg px-4 py-2.5 text-sm font-bold transition-colors shadow-lg shadow-white/10">
                   Subscribe
                 </button>
@@ -321,11 +333,13 @@ const scrollToContent = () => {
 }
 
 // Helper for pricing logic
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getStartingPrice = (vendor: any) => {
   return vendor.starting_price || vendor.price_range_min || 0
 }
 
 // --- 1. Configuration Data ---
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const eventConfig: Record<string, any> = {
   weddings: {
     slug: 'wedding',
@@ -397,22 +411,24 @@ useHead(() => ({
   ]
 }))
 
+import type { Database } from '~/types/database.types'
+
 // --- 3. Data Fetching ---
-const client = useSupabaseClient()
+const client = useSupabaseClient<Database>()
 
 const {data: vendorsData, pending} = await useAsyncData(
     `event-vendors-${slug.value}`,
     async () => {
       if (!currentEvent.value) return []
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
       const targetCategorySlugs = currentEvent.value.recommendedCategories.map((c: any) => c.slug)
 
       const {data, error} = await client
-          .schema('stagebloom')
           .from('vendors')
           .select(`
             id, slug, display_name, city, area,
-            starting_price, cover_image_url, is_verified,
+            starting_price, cover_image_url, is_verified, short_bio,
             vendor_categories!inner (name, slug)
           `)
           .in('vendor_categories.slug', targetCategorySlugs)
@@ -422,7 +438,8 @@ const {data: vendorsData, pending} = await useAsyncData(
         console.error('Error fetching event vendors:', error)
         return []
       }
-      return data
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return data as any[]
     },
     {
       watch: [slug],

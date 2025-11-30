@@ -1,6 +1,7 @@
 // src/server/api/vendors/search-llm.post.ts
-import {defineEventHandler, readBody, createError} from 'h3'
-import {serverSupabaseClient} from '#supabase/server'
+import { defineEventHandler, readBody, createError } from 'h3'
+import { serverSupabaseClient } from '#supabase/server'
+import type { Database } from '~/types/database.types'
 import OpenAI from 'openai'
 
 type PlannerFilters = {
@@ -101,7 +102,7 @@ Field rules:
     let planner: PlannerResult
     try {
         planner = JSON.parse(raw) as PlannerResult
-    } catch (e) {
+    } catch {
         console.error('LLM returned invalid JSON:', raw)
         throw createError({
             statusCode: 500,
@@ -111,13 +112,13 @@ Field rules:
 
     // If not a vendor search, short-circuit
     if (planner.intent !== 'search_vendors') {
-        return {vendors: [], planner}
+        return { vendors: [], planner }
     }
 
     const filters = planner.filters
 
     // 🗄 Supabase (Nuxt helper, no direct createClient)
-    const supabase = await serverSupabaseClient(event)
+    const supabase = await serverSupabaseClient<Database>(event)
 
     // Take first category/city if provided
     const categorySlug = filters.category_slugs?.[0] ?? null
@@ -126,12 +127,13 @@ Field rules:
     // 1) Resolve category_id by slug
     let categoryId: string | null = null
     if (categorySlug) {
-        const {data: cat, error: catError} = await supabase
+        const { data: cat, error: catError } = await supabase
+            // @ts-ignore
             .schema('stagebloom')
             .from('vendor_categories')
             .select('id')
             .eq('slug', categorySlug)
-            .maybeSingle()
+            .maybeSingle() as { data: { id: string } | null, error: any }
 
         if (catError) {
             console.error('Category lookup error:', catError)
@@ -146,6 +148,7 @@ Field rules:
 
     // 2) Build vendor query
     let query = supabase
+        // @ts-ignore
         .schema('stagebloom')
         .from('vendors')
         .select(
@@ -190,7 +193,8 @@ Field rules:
         query = query.eq('is_verified', true)
     }
 
-    const {data, error} = await query
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data, error } = await query as { data: any[] | null, error: any }
 
     if (error) {
         console.error('Error searching vendors (LLM):', error)

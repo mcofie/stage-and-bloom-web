@@ -56,7 +56,7 @@
           </div>
         </div>
 
-        <form @submit.prevent="onCreate" class="grid gap-4 md:grid-cols-2">
+        <form class="grid gap-4 md:grid-cols-2" @submit.prevent="onCreate">
           <div class="space-y-1.5">
             <label class="text-xs font-semibold text-slate-600">Name</label>
             <input
@@ -65,7 +65,7 @@
                 required
                 placeholder="Decor & Styling"
                 class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-            />
+            >
           </div>
 
           <div class="space-y-1.5">
@@ -76,7 +76,7 @@
                 required
                 placeholder="decor"
                 class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-            />
+            >
           </div>
 
           <div class="space-y-1.5 md:col-span-2">
@@ -96,7 +96,7 @@
                 type="text"
                 placeholder="sparkles"
                 class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-            />
+            >
           </div>
 
           <div class="space-y-1.5">
@@ -106,7 +106,7 @@
                 type="number"
                 min="0"
                 class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-            />
+            >
           </div>
 
           <div class="md:col-span-2 flex items-center justify-between mt-2">
@@ -140,7 +140,7 @@
           </h3>
           <button
               class="text-xs text-slate-500 hover:text-slate-700"
-              @click="refresh"
+              @click="() => refresh()"
           >
             Refresh
           </button>
@@ -197,8 +197,9 @@
                       class="inline-flex items-center gap-1 rounded-full px-2 py-0.5"
                       :class="cat.is_active ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-500'"
                   >
-                    <span class="h-1.5 w-1.5 rounded-full"
-                          :class="cat.is_active ? 'bg-emerald-500' : 'bg-slate-400'"></span>
+                    <span
+class="h-1.5 w-1.5 rounded-full"
+                          :class="cat.is_active ? 'bg-emerald-500' : 'bg-slate-400'"/>
                     {{ cat.is_active ? 'Active' : 'Hidden' }}
                   </span>
               </td>
@@ -243,7 +244,9 @@ type CategoryRow = {
   is_active: boolean
 }
 
-const client = useSupabaseClient()
+import type { Database } from '~/types/database.types'
+
+const client = useSupabaseClient<Database>()
 
 // Load categories
 const {
@@ -253,7 +256,6 @@ const {
   refresh
 } = await useAsyncData<CategoryRow[]>('admin-categories', async () => {
   const {data, error} = await client
-      .schema('stagebloom')
       .from('vendor_categories')
       .select('*')
       .order('sort_order', {ascending: true})
@@ -293,9 +295,8 @@ const onCreate = async () => {
       sort_order: form.value.sort_order ?? 50
     }
 
-    const {error} = await client
-        .schema('stagebloom')
-        .from('vendor_categories')
+    const {error} = await (client
+        .from('vendor_categories') as any)
         .insert(payload)
 
     if (error) {
@@ -319,9 +320,8 @@ const onCreate = async () => {
 }
 
 const toggleActive = async (cat: CategoryRow) => {
-  const {error} = await client
-      .schema('stagebloom')
-      .from('vendor_categories')
+  const {error} = await (client
+      .from('vendor_categories') as any)
       .update({is_active: !cat.is_active})
       .eq('id', cat.id)
 
@@ -335,9 +335,8 @@ const toggleActive = async (cat: CategoryRow) => {
 const confirmDelete = async (cat: CategoryRow) => {
   if (!confirm(`Delete category "${cat.name}"? This cannot be undone.`)) return
 
-  const {error} = await client
-      .schema('stagebloom')
-      .from('vendor_categories')
+  const {error} = await (client
+      .from('vendor_categories') as any)
       .delete()
       .eq('id', cat.id)
 
