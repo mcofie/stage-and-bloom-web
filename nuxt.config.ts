@@ -37,6 +37,9 @@ export default defineNuxtConfig({
         public: {
             supabaseUrl: process.env.SUPABASE_URL,
             supabaseAnonKey: process.env.SUPABASE_ANON_KEY,
+            posthogPublicKey: 'phc_5IuBruCp37CaBk0hwatcseEqiUTJ0FAz8wnhDqoUc4q',
+            posthogHost: 'https://us.i.posthog.com',
+            posthogDefaults: '2025-11-30'
         },
     },
 
