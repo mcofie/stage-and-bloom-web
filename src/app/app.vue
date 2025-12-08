@@ -1,6 +1,8 @@
 <template>
   <div class="font-sans antialiased text-slate-900 bg-slate-50 min-h-screen relative">
-    <NuxtPage/>
+    <NuxtLayout>
+      <NuxtPage/>
+    </NuxtLayout>
     <UNotifications />
   </div>
 </template>

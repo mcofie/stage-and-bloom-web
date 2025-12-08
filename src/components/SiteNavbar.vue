@@ -49,8 +49,7 @@ stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
 
       <div class="flex items-center gap-4 shrink-0">
         <div
-class="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full border"
-             :class="isHome && !isScrolled ? 'bg-white/10 border-white/20 text-white' : 'bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300'">
+class="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full border bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300">
           <span class="text-lg">🇬🇭</span>
           <select class="bg-transparent text-xs font-medium focus:outline-none cursor-pointer dark:bg-slate-800">
             <option value="gh" class="text-slate-800 dark:text-white">Ghana</option>
@@ -59,8 +58,7 @@ class="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full border"
         </div>
 
         <button
-            class="p-2 rounded-full transition-colors relative"
-            :class="isHome && !isScrolled ? 'text-white hover:bg-white/10' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'"
+            class="p-2 rounded-full transition-colors relative text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
             @click="isPinnedDrawerOpen = true"
         >
           <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -75,8 +73,7 @@ class="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full border"
         </button>
 
         <button
-            class="p-2 rounded-full transition-colors"
-            :class="isHome && !isScrolled ? 'text-white hover:bg-white/10' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'"
+            class="p-2 rounded-full transition-colors text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
             @click="toggleTheme"
         >
           <span v-if="colorMode.value === 'dark'" class="text-lg">🌞</span>
@@ -91,8 +88,7 @@ to="/for-vendors"
 
         <!-- Mobile Menu Button -->
         <button
-            class="md:hidden p-2 rounded-lg transition-colors"
-            :class="isHome && !isScrolled ? 'text-white hover:bg-white/10' : 'text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800'"
+            class="md:hidden p-2 rounded-lg transition-colors text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800"
             @click="isMobileMenuOpen = true"
         >
           <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -261,7 +257,7 @@ const headerClasses = computed(() => {
 })
 
 const textColorClass = computed(() => {
-  return (isHome.value && !isScrolled.value && !isSearchPanelOpen.value) ? 'text-white' : 'text-slate-900 dark:text-white'
+  return 'text-slate-900 dark:text-white'
 })
 
 const currentQuery = computed(() => route.query)

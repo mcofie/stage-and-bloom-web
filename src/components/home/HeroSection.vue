@@ -18,34 +18,8 @@
         </h1>
 
         <p class="text-lg text-slate-600 dark:text-slate-300 leading-relaxed max-w-lg">
-          Discover Accra’s finest decorators, caterers, and creatives. Plugged directly into WhatsApp for seamless
-          planning.
+          Discover Accra’s finest decorators, caterers, and creatives for seamless planning.
         </p>
-
-        <div class="flex items-center gap-6 pt-2">
-          <div class="flex -space-x-3">
-            <NuxtImg
-class="h-10 w-10 rounded-full border-2 border-white dark:border-slate-800 object-cover"
-                 src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=64&h=64"
-                 alt="User"/>
-            <NuxtImg
-class="h-10 w-10 rounded-full border-2 border-white dark:border-slate-800 object-cover"
-                 src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=64&h=64"
-                 alt="User"/>
-            <NuxtImg
-class="h-10 w-10 rounded-full border-2 border-white dark:border-slate-800 object-cover"
-                 src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=64&h=64"
-                 alt="User"/>
-            <div
-                class="h-10 w-10 rounded-full border-2 border-white dark:border-slate-800 bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-600 dark:text-slate-300">
-              +2k
-            </div>
-          </div>
-          <div class="text-sm">
-            <p class="font-bold text-slate-900 dark:text-white">Trusted by planners</p>
-            <div class="flex text-yellow-400 text-xs">★★★★★</div>
-          </div>
-        </div>
       </div>
 
       <div class="lg:col-span-6 relative">

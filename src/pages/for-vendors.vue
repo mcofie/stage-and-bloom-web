@@ -266,15 +266,7 @@
 
     </main>
 
-    <footer class="bg-[#05080F] border-t border-white/5 py-12">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-        <div class="flex items-center gap-2">
-          <div class="h-8 w-8 bg-amber-500 text-[#0B0F19] font-serif font-bold flex items-center justify-center rounded-lg">SB</div>
-          <span class="font-serif font-bold text-white text-lg">Stage &amp; Bloom</span>
-        </div>
-        <p class="text-sm text-slate-500">© {{ new Date().getFullYear() }} Stage &amp; Bloom. All rights reserved.</p>
-      </div>
-    </footer>
+
 
   </div>
 </template>
