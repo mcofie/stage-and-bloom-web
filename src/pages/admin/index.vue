@@ -1,35 +1,6 @@
 <template>
   <div class="font-sans bg-[#FDFCF8] text-slate-800 min-h-screen">
-    <!-- Header -->
-    <header class="border-b border-slate-200/60 bg-white/80 backdrop-blur-md sticky top-0 z-30">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
-        <NuxtLink to="/" class="flex items-center gap-3 group">
-          <div
-              class="relative flex items-center justify-center h-10 w-10 bg-rose-600 text-white font-serif font-bold text-xl rounded-xl shadow-lg shadow-rose-200 group-hover:scale-105 transition-transform"
-          >
-            SB
-          </div>
-          <div class="leading-none">
-            <h1 class="font-serif font-bold text-xl text-slate-900 tracking-tight">
-              Stage &amp; Bloom
-            </h1>
-            <p class="text-[10px] uppercase tracking-widest text-slate-500 mt-1">
-              Admin Back Office
-            </p>
-          </div>
-        </NuxtLink>
 
-        <div class="flex items-center gap-3 text-xs text-slate-500">
-          <span v-if="user?.email">Signed in as <strong>{{ user.email }}</strong></span>
-          <button
-              class="px-3 py-1.5 rounded-full border border-slate-200 hover:bg-slate-50"
-              @click="signOut"
-          >
-            Sign out
-          </button>
-        </div>
-      </div>
-    </header>
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-10">
       <!-- Page title -->
@@ -138,7 +109,8 @@
 
 <script setup lang="ts">
 definePageMeta({
-  middleware: 'admin'
+  middleware: 'admin',
+  layout: 'admin'
 })
 
 const user = useSupabaseUser()

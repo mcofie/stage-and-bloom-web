@@ -12,6 +12,7 @@ export default defineNuxtConfig({
     image: {
         domains: [
             'images.pexels.com',
+            'images.unsplash.com',
             process.env.SUPABASE_URL ? new URL(process.env.SUPABASE_URL).hostname : ''
         ].filter(Boolean)
     },

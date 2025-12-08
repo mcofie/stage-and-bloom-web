@@ -1,32 +1,7 @@
 <template>
   <div class="font-sans bg-[#FDFCF8] text-slate-800 min-h-screen">
     <!-- Header -->
-    <header class="border-b border-slate-200/60 bg-white/80 backdrop-blur-md sticky top-0 z-30">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
-        <NuxtLink to="/admin" class="flex items-center gap-3 group">
-          <div
-              class="relative flex items-center justify-center h-9 w-9 bg-rose-600 text-white font-serif font-bold text-lg rounded-xl shadow-md shadow-rose-200 group-hover:scale-105 transition-transform"
-          >
-            SB
-          </div>
-          <div class="leading-none">
-            <p class="text-[10px] uppercase tracking-[0.2em] text-slate-400">Admin</p>
-            <h1 class="font-serif font-semibold text-lg text-slate-900 tracking-tight">
-              Requests
-            </h1>
-          </div>
-        </NuxtLink>
 
-        <div class="flex items-center gap-3">
-          <NuxtLink
-              to="/admin"
-              class="hidden sm:inline-flex text-xs font-medium text-slate-500 hover:text-rose-600 items-center gap-1"
-          >
-            ← Back to dashboard
-          </NuxtLink>
-        </div>
-      </div>
-    </header>
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
       <!-- Page Title & Intro -->
@@ -163,7 +138,8 @@
 import type {Database} from '~/types/database.types'
 
 definePageMeta({
-  middleware: 'admin'
+  middleware: 'admin',
+  layout: 'admin'
 })
 
 const client = useSupabaseClient<Database>()

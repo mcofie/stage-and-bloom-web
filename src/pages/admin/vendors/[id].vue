@@ -1,40 +1,7 @@
 <template>
   <div class="font-sans bg-[#FDFCF8] text-slate-800 min-h-screen">
     <!-- Header -->
-    <header class="border-b border-slate-200/60 bg-white/80 backdrop-blur-md sticky top-0 z-30">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
-        <NuxtLink to="/admin/vendors" class="flex items-center gap-3 group">
-          <div
-              class="relative flex items-center justify-center h-9 w-9 bg-rose-600 text-white font-serif font-bold text-lg rounded-xl shadow-md shadow-rose-200 group-hover:scale-105 transition-transform"
-          >
-            SB
-          </div>
-          <div class="leading-none">
-            <p class="text-[10px] uppercase tracking-[0.2em] text-slate-400">Admin</p>
-            <h1 class="font-serif font-semibold text-lg text-slate-900 tracking-tight">
-              Edit vendor
-            </h1>
-          </div>
-        </NuxtLink>
 
-        <div class="flex items-center gap-3 text-xs">
-          <NuxtLink
-              to="/admin/vendors"
-              class="text-slate-500 hover:text-rose-600 inline-flex items-center gap-1"
-          >
-            ← Back to vendors
-          </NuxtLink>
-          <NuxtLink
-              v-if="vendorForm.slug"
-              :to="`/vendors/${vendorForm.slug}`"
-              class="hidden sm:inline-flex items-center gap-1 rounded-full border border-slate-200 px-3 py-1.5 text-[11px] text-slate-700 hover:border-rose-400 hover:text-rose-700"
-              target="_blank"
-          >
-            View public profile ↗
-          </NuxtLink>
-        </div>
-      </div>
-    </header>
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
       <!-- LOADING / ERROR -->
@@ -504,7 +471,8 @@ import {computed, ref} from 'vue'
 import type {Database} from '~/types/database.types'
 
 definePageMeta({
-  middleware: 'admin'
+  middleware: 'admin',
+  layout: 'admin'
 })
 
 const route = useRoute()
@@ -531,7 +499,7 @@ type VendorRow = {
   is_active: boolean
   is_verified: boolean
   currency_code: string | null
-  vendor_categories: { id: string; slug: string; name: string } | null
+  vendor_categories: { id: string; slug: string; name: string } | { id: string; slug: string; name: string }[] | null
 }
 
 type CategoryRow = {
@@ -627,7 +595,7 @@ const {
   if (!vendorRes.data) throw new Error('Vendor not found')
 
   return {
-    vendor: vendorRes.data as VendorRow,
+    vendor: vendorRes.data as unknown as VendorRow,
     categories: (catRes.data || []) as CategoryRow[],
     rates: (rateRes.data || []) as RateRow[],
     photos: (photoRes.data || []) as PhotoRow[]
