@@ -211,11 +211,17 @@
                   {{ vendor.is_active ? 'Hide' : 'Activate' }}
                 </button>
                 <NuxtLink
-                    :to="`/admin/vendors/${vendor.id}`"
+                    :to="`/admin/vendors/${vendor.slug}`"
                     class="text-rose-600 hover:text-rose-700"
                 >
                   Edit
                 </NuxtLink>
+                <button
+                    class="ml-2 text-red-500 hover:text-red-700"
+                    @click="deleteVendor(vendor)"
+                >
+                  Delete
+                </button>
               </td>
             </tr>
             </tbody>
@@ -363,6 +369,24 @@ const toggleVerified = async (vendor: VendorRow) => {
 
   if (error) {
     alert('Failed to update vendor: ' + error.message)
+    return
+  }
+  await refresh()
+}
+
+const deleteVendor = async (vendor: VendorRow) => {
+  if (!confirm(`Are you sure you want to delete "${vendor.display_name}"? This action cannot be undone.`)) {
+    return
+  }
+
+  const {error} = await (client
+      .schema('stagebloom')
+      .from('vendors') as any) // eslint-disable-line @typescript-eslint/no-explicit-any
+      .delete()
+      .eq('id', vendor.id)
+
+  if (error) {
+    alert('Failed to delete vendor: ' + error.message)
     return
   }
   await refresh()

@@ -476,10 +476,100 @@ definePageMeta({
 })
 
 const route = useRoute()
-const vendorId = route.params.id as string
+const vendorSlug = route.params.slug as string
 
 
 const client = useSupabaseClient<Database>()
+
+// ... Types ...
+
+const {
+  data,
+  pending,
+  error: loadError,
+  refresh
+} = await useAsyncData('admin-vendor-' + vendorSlug, async () => {
+  // 1. Fetch vendor by slug
+  const { data: vendorData, error: vendorError } = await client
+      .schema('stagebloom')
+      .from('vendors')
+      .select(
+          `
+        id,
+        slug,
+        display_name,
+        category_id,
+        city,
+        area,
+        country_code,
+        starting_price,
+        price_range_min,
+        price_range_max,
+        whatsapp_number,
+        instagram_handle,
+        cover_image_url,
+        short_bio,
+        is_active,
+        is_verified,
+        currency_code,
+        vendor_categories:vendor_categories!vendors_category_id_fkey (
+          id,
+          slug,
+          name
+        )
+      `
+      )
+      .eq('slug', vendorSlug)
+      .maybeSingle()
+
+  if (vendorError) throw vendorError
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  if (!vendorData) throw new Error('Vendor not found')
+  
+  console.log('Fetched vendor:', vendorData)
+  const vendorId = vendorData.id
+  console.log('Using Vendor ID:', vendorId)
+
+  // 2. Fetch related data using ID
+  const [catRes, rateRes, photoRes] = await Promise.all([
+    client
+        .schema('stagebloom')
+        .from('vendor_categories')
+        .select('id, slug, name')
+        .eq('is_active', true)
+        .order('sort_order', {ascending: true})
+        .order('name', {ascending: true}),
+    client
+        .schema('stagebloom')
+        .from('vendor_rates')
+        .select(
+            'id, vendor_id, service_name, pricing_model, unit_label, starting_from_amount, currency_code, min_guests, max_guests, is_primary, is_active, notes'
+        )
+        .eq('vendor_id', vendorId)
+        .order('created_at', {ascending: false}),
+    client
+        .schema('stagebloom')
+        .from('vendor_photos')
+        .select('id, vendor_id, image_url, caption, is_cover')
+        .eq('vendor_id', vendorId)
+        .order('is_cover', {ascending: false})
+        .order('sort_order', {ascending: true})
+        .order('created_at', {ascending: false})
+  ])
+
+  console.log('Photo response:', photoRes)
+
+  if (catRes.error) console.error('Category fetch error:', catRes.error)
+  if (rateRes.error) console.error('Rate fetch error:', rateRes.error)
+  if (photoRes.error) console.error('Photo fetch error:', photoRes.error)
+
+  return {
+    vendor: vendorData as unknown as VendorRow,
+    categories: (catRes.data || []) as CategoryRow[],
+    rates: (rateRes.data || []) as RateRow[],
+    photos: (photoRes.data || []) as PhotoRow[]
+  }
+})
 
 type VendorRow = {
   id: string
@@ -531,77 +621,6 @@ type PhotoRow = {
   is_cover: boolean
 }
 
-const {
-  data,
-  pending,
-  error: loadError,
-  refresh
-} = await useAsyncData('admin-vendor-' + vendorId, async () => {
-  const [vendorRes, catRes, rateRes, photoRes] = await Promise.all([
-    client
-        .schema('stagebloom')
-        .from('vendors')
-        .select(
-            `
-        id,
-        slug,
-        display_name,
-        category_id,
-        city,
-        area,
-        country_code,
-        starting_price,
-        price_range_min,
-        price_range_max,
-        whatsapp_number,
-        instagram_handle,
-        cover_image_url,
-        short_bio,
-        is_active,
-        is_verified,
-        currency_code,
-        vendor_categories:vendor_categories!vendors_category_id_fkey (
-          id,
-          slug,
-          name
-        )
-      `
-        )
-        .eq('id', vendorId)
-        .maybeSingle(),
-    client
-        .from('vendor_categories')
-        .select('id, slug, name')
-        .eq('is_active', true)
-        .order('sort_order', {ascending: true})
-        .order('name', {ascending: true}),
-    client
-        .from('vendor_rates')
-        .select(
-            'id, vendor_id, service_name, pricing_model, unit_label, starting_from_amount, currency_code, min_guests, max_guests, is_primary, is_active, notes'
-        )
-        .eq('vendor_id', vendorId)
-        .order('created_at', {ascending: false}),
-    client
-        .from('vendor_photos')
-        .select('id, vendor_id, image_url, caption, is_cover')
-        .eq('vendor_id', vendorId)
-        .order('is_cover', {ascending: false})
-        .order('sort_order', {ascending: true})
-        .order('created_at', {ascending: false})
-  ])
-
-  if (vendorRes.error) throw vendorRes.error
-  if (!vendorRes.data) throw new Error('Vendor not found')
-
-  return {
-    vendor: vendorRes.data as unknown as VendorRow,
-    categories: (catRes.data || []) as CategoryRow[],
-    rates: (rateRes.data || []) as RateRow[],
-    photos: (photoRes.data || []) as PhotoRow[]
-  }
-})
-
 const rawVendor = computed(() => data.value?.vendor as VendorRow | undefined)
 const categories = computed(() => (data.value?.categories || []) as CategoryRow[])
 const rates = ref<RateRow[]>(data.value?.rates || [])
@@ -647,6 +666,17 @@ watchEffect(() => {
   }
 })
 
+// Sync rates and photos when data changes (initial load or refresh)
+watch(() => data.value, (newData) => {
+  console.log('Data changed:', newData)
+  if (newData) {
+    console.log('Setting rates:', newData.rates)
+    console.log('Setting photos:', newData.photos)
+    rates.value = newData.rates
+    photos.value = newData.photos
+  }
+}, { immediate: true })
+
 const currentCategory = computed(() =>
     categories.value.find((c) => c.id === vendorForm.value.category_id)
 )
@@ -685,7 +715,7 @@ const saveDetails = async () => {
         .schema('stagebloom')
         .from('vendors') as any) // eslint-disable-line @typescript-eslint/no-explicit-any
         .update(payload)
-        .eq('id', vendorId)
+        .eq('id', vendorForm.value.id)
 
     if (error) {
       console.error('Update vendor error:', error)
@@ -723,7 +753,7 @@ const addRate = async () => {
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const payload: any = {
-      vendor_id: vendorId,
+      vendor_id: vendorForm.value.id,
       service_name: newRate.value.service_name.trim(),
       pricing_model: newRate.value.pricing_model,
       starting_from_amount: newRate.value.starting_from_amount,
@@ -803,12 +833,12 @@ const addPhoto = async () => {
           .schema('stagebloom')
           .from('vendor_photos') as any) // eslint-disable-line @typescript-eslint/no-explicit-any
           .update({is_cover: false})
-          .eq('vendor_id', vendorId)
+          .eq('vendor_id', vendorForm.value.id)
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const payload: any = {
-      vendor_id: vendorId,
+      vendor_id: vendorForm.value.id,
       image_url: newPhoto.value.image_url.trim(),
       caption: newPhoto.value.caption.trim() || null,
       is_cover: newPhoto.value.is_cover
@@ -853,7 +883,7 @@ const setCoverPhoto = async (photo: PhotoRow) => {
       .schema('stagebloom')
       .from('vendor_photos') as any) // eslint-disable-line @typescript-eslint/no-explicit-any
       .update({is_cover: false})
-      .eq('vendor_id', vendorId)
+      .eq('vendor_id', vendorForm.value.id)
 
   if (error) {
     alert('Failed to update cover flag: ' + error.message)
